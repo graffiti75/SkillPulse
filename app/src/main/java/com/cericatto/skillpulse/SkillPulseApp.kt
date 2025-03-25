@@ -1,6 +1,7 @@
 package com.cericatto.skillpulse
 
 import android.app.Application
+import com.google.firebase.FirebaseApp
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -8,6 +9,10 @@ import timber.log.Timber
 class SkillPulseApp : Application() {
 	override fun onCreate() {
 		super.onCreate()
+
+		/// Initialize Firebase.
+		FirebaseApp.initializeApp(this)
+
 		// Plant a debug tree for logging in debug builds
 		if (BuildConfig.DEBUG) {
 			Timber.plant(Timber.DebugTree())

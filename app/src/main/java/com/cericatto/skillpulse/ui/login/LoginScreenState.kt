@@ -1,6 +1,13 @@
 package com.cericatto.skillpulse.ui.login
 
-// TODO: This class will be expanded later.
+data class MessageAlert(
+	val isError: Boolean = true,
+	val message: String = ""
+)
+
 data class LoginScreenState(
-	val loading : Boolean = true
+	val loading : Boolean = true,
+	val alert : MessageAlert? = null,
+	val user : String = "",
+	val userLogged : Boolean = false
 )

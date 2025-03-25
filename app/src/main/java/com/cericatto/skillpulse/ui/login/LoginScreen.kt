@@ -1,6 +1,7 @@
 package com.cericatto.skillpulse.ui.login
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,11 +16,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cericatto.skillpulse.ui.common.BottomAlert
 import com.cericatto.skillpulse.ui.common.DynamicStatusBarColor
 
 @Composable
@@ -28,12 +31,24 @@ fun LoginScreenRoot(
 	viewModel: LoginScreenViewModel = hiltViewModel()
 ) {
 	val state by viewModel.state.collectAsStateWithLifecycle()
+	val onAction = viewModel::onAction
+
 	DynamicStatusBarColor()
-	LoginScreen(
-		modifier = modifier,
-		onAction = viewModel::onAction,
-		state = state
-	)
+	Box(
+		contentAlignment = Alignment.BottomCenter,
+		modifier = Modifier.fillMaxSize()
+	) {
+		LoginScreen(
+			modifier = modifier,
+			onAction = onAction,
+			state = state
+		)
+		if (state.alert != null) {
+			BottomAlert(
+				alert = state.alert
+			)
+		}
+	}
 }
 
 @Composable

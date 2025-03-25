@@ -2,13 +2,37 @@ package com.cericatto.skillpulse.ui.common
 
 import android.app.Activity
 import android.os.Build
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
+import com.cericatto.skillpulse.ui.login.LoginScreenAction
+import com.cericatto.skillpulse.ui.login.MessageAlert
 
 @Suppress("DEPRECATION")
 @Composable
@@ -33,5 +57,55 @@ fun DynamicStatusBarColor() {
 				isAppearanceLightStatusBars = !isDarkTheme
 			}
 		}
+	}
+}
+
+@Composable
+fun BottomAlert(
+	alert: MessageAlert?
+) {
+	val messageHeight by animateDpAsState(
+		// The target value is determined by the performAnimation state.
+		targetValue = if (alert != null) 68.dp else 0.dp,
+		animationSpec = tween(
+			durationMillis = 600,
+			easing = FastOutSlowInEasing
+		),
+		label = "Error Message Height Animation"
+	)
+	val backgroundColor = if (alert != null && alert.isError) {
+		Color(0xFFA40019)
+	} else {
+		Color(0xFF094809)
+	}
+	Column(
+		horizontalAlignment = Alignment.CenterHorizontally,
+		verticalArrangement = Arrangement.Center,
+		modifier = Modifier.background(backgroundColor)
+			.height(messageHeight)
+			// Add clip modifier to ensure content is clipped during animation.
+			.clip(RectangleShape)
+	) {
+		Spacer(modifier = Modifier.padding(top = 10.dp))
+		Text(
+			text = alert?.message ?: "",
+			style = TextStyle(
+				color = Color.White,
+				textAlign = TextAlign.Center,
+				fontSize = 16.sp
+			),
+			modifier = Modifier.fillMaxWidth()
+		)
+		Spacer(modifier = Modifier.padding(bottom = 20.dp))
+		HorizontalDivider(
+			modifier = Modifier
+				.padding(horizontal = 140.dp)
+				.background(
+					color = Color.White,
+					shape = RoundedCornerShape(30.dp)
+				)
+				.height(5.dp)
+		)
+		Spacer(modifier = Modifier.padding(bottom = 10.dp))
 	}
 }
