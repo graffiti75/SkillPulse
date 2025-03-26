@@ -1,4 +1,4 @@
-package com.cericatto.skillpulse.navigation
+package com.cericatto.skillpulse.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.cericatto.skillpulse.ui.login.LoginScreenRoot
+import com.cericatto.skillpulse.ui.task.TaskScreenRoot
 
 @Composable
 fun NavHostComposable(
@@ -18,6 +19,9 @@ fun NavHostComposable(
 	) {
 		composable<Route.LoginScreen> {
 			LoginScreenRoot(modifier)
+		}
+		composable<Route.TaskScreen> {
+			TaskScreenRoot(modifier)
 		}
 	}
 }

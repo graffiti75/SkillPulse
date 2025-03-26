@@ -1,4 +1,4 @@
-package com.cericatto.skillpulse
+package com.cericatto.skillpulse.ui.task
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,12 +18,34 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cericatto.skillpulse.ui.common.DynamicStatusBarColor
 import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun SkillPulseTaskScreen() {
+fun TaskScreenRoot(
+	modifier: Modifier = Modifier,
+	viewModel: TaskScreenViewModel = hiltViewModel()
+) {
+	val state by viewModel.state.collectAsStateWithLifecycle()
+	val onAction = viewModel::onAction
+
+	DynamicStatusBarColor()
+	TaskScreen(
+		modifier = modifier,
+		onAction = onAction,
+		state = state
+	)
+}
+
+@Composable
+fun TaskScreen(
+	modifier: Modifier = Modifier,
+	onAction: (TaskScreenAction) -> Unit,
+	state: TaskScreenState
+) {
 	val db = FirebaseFirestore.getInstance()
 	var taskDescription by remember { mutableStateOf("") }
 	var tasks by remember { mutableStateOf(listOf<String>()) }
@@ -73,10 +95,4 @@ fun SkillPulseTaskScreen() {
 			}
 		}
 	}
-}
-
-@Preview
-@Composable
-fun SkillPulseTaskScreenPreview() {
-	SkillPulseTaskScreen()
 }

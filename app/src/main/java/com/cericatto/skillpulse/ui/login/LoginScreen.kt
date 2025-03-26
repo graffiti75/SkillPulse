@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -43,9 +44,10 @@ fun LoginScreenRoot(
 			onAction = onAction,
 			state = state
 		)
-		if (state.alert != null) {
+		state.alert?.let {
 			BottomAlert(
-				alert = state.alert
+				onAction = onAction,
+				alert = it
 			)
 		}
 	}
@@ -59,12 +61,15 @@ private fun LoginScreen(
 ) {
 	var email by remember { mutableStateOf("") }
 	var password by remember { mutableStateOf("") }
+	val keyboardController = LocalSoftwareKeyboardController.current
 
 	Column(
+		verticalArrangement = Arrangement.Top,
+		horizontalAlignment = Alignment.CenterHorizontally,
 		modifier = Modifier
 			.fillMaxSize()
-			.padding(16.dp),
-		verticalArrangement = Arrangement.Center
+			.padding(20.dp)
+			.padding(top = 80.dp)
 	) {
 		TextField(
 			value = email,
@@ -88,6 +93,7 @@ private fun LoginScreen(
 		Spacer(modifier = Modifier.height(16.dp))
 		Button(
 			onClick = {
+				keyboardController?.hide()
 				onAction(LoginScreenAction.OnCreateUser(email, password))
 			},
 			modifier = Modifier.fillMaxWidth()
@@ -97,8 +103,9 @@ private fun LoginScreen(
 		Spacer(modifier = Modifier.height(8.dp))
 		Button(
 			onClick = {
+				keyboardController?.hide()
 				onAction(LoginScreenAction.OnLoginClick(email, password))
-			}, // Login
+			},
 			modifier = Modifier.fillMaxWidth()
 		) {
 			Text("Log In")

@@ -1,4 +1,4 @@
-package com.cericatto.skillpulse.timber
+package com.cericatto.skillpulse.data.timber
 
 import timber.log.Timber
 

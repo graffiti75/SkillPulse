@@ -1,8 +1,10 @@
 package com.cericatto.skillpulse.ui.login
 
+import com.cericatto.skillpulse.ui.UiText
+
 data class MessageAlert(
-	val isError: Boolean = true,
-	val message: String = ""
+	val errorMessage: Pair<UiText, String>? = null,
+	val successMessage: UiText? = null
 )
 
 data class LoginScreenState(

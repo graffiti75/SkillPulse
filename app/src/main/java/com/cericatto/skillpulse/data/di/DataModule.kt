@@ -1,7 +1,9 @@
-package com.cericatto.skillpulse.di
+package com.cericatto.skillpulse.data.di
 
 import android.app.Application
 import android.content.Context
+import com.cericatto.skillpulse.data.auth.FirebaseUserAuthentication
+import com.cericatto.skillpulse.domain.auth.UserAuthentication
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
@@ -25,6 +27,12 @@ object DataModule {
 	@Singleton
 	fun provideFirebaseAuth(): FirebaseAuth {
 		return FirebaseAuth.getInstance()
+	}
+
+	@Provides
+	@Singleton
+	fun provideUserAuthentication(auth: FirebaseAuth): UserAuthentication {
+		return FirebaseUserAuthentication(auth)
 	}
 
 	/*

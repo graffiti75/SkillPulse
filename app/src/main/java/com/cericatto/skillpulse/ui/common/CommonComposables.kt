@@ -6,6 +6,7 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -62,33 +63,46 @@ fun DynamicStatusBarColor() {
 
 @Composable
 fun BottomAlert(
-	alert: MessageAlert?
+	onAction: (LoginScreenAction) -> Unit,
+	alert: MessageAlert
 ) {
 	val messageHeight by animateDpAsState(
 		// The target value is determined by the performAnimation state.
-		targetValue = if (alert != null) 68.dp else 0.dp,
+		targetValue = 100.dp,
 		animationSpec = tween(
 			durationMillis = 600,
 			easing = FastOutSlowInEasing
 		),
 		label = "Error Message Height Animation"
 	)
-	val backgroundColor = if (alert != null && alert.isError) {
+	val backgroundColor = if (alert.errorMessage != null) {
 		Color(0xFFA40019)
 	} else {
-		Color(0xFF094809)
+		Color(0xFF0F930F)
+	}
+	val message = if (alert.successMessage != null) {
+		alert.successMessage.asString()
+	} else {
+		if (alert.errorMessage != null) {
+			val (errorMessage, errorCause) = alert.errorMessage
+			"Error: ${errorMessage.asString()}, Cause: $errorCause"
+		} else ""
 	}
 	Column(
 		horizontalAlignment = Alignment.CenterHorizontally,
 		verticalArrangement = Arrangement.Center,
-		modifier = Modifier.background(backgroundColor)
+		modifier = Modifier
+			.clickable {
+				onAction(LoginScreenAction.OnDismissAlert)
+			}
+			.background(backgroundColor)
 			.height(messageHeight)
 			// Add clip modifier to ensure content is clipped during animation.
 			.clip(RectangleShape)
 	) {
 		Spacer(modifier = Modifier.padding(top = 10.dp))
 		Text(
-			text = alert?.message ?: "",
+			text = message,
 			style = TextStyle(
 				color = Color.White,
 				textAlign = TextAlign.Center,

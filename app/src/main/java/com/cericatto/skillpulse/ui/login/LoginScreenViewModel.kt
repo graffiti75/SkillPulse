@@ -1,17 +1,23 @@
 package com.cericatto.skillpulse.ui.login
 
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
+import androidx.lifecycle.viewModelScope
+import com.cericatto.skillpulse.R
+import com.cericatto.skillpulse.domain.auth.UserAuthentication
+import com.cericatto.skillpulse.domain.errors.Result
+import com.cericatto.skillpulse.ui.UiText
+import com.cericatto.skillpulse.ui.asUiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginScreenViewModel @Inject constructor(
-	private val auth: FirebaseAuth
+	private val auth: UserAuthentication
 ): ViewModel() {
 
 	private val _state = MutableStateFlow(LoginScreenState())
@@ -21,6 +27,7 @@ class LoginScreenViewModel @Inject constructor(
 		when (action) {
 			is LoginScreenAction.OnLoginClick -> login(action.email, action.password)
 			is LoginScreenAction.OnCreateUser -> createUser(action.email, action.password)
+			is LoginScreenAction.OnDismissAlert -> dismissAlert()
 		}
 	}
 
@@ -28,56 +35,53 @@ class LoginScreenViewModel @Inject constructor(
 		_state.update { it.copy(loading = false) }
 	}
 
-	private fun checkUserLogged() {
-		auth.addAuthStateListener { firebaseAuth ->
-			val user = firebaseAuth.currentUser
-			if (user != null) {
-				_state.update {
-					it.copy(
-						user = user.email ?: "",
-						userLogged = true
-					)
+	private fun login(email: String, password: String) {
+		viewModelScope.launch {
+			when (val result = auth.login(email, password)) {
+				is Result.Error -> {
+					_state.update {
+						it.copy(
+							alert = MessageAlert(
+								errorMessage = Pair(result.error.asUiText(), result.message ?: "")
+							)
+						)
+					}
 				}
-			} else {
-				_state.update {
-					it.copy(
-						user = "",
-						userLogged = false
-					)
+				is Result.Success -> {
+					// TODO: Navigate to TaskScreen (add later)
 				}
 			}
 		}
 	}
 
-	private fun login(email: String, password: String) {
-		auth.signInWithEmailAndPassword(email, password)
-			.addOnCompleteListener { task ->
-				if (task.isSuccessful) {
+	private fun createUser(email: String, password: String) {
+		viewModelScope.launch {
+			when (val result = auth.signUp(email, password)) {
+				is Result.Error -> {
 					_state.update {
-						it.copy(alert = MessageAlert(isError = false, message = "Login Successful!"))
+						it.copy(
+							alert = MessageAlert(
+								errorMessage = Pair(result.error.asUiText(), result.message ?: "")
+							)
+						)
 					}
-					// TODO: Navigate to TaskScreen (add later)
-				} else {
+				}
+				is Result.Success -> {
 					_state.update {
-						it.copy(alert = MessageAlert(message = "Login Failed: ${task.exception?.message}"))
+						it.copy(
+							alert = MessageAlert(
+								successMessage = UiText.StringResource(R.string.signup_success)
+							)
+						)
 					}
 				}
 			}
-		checkUserLogged()
+		}
 	}
 
-	private fun createUser(email: String, password: String) {
-		auth.createUserWithEmailAndPassword(email, password)
-			.addOnCompleteListener { task ->
-				if (task.isSuccessful) {
-					_state.update {
-						it.copy(alert = MessageAlert(isError = false, message = "User created successfully!"))
-					}
-				} else {
-					_state.update {
-						it.copy(alert = MessageAlert(message = "Error creating user: ${task.exception?.message}"))
-					}
-				}
-			}
+	private fun dismissAlert() {
+		_state.update {
+			it.copy(alert = null)
+		}
 	}
 }

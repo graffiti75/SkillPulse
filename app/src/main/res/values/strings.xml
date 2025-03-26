@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">SkillPulse</string>
+
+    <string name="login_success">Login Successful!</string>
+    <string name="signup_success">User created successfully!</string>
+
+    <!--=============== ERRORS ===============-->
+
+    <!-- Firebase Errors -->
+
+    <string name="login_failed">Login Failed</string>
+    <string name="signup_failed">Error Creating User</string>
+
+    <!-- Local Errors -->
+
+    <string name="error_disk_full">Failed to save the item because your device\'s disk is full</string>
+    <string name="error_user_is_null">Email or password are incorrect.</string>
+
+    <!-- Network Errors -->
+
+    <string name="unauthorized">The request requires user authentication.</string>
+    <string name="forbidden">The server understood the request but refuses to fulfill it.</string>
+    <string name="no_internet">Couldn\'t reach server. Check your internet connection.</string>
+    <string name="error_serialization">Oops, couldn\'t parse data.</string>
+    <string name="unknown_error">An unknown error occurred</string>
+
+    <string name="try_again_later">Oops, something went wrong. Please try again later.</string>
 </resources>
