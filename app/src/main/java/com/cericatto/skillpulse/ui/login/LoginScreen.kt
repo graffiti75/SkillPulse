@@ -23,16 +23,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cericatto.skillpulse.ui.ObserveAsEvents
+import com.cericatto.skillpulse.ui.UiEvent
 import com.cericatto.skillpulse.ui.common.BottomAlert
 import com.cericatto.skillpulse.ui.common.DynamicStatusBarColor
+import com.cericatto.skillpulse.ui.navigation.Route
 
 @Composable
 fun LoginScreenRoot(
+	onNavigate: (Route) -> Unit,
+	onNavigateUp: () -> Unit,
 	modifier: Modifier = Modifier,
 	viewModel: LoginScreenViewModel = hiltViewModel()
 ) {
 	val state by viewModel.state.collectAsStateWithLifecycle()
 	val onAction = viewModel::onAction
+
+	ObserveAsEvents(viewModel.events) { event ->
+		when (event) {
+			is UiEvent.Navigate -> onNavigate(event.route)
+			is UiEvent.NavigateUp -> onNavigateUp()
+			else -> Unit
+		}
+	}
 
 	DynamicStatusBarColor()
 	Box(

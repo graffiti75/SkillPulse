@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -46,11 +47,12 @@ fun TaskScreen(
 	onAction: (TaskScreenAction) -> Unit,
 	state: TaskScreenState
 ) {
-	val db = FirebaseFirestore.getInstance()
+//	val db = FirebaseFirestore.getInstance()
 	var taskDescription by remember { mutableStateOf("") }
 	var tasks by remember { mutableStateOf(listOf<String>()) }
 
 	// Load tasks from Firestore
+	/*
 	LaunchedEffect(Unit) {
 		db.collection("tasks")
 			.addSnapshotListener { snapshot, e ->
@@ -58,6 +60,7 @@ fun TaskScreen(
 				tasks = snapshot?.documents?.map { it.getString("description") ?: "" } ?: emptyList()
 			}
 	}
+	 */
 
 	Column(
 		modifier = Modifier
@@ -80,7 +83,7 @@ fun TaskScreen(
 						"description" to taskDescription,
 						"timestamp" to System.currentTimeMillis()
 					)
-					db.collection("tasks").add(task)
+//					db.collection("tasks").add(task)
 					taskDescription = ""
 				}
 			},
@@ -95,4 +98,14 @@ fun TaskScreen(
 			}
 		}
 	}
+}
+
+@Preview
+@Composable
+fun TaskScreenPreview() {
+	TaskScreen(
+		modifier = Modifier,
+		onAction = {},
+		state = TaskScreenState()
+	)
 }

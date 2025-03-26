@@ -10,6 +10,7 @@
 
     <string name="login_failed">Login Failed</string>
     <string name="signup_failed">Error Creating User</string>
+    <string name="user_is_logged_failed">Error while checking if User is logged</string>
 
     <!-- Local Errors -->
 

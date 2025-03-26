@@ -18,7 +18,11 @@ fun NavHostComposable(
 		startDestination = Route.LoginScreen
 	) {
 		composable<Route.LoginScreen> {
-			LoginScreenRoot(modifier)
+			LoginScreenRoot(
+				modifier = modifier,
+				onNavigate = { navController.navigate(it) },
+				onNavigateUp = { navController.navigateUp() }
+			)
 		}
 		composable<Route.TaskScreen> {
 			TaskScreenRoot(modifier)

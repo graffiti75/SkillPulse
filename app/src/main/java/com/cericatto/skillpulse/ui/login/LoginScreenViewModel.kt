@@ -5,12 +5,16 @@ import androidx.lifecycle.viewModelScope
 import com.cericatto.skillpulse.R
 import com.cericatto.skillpulse.domain.auth.UserAuthentication
 import com.cericatto.skillpulse.domain.errors.Result
+import com.cericatto.skillpulse.ui.UiEvent
 import com.cericatto.skillpulse.ui.UiText
 import com.cericatto.skillpulse.ui.asUiText
+import com.cericatto.skillpulse.ui.navigation.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,6 +26,9 @@ class LoginScreenViewModel @Inject constructor(
 
 	private val _state = MutableStateFlow(LoginScreenState())
 	val state: StateFlow<LoginScreenState> = _state.asStateFlow()
+
+	private val _events = Channel<UiEvent>()
+	val events = _events.receiveAsFlow()
 
 	fun onAction(action: LoginScreenAction) {
 		when (action) {
@@ -48,7 +55,7 @@ class LoginScreenViewModel @Inject constructor(
 					}
 				}
 				is Result.Success -> {
-					// TODO: Navigate to TaskScreen (add later)
+					goToTaskScreen()
 				}
 			}
 		}
@@ -82,6 +89,13 @@ class LoginScreenViewModel @Inject constructor(
 	private fun dismissAlert() {
 		_state.update {
 			it.copy(alert = null)
+		}
+	}
+
+	private fun goToTaskScreen() {
+		viewModelScope.launch {
+			dismissAlert()
+			_events.send(UiEvent.Navigate(Route.TaskScreen))
 		}
 	}
 }
