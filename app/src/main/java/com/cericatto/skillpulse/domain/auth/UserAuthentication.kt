@@ -6,5 +6,5 @@ import com.cericatto.skillpulse.domain.errors.Result
 interface UserAuthentication {
 	suspend fun login(email: String, password: String): Result<Boolean, DataError>
 	suspend fun signUp(email: String, password: String): Result<Boolean, DataError>
-	suspend fun isUserLogged(): Result<String, DataError>
+	suspend fun userLogged(): Result<String, DataError>
 }

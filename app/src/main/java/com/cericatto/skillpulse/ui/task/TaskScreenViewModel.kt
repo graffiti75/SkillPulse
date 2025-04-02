@@ -1,28 +1,89 @@
 package com.cericatto.skillpulse.ui.task
 
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
+import androidx.lifecycle.viewModelScope
+import com.cericatto.skillpulse.domain.auth.UserAuthentication
+import com.cericatto.skillpulse.domain.errors.Result
+import com.cericatto.skillpulse.domain.remote.RemoteDatabase
+import com.cericatto.skillpulse.ui.MessageAlert
+import com.cericatto.skillpulse.ui.asUiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TaskScreenViewModel @Inject constructor(
-	private val auth: FirebaseAuth
+	private val auth: UserAuthentication,
+	private val db: RemoteDatabase
 ): ViewModel() {
 
 	private val _state = MutableStateFlow(TaskScreenState())
 	val state: StateFlow<TaskScreenState> = _state.asStateFlow()
 
 	fun onAction(action: TaskScreenAction) {
-//		when (action) {
-//		}
+		when (action) {
+			is TaskScreenAction.OnDismissAlert -> dismissAlert()
+		}
 	}
 
 	init {
 		_state.update { it.copy(loading = false) }
+		checkUserLogged()
+	}
+
+	private fun checkUserLogged() {
+		viewModelScope.launch {
+			when (val result = auth.userLogged()) {
+				is Result.Error -> {
+					_state.update {
+						it.copy(
+							alert = MessageAlert(
+								errorMessage = Pair(result.error.asUiText(), result.message ?: "")
+							)
+						)
+					}
+				}
+				is Result.Success -> {
+					_state.update {
+						it.copy(
+							user = result.data,
+						)
+					}
+				}
+			}
+		}
+	}
+
+	private fun loadTasks() {
+		viewModelScope.launch {
+			when (val result = db.loadTasks()) {
+				is Result.Error -> {
+					_state.update {
+						it.copy(
+							alert = MessageAlert(
+								errorMessage = Pair(result.error.asUiText(), result.message ?: "")
+							)
+						)
+					}
+				}
+				is Result.Success -> {
+					_state.update {
+						it.copy(
+							tasks = result.data
+						)
+					}
+				}
+			}
+		}
+	}
+
+	private fun dismissAlert() {
+		_state.update {
+			it.copy(alert = null)
+		}
 	}
 }

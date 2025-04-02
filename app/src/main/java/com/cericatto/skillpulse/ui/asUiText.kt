@@ -15,6 +15,9 @@ fun DataError.asUiText(): UiText {
 		DataError.Firebase.USER_LOGGED -> UiText.StringResource(
 			R.string.user_is_logged_failed
 		)
+		DataError.Firebase.FIRESTORE_ERROR -> UiText.StringResource(
+			R.string.firestore_error
+		)
 
 		// Local
 		DataError.Local.DISK_FULL -> UiText.StringResource(

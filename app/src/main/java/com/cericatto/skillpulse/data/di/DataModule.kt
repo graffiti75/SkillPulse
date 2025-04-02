@@ -3,8 +3,11 @@ package com.cericatto.skillpulse.data.di
 import android.app.Application
 import android.content.Context
 import com.cericatto.skillpulse.data.auth.FirebaseUserAuthentication
+import com.cericatto.skillpulse.data.remote.FirebaseRemoteDatabase
 import com.cericatto.skillpulse.domain.auth.UserAuthentication
+import com.cericatto.skillpulse.domain.remote.RemoteDatabase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,8 +34,20 @@ object DataModule {
 
 	@Provides
 	@Singleton
+	fun provideFirebaseFirestore(): FirebaseFirestore {
+		return FirebaseFirestore.getInstance()
+	}
+
+	@Provides
+	@Singleton
 	fun provideUserAuthentication(auth: FirebaseAuth): UserAuthentication {
 		return FirebaseUserAuthentication(auth)
+	}
+
+	@Provides
+	@Singleton
+	fun provideRemoteDatabase(db: FirebaseFirestore): RemoteDatabase {
+		return FirebaseRemoteDatabase(db)
 	}
 
 	/*

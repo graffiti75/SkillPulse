@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.cericatto.skillpulse.R
 import com.cericatto.skillpulse.domain.auth.UserAuthentication
 import com.cericatto.skillpulse.domain.errors.Result
+import com.cericatto.skillpulse.ui.MessageAlert
 import com.cericatto.skillpulse.ui.UiEvent
 import com.cericatto.skillpulse.ui.UiText
 import com.cericatto.skillpulse.ui.asUiText

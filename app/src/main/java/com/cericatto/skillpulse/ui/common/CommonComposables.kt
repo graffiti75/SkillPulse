@@ -32,8 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
-import com.cericatto.skillpulse.ui.login.LoginScreenAction
-import com.cericatto.skillpulse.ui.login.MessageAlert
+import com.cericatto.skillpulse.ui.MessageAlert
 
 @Suppress("DEPRECATION")
 @Composable
@@ -63,7 +62,7 @@ fun DynamicStatusBarColor() {
 
 @Composable
 fun BottomAlert(
-	onAction: (LoginScreenAction) -> Unit,
+	onDismiss: () -> Unit,
 	alert: MessageAlert
 ) {
 	val messageHeight by animateDpAsState(
@@ -93,7 +92,7 @@ fun BottomAlert(
 		verticalArrangement = Arrangement.Center,
 		modifier = Modifier
 			.clickable {
-				onAction(LoginScreenAction.OnDismissAlert)
+				onDismiss()
 			}
 			.background(backgroundColor)
 			.height(messageHeight)

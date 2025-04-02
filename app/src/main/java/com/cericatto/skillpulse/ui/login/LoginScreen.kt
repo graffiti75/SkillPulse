@@ -59,7 +59,7 @@ fun LoginScreenRoot(
 		)
 		state.alert?.let {
 			BottomAlert(
-				onAction = onAction,
+				onDismiss = { onAction(LoginScreenAction.OnDismissAlert) },
 				alert = it
 			)
 		}

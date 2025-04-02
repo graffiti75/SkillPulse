@@ -33,7 +33,7 @@ class FirebaseUserAuthentication(
 		}
 	}
 
-	override suspend fun isUserLogged(): Result<String, DataError> {
+	override suspend fun userLogged(): Result<String, DataError> {
 		return try {
 			val user = auth.currentUser
 			if (user != null) {
