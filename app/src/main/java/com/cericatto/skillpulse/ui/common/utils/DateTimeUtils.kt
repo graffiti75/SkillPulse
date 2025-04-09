@@ -1,0 +1,22 @@
+package com.cericatto.skillpulse.ui.common.utils
+
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+
+fun ZonedDateTime.getDateTimeAsString(pattern: String = "MMM d yyyy, HH:mm"): String {
+	val formatter = DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH)
+	return this.format(formatter)
+}
+
+fun Long.toZonedDateTime(zoneId: String = ""): ZonedDateTime {
+	return ZonedDateTime.ofInstant(
+		Instant.ofEpochMilli(this),
+		if (zoneId.isEmpty()) ZoneId.systemDefault() else ZoneId.of("UTC")
+	)
+}
+
+fun Long.getDateTimeAsString(pattern: String = "MMM d yyyy, HH:mm") =
+	this.toZonedDateTime().getDateTimeAsString(pattern)

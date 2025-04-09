@@ -4,6 +4,8 @@
     <string name="login_success">Login Successful!</string>
     <string name="signup_success">User created successfully!</string>
 
+    <string name="add_task_success">Task added successfully!</string>
+
     <!--=============== ERRORS ===============-->
 
     <!-- Firebase Errors -->

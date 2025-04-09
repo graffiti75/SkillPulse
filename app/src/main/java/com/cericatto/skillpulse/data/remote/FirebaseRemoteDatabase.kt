@@ -36,7 +36,9 @@ class FirebaseRemoteDatabase(
 		try {
 			val task = hashMapOf(
 				"description" to description,
-				"timestamp" to System.currentTimeMillis()
+				"timestamp" to System.currentTimeMillis(),
+				"startTime" to System.currentTimeMillis(),
+				"endTime" to System.currentTimeMillis(),
 			)
 			db.collection("tasks")
 				.add(task)

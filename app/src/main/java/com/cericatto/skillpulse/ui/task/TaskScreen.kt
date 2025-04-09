@@ -1,5 +1,7 @@
 package com.cericatto.skillpulse.ui.task
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -19,15 +22,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cericatto.skillpulse.data.model.Task
+import com.cericatto.skillpulse.data.model.initTaskList
 import com.cericatto.skillpulse.ui.common.BottomAlert
 import com.cericatto.skillpulse.ui.common.DynamicStatusBarColor
-import com.google.firebase.firestore.FirebaseFirestore
+import com.cericatto.skillpulse.ui.common.shadowModifier
+import com.cericatto.skillpulse.ui.common.utils.getDateTimeAsString
 
 @Composable
 fun TaskScreenRoot(
@@ -62,11 +74,10 @@ fun TaskScreen(
 	onAction: (TaskScreenAction) -> Unit,
 	state: TaskScreenState
 ) {
-	val db = FirebaseFirestore.getInstance()
 	var taskDescription by remember { mutableStateOf("") }
-
 	Column(
 		modifier = Modifier
+			.background(Color.Red.copy(alpha = 0.1f))
 			.fillMaxSize()
 			.padding(16.dp)
 	) {
@@ -75,7 +86,8 @@ fun TaskScreen(
 			style = TextStyle(
 				fontSize = 20.sp
 			),
-			modifier = Modifier.padding(10.dp)
+			modifier = Modifier
+				.padding(10.dp)
 				.padding(bottom = 20.dp)
 		)
 
@@ -92,14 +104,8 @@ fun TaskScreen(
 		Spacer(modifier = Modifier.height(8.dp))
 		Button(
 			onClick = {
-				if (taskDescription.isNotEmpty()) {
-					val task = hashMapOf(
-						"description" to taskDescription,
-						"timestamp" to System.currentTimeMillis()
-					)
-					db.collection("tasks").add(task)
-					taskDescription = ""
-				}
+				onAction(TaskScreenAction.OnLoadingUpdate(true))
+				onAction(TaskScreenAction.OnAddTask(description = taskDescription))
 			},
 			modifier = Modifier.fillMaxWidth()
 		) {
@@ -108,13 +114,63 @@ fun TaskScreen(
 		Spacer(modifier = Modifier.height(16.dp))
 		LazyColumn {
 			items(state.tasks) { task ->
-				Text(
-					text = task.toString(),
-					modifier = Modifier.padding(8.dp)
+				TaskItem(
+					modifier = Modifier
+						.padding(top = 5.dp),
+					state = state,
+					task = task
 				)
 			}
 		}
 	}
+}
+
+@Composable
+private fun TaskItem(
+	modifier: Modifier = Modifier,
+	state: TaskScreenState,
+	task: Task
+) {
+	if (state.loading) {
+
+	} else {
+		Column(
+			verticalArrangement = Arrangement.Center,
+			horizontalAlignment = Alignment.Start,
+			modifier = modifier.shadowModifier()
+		) {
+			StyledText(
+				title = "Description",
+				content = task.description
+			)
+			StyledText(
+				title = "Start Time",
+				content = task.startTime.getDateTimeAsString()
+			)
+			StyledText(
+				title = "End Time",
+				content = task.endTime.getDateTimeAsString()
+			)
+		}
+	}
+}
+
+@Composable
+private fun StyledText(
+	title: String,
+	content: String
+) {
+	val annotatedString = buildAnnotatedString {
+		withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+			append(title)
+		}
+		append(": ")
+		withStyle(style = SpanStyle(fontWeight = FontWeight.Normal)) {
+			append(content)
+		}
+	}
+
+	Text(text = annotatedString)
 }
 
 @Preview
@@ -123,6 +179,19 @@ fun TaskScreenPreview() {
 	TaskScreen(
 		modifier = Modifier,
 		onAction = {},
-		state = TaskScreenState()
+		state = TaskScreenState().copy(
+			tasks = initTaskList(),
+			loading = false
+		)
+	)
+}
+
+@Preview
+@Composable
+fun TaskItemPreview() {
+	TaskItem(
+		modifier = Modifier,
+		state = TaskScreenState(),
+		task = Task()
 	)
 }
