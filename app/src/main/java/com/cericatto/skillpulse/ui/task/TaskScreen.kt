@@ -13,7 +13,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,8 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.cericatto.skillpulse.data.mappers.toTask
-import com.cericatto.skillpulse.data.model.Task
 import com.cericatto.skillpulse.ui.common.BottomAlert
 import com.cericatto.skillpulse.ui.common.DynamicStatusBarColor
 import com.google.firebase.firestore.FirebaseFirestore
@@ -67,19 +64,6 @@ fun TaskScreen(
 ) {
 	val db = FirebaseFirestore.getInstance()
 	var taskDescription by remember { mutableStateOf("") }
-	var tasks by remember { mutableStateOf(listOf<Task>()) }
-
-	// Load tasks from Firestore.
-	LaunchedEffect(Unit) {
-		db.collection("tasks")
-			.addSnapshotListener { snapshot, e ->
-				val time = System.currentTimeMillis()
-				if (e != null) return@addSnapshotListener
-				tasks = snapshot?.documents?.map {
-					it.toTask() ?: Task("", 0, time, time)
-				} ?: emptyList()
-			}
-	}
 
 	Column(
 		modifier = Modifier
@@ -99,7 +83,7 @@ fun TaskScreen(
 			value = taskDescription,
 			onValueChange = {
 				taskDescription = it
-							},
+			},
 			label = {
 				Text("Enter a task (e.g., Fix my code)")
 			},
@@ -123,7 +107,7 @@ fun TaskScreen(
 		}
 		Spacer(modifier = Modifier.height(16.dp))
 		LazyColumn {
-			items(tasks) { task ->
+			items(state.tasks) { task ->
 				Text(
 					text = task.toString(),
 					modifier = Modifier.padding(8.dp)

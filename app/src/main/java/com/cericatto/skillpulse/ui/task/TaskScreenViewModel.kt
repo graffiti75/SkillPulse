@@ -33,6 +33,7 @@ class TaskScreenViewModel @Inject constructor(
 	init {
 		_state.update { it.copy(loading = false) }
 		checkUserLogged()
+		loadTasks()
 	}
 
 	private fun checkUserLogged() {
