@@ -73,9 +73,10 @@ fun TaskScreen(
 	LaunchedEffect(Unit) {
 		db.collection("tasks")
 			.addSnapshotListener { snapshot, e ->
+				val time = System.currentTimeMillis()
 				if (e != null) return@addSnapshotListener
 				tasks = snapshot?.documents?.map {
-					it.toTask() ?: Task("", 0)
+					it.toTask() ?: Task("", 0, time, time)
 				} ?: emptyList()
 			}
 	}

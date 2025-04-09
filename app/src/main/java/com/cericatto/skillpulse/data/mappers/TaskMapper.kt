@@ -7,7 +7,8 @@ fun DocumentSnapshot.toTask(): Task? {
 	return try {
 		val description = getString("description") ?: return null
 		val timestamp = getLong("timestamp") ?: return null
-		Task(description, timestamp)
+		val time = System.currentTimeMillis()
+		Task(description, timestamp, time, time)
 	} catch (e: Exception) {
 		null // Return null if mapping fails (mapNotNull will filter these out).
 	}
