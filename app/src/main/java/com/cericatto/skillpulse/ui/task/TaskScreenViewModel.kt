@@ -3,6 +3,7 @@ package com.cericatto.skillpulse.ui.task
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cericatto.skillpulse.R
+import com.cericatto.skillpulse.data.model.Task
 import com.cericatto.skillpulse.domain.auth.UserAuthentication
 import com.cericatto.skillpulse.domain.errors.Result
 import com.cericatto.skillpulse.domain.remote.RemoteDatabase
@@ -31,6 +32,8 @@ class TaskScreenViewModel @Inject constructor(
 			is TaskScreenAction.OnDismissAlert -> dismissAlert()
 			is TaskScreenAction.OnLoadingUpdate -> updateLoading(action.loading)
 			is TaskScreenAction.OnAddTask -> addTask(action.description)
+			is TaskScreenAction.OnShowDeleteDialog -> showDeleteDialog(action.show)
+			is TaskScreenAction.OnDeleteTask -> deleteTask(action.task)
 		}
 	}
 
@@ -119,6 +122,23 @@ class TaskScreenViewModel @Inject constructor(
 					}
 				}
 			}
+		}
+	}
+
+	private fun showDeleteDialog(show: Boolean) {
+		_state.update { state ->
+			state.copy(
+				showDeleteDialog = show
+			)
+		}
+	}
+
+	private fun deleteTask(task: Task) {
+		val newTasks = _state.value.tasks.filter { it.id != task.id }
+		_state.update { state ->
+			state.copy(
+				tasks = newTasks
+			)
 		}
 	}
 

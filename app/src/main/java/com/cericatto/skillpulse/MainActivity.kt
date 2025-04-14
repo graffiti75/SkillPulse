@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.cericatto.skillpulse.ui.common.SwipeToDeleteScreen
 import com.cericatto.skillpulse.ui.navigation.NavHostComposable
 import com.cericatto.skillpulse.ui.theme.SkillPulseTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +30,9 @@ class MainActivity : ComponentActivity() {
 					NavHostComposable(
 						modifier = Modifier.fillMaxSize() // Pass a clean modifier
 					)
+//					SwipeToDeleteScreen(
+//						modifier = Modifier.fillMaxSize()
+//					)
 				}
 			}
 		}

@@ -6,6 +6,11 @@
 
     <string name="add_task_success">Task added successfully!</string>
 
+    <string name="dialog__ok">OK</string>
+    <string name="dialog__cancel">Cancel</string>
+    <string name="dialog__delete_item">Delete Item</string>
+    <string name="dialog__are_you_sure_delete_item">Are you sure you want to delete this item?</string>
+
     <!--=============== ERRORS ===============-->
 
     <!-- Firebase Errors -->

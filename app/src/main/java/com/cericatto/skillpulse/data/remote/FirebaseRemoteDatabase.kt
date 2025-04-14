@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.util.UUID
 
 class FirebaseRemoteDatabase(
 	private val db: FirebaseFirestore
@@ -19,7 +20,6 @@ class FirebaseRemoteDatabase(
 			val snapshot = db.collection("tasks")
 				.get()
 				.await() // Suspends until the query completes.
-
 			val tasks = snapshot.documents.mapNotNull { it.toTask() }
 			Result.Success(tasks)
 		} catch (e: Exception) {
@@ -35,6 +35,7 @@ class FirebaseRemoteDatabase(
 	): Result<Boolean, DataError> = withContext(Dispatchers.IO) {
 		try {
 			val task = hashMapOf(
+				"id" to UUID.randomUUID().toString(),
 				"description" to description,
 				"timestamp" to System.currentTimeMillis(),
 				"startTime" to System.currentTimeMillis(),

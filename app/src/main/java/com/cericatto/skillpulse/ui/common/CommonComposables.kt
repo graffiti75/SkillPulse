@@ -147,3 +147,4 @@ fun Modifier.shadowModifier(
 	)
 	.fillMaxWidth()
 	.padding(15.dp)
+

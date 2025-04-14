@@ -7,5 +7,7 @@ data class TaskScreenState(
 	val loading : Boolean = true,
 	val alert : MessageAlert? = null,
 	val user : String = "",
-	val tasks : List<Task> = emptyList()
+	val tasks : List<Task> = emptyList(),
+	val showDeleteDialog : Boolean = false,
+	val itemToDelete : Task? = null
 )
