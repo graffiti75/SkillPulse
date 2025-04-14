@@ -27,6 +27,7 @@ import com.cericatto.skillpulse.ui.ObserveAsEvents
 import com.cericatto.skillpulse.ui.UiEvent
 import com.cericatto.skillpulse.ui.common.BottomAlert
 import com.cericatto.skillpulse.ui.common.DynamicStatusBarColor
+import com.cericatto.skillpulse.ui.common.LoadingScreen
 import com.cericatto.skillpulse.ui.navigation.Route
 
 @Composable
@@ -48,20 +49,24 @@ fun LoginScreenRoot(
 	}
 
 	DynamicStatusBarColor()
-	Box(
-		contentAlignment = Alignment.BottomCenter,
-		modifier = Modifier.fillMaxSize()
-	) {
-		LoginScreen(
-			modifier = modifier,
-			onAction = onAction,
-			state = state
-		)
-		state.alert?.let {
-			BottomAlert(
-				onDismiss = { onAction(LoginScreenAction.OnDismissAlert) },
-				alert = it
+	if (state.loading) {
+		LoadingScreen()
+	} else {
+		Box(
+			contentAlignment = Alignment.BottomCenter,
+			modifier = Modifier.fillMaxSize()
+		) {
+			LoginScreen(
+				modifier = modifier,
+				onAction = onAction,
+				state = state
 			)
+			state.alert?.let {
+				BottomAlert(
+					onDismiss = { onAction(LoginScreenAction.OnDismissAlert) },
+					alert = it
+				)
+			}
 		}
 	}
 }
@@ -82,7 +87,7 @@ private fun LoginScreen(
 		modifier = Modifier
 			.fillMaxSize()
 			.padding(20.dp)
-			.padding(top = 80.dp)
+			.padding(top = 20.dp)
 	) {
 		TextField(
 			value = email,

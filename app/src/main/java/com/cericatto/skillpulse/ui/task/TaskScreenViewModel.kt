@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,8 +39,7 @@ class TaskScreenViewModel @Inject constructor(
 	}
 
 	init {
-		_state.update { it.copy(loading = false) }
-		checkUserLogged()
+		Timber.d("Loading tasks")
 		loadTasks()
 	}
 
@@ -49,45 +49,26 @@ class TaskScreenViewModel @Inject constructor(
 		}
 	}
 
-	private fun checkUserLogged() {
-		viewModelScope.launch {
-			when (val result = auth.userLogged()) {
-				is Result.Error -> {
-					_state.update {
-						it.copy(
-							alert = MessageAlert(
-								errorMessage = Pair(result.error.asUiText(), result.message ?: "")
-							)
-						)
-					}
-				}
-				is Result.Success -> {
-					_state.update {
-						it.copy(
-							user = result.data,
-						)
-					}
-				}
-			}
-		}
-	}
-
 	private fun loadTasks() {
 		viewModelScope.launch {
 			when (val result = db.loadTasks()) {
 				is Result.Error -> {
+					Timber.e("Tasks couldn't be loaded: ${result.message}")
 					_state.update {
 						it.copy(
 							alert = MessageAlert(
 								errorMessage = Pair(result.error.asUiText(), result.message ?: "")
-							)
+							),
+							loading = false
 						)
 					}
 				}
 				is Result.Success -> {
+					Timber.d("Tasks loaded! Here they are: ${result.data}")
 					_state.update {
 						it.copy(
-							tasks = result.data
+							tasks = result.data,
+							loading = false
 						)
 					}
 				}

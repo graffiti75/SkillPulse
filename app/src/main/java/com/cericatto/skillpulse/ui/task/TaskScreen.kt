@@ -10,12 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -40,6 +37,7 @@ import com.cericatto.skillpulse.data.model.Task
 import com.cericatto.skillpulse.data.model.initTaskList
 import com.cericatto.skillpulse.ui.common.BottomAlert
 import com.cericatto.skillpulse.ui.common.DynamicStatusBarColor
+import com.cericatto.skillpulse.ui.common.LoadingScreen
 import com.cericatto.skillpulse.ui.common.shadowModifier
 import com.cericatto.skillpulse.ui.common.utils.ConfirmationDialog
 import com.cericatto.skillpulse.ui.common.utils.getDateTimeAsString
@@ -137,18 +135,7 @@ private fun TaskItem(
 	onAction: (TaskScreenAction) -> Unit
 ) {
 	if (state.loading) {
-		Box(
-			modifier = Modifier
-				.fillMaxSize()
-				.background(Color.Transparent),
-			contentAlignment = Alignment.Center
-		) {
-			CircularProgressIndicator(
-				color = MaterialTheme.colorScheme.primary,
-				strokeWidth = 4.dp,
-				modifier = Modifier.size(64.dp)
-			)
-		}
+		LoadingScreen()
 	} else {
 		Column(
 			verticalArrangement = Arrangement.Center,

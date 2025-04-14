@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,7 +41,8 @@ class LoginScreenViewModel @Inject constructor(
 	}
 
 	init {
-		_state.update { it.copy(loading = false) }
+		Timber.d("Checking logged user")
+		checkUserLogged()
 	}
 
 	private fun login(email: String, password: String) {
@@ -82,6 +84,34 @@ class LoginScreenViewModel @Inject constructor(
 							)
 						)
 					}
+				}
+			}
+		}
+	}
+
+	private fun checkUserLogged() {
+		viewModelScope.launch {
+			when (val result = auth.userLogged()) {
+				is Result.Error -> {
+					Timber.e("User logged action couldn't not be verified: ${result.message}")
+					_state.update {
+						it.copy(
+							alert = MessageAlert(
+								errorMessage = Pair(result.error.asUiText(), result.message ?: "")
+							),
+							loading = false
+						)
+					}
+				}
+				is Result.Success -> {
+					Timber.d("User logged in as ${result.data}")
+					_state.update {
+						it.copy(
+							user = result.data,
+							loading = false
+						)
+					}
+					goToTaskScreen()
 				}
 			}
 		}
