@@ -28,7 +28,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -135,13 +134,17 @@ fun BottomAlert(
 fun Modifier.shadowModifier(
 	cornerShapePadding: Dp = 20.dp,
 	elevation: Dp = 5.dp,
-	borderColor: Color = Color.White,
-	contentColor: Color = Color.LightGray.copy(alpha = 0.25f)
+	outsideColor: Color,
+	borderColor: Color = Color.Gray,
+	contentColor: Color = Color.LightGray.copy(alpha = 0.5f)
 ) = this
 	.shadow(
 		elevation = elevation,
+		ambientColor = outsideColor,
+		spotColor = outsideColor,
 		shape = RoundedCornerShape(cornerShapePadding),
 	)
+	.padding(2.dp)
 	.background(
 		color = borderColor,
 		shape = RoundedCornerShape(cornerShapePadding)

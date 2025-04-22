@@ -1,7 +1,8 @@
 package com.cericatto.skillpulse.ui.task
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,8 +39,8 @@ import com.cericatto.skillpulse.data.model.initTaskList
 import com.cericatto.skillpulse.ui.common.BottomAlert
 import com.cericatto.skillpulse.ui.common.DynamicStatusBarColor
 import com.cericatto.skillpulse.ui.common.LoadingScreen
+import com.cericatto.skillpulse.ui.common.SwipeableTaskItem
 import com.cericatto.skillpulse.ui.common.shadowModifier
-import com.cericatto.skillpulse.ui.common.utils.ConfirmationDialog
 import com.cericatto.skillpulse.ui.common.utils.getDateTimeAsString
 
 @Composable
@@ -71,27 +72,31 @@ fun TaskScreenRoot(
 
 @Composable
 fun TaskScreen(
-	modifier: Modifier = Modifier,
+	isDarkTheme: Boolean = isSystemInDarkTheme(),
 	onAction: (TaskScreenAction) -> Unit,
-	state: TaskScreenState
+	state: TaskScreenState,
+	modifier: Modifier = Modifier
 ) {
+	val backgroundColor = if (isDarkTheme) Color.DarkGray else Color.White
+	val textColor = if (isDarkTheme) Color.LightGray else Color.Black
+
 	var taskDescription by remember { mutableStateOf("") }
 	Column(
 		modifier = Modifier
-			.background(Color.Red.copy(alpha = 0.1f))
+			.background(backgroundColor)
 			.fillMaxSize()
 			.padding(16.dp)
 	) {
 		Text(
 			text = "Welcome ${state.user}",
 			style = TextStyle(
-				fontSize = 20.sp
+				fontSize = 20.sp,
+				color = textColor
 			),
 			modifier = Modifier
 				.padding(10.dp)
 				.padding(bottom = 20.dp)
 		)
-
 		TextField(
 			value = taskDescription,
 			onValueChange = {
@@ -113,37 +118,47 @@ fun TaskScreen(
 			Text("Post Task")
 		}
 		Spacer(modifier = Modifier.height(16.dp))
-		LazyColumn {
+		LazyColumn(
+			verticalArrangement = Arrangement.spacedBy(5.dp),
+		) {
 			items(state.tasks) { task ->
-				TaskItem(
-					modifier = Modifier
-						.padding(top = 5.dp),
-					state = state,
-					task = task,
+				SwipeableTaskItem(
+					item = task,
+					showDialog = state.showDeleteDialog,
+					isDarkTheme = isDarkTheme,
 					onAction = onAction
-				)
+				) {
+					TaskItem(
+						modifier = Modifier,
+						state = state,
+						task = task,
+						isDarkTheme = isDarkTheme,
+						onAction = onAction
+					)
+				}
 			}
 		}
 	}
 }
 
 @Composable
-private fun TaskItem(
+fun TaskItem(
 	modifier: Modifier = Modifier,
 	state: TaskScreenState,
 	task: Task,
+	isDarkTheme: Boolean,
 	onAction: (TaskScreenAction) -> Unit
 ) {
+	val borderColor = if (isDarkTheme) Color.DarkGray else Color.White
 	if (state.loading) {
 		LoadingScreen()
 	} else {
 		Column(
 			verticalArrangement = Arrangement.Center,
 			horizontalAlignment = Alignment.Start,
-			modifier = modifier.shadowModifier()
-				.clickable {
-					onAction(TaskScreenAction.OnShowDeleteDialog(true))
-				}
+			modifier = modifier
+				.background(color = borderColor)
+				.shadowModifier(outsideColor = borderColor)
 		) {
 			StyledText(
 				title = "Description",
@@ -158,16 +173,6 @@ private fun TaskItem(
 				content = task.endTime.getDateTimeAsString()
 			)
 		}
-	}
-	if (state.showDeleteDialog) {
-		ConfirmationDialog(
-			item = task,
-			onAction = onAction,
-			onDeleteItem = {
-				onAction(TaskScreenAction.OnDeleteTask(task))
-			},
-			showDialog = state.showDeleteDialog
-		)
 	}
 }
 
@@ -185,7 +190,14 @@ private fun StyledText(
 		) {
 			append(title)
 		}
-		append(": ")
+		withStyle(
+			style = SpanStyle(
+				fontWeight = FontWeight.Normal,
+				color = Color.Black
+			)
+		) {
+			append(": ")
+		}
 		withStyle(
 			style = SpanStyle(
 				fontWeight = FontWeight.Normal,
@@ -199,10 +211,15 @@ private fun StyledText(
 	Text(text = annotatedString)
 }
 
-@Preview
+@Preview(
+	name = "Light Theme Preview",
+	uiMode = Configuration.UI_MODE_NIGHT_NO,
+	showBackground = true
+)
 @Composable
-fun TaskScreenPreview() {
+fun TaskScreenPreviewLight() {
 	TaskScreen(
+		isDarkTheme = false,
 		modifier = Modifier,
 		onAction = {},
 		state = TaskScreenState().copy(
@@ -212,13 +229,52 @@ fun TaskScreenPreview() {
 	)
 }
 
-@Preview
+@Preview(
+	name = "Dark Theme Preview",
+	uiMode = Configuration.UI_MODE_NIGHT_YES,
+	showBackground = true
+)
 @Composable
-fun TaskItemPreview() {
+fun TaskScreenPreviewDark() {
+	TaskScreen(
+		isDarkTheme = true,
+		modifier = Modifier,
+		onAction = {},
+		state = TaskScreenState().copy(
+			tasks = initTaskList(),
+			loading = false
+		)
+	)
+}
+
+@Preview(
+	name = "Light Theme Preview",
+	uiMode = Configuration.UI_MODE_NIGHT_NO,
+	showBackground = true
+)
+@Composable
+fun TaskItemPreviewLight() {
 	TaskItem(
 		modifier = Modifier,
 		state = TaskScreenState(),
 		task = Task(),
+		isDarkTheme = false,
+		onAction = {}
+	)
+}
+
+@Preview(
+	name = "Dark Theme Preview",
+	uiMode = Configuration.UI_MODE_NIGHT_YES,
+	showBackground = true
+)
+@Composable
+fun TaskItemPreviewDark() {
+	TaskItem(
+		modifier = Modifier,
+		state = TaskScreenState(),
+		task = Task(),
+		isDarkTheme = true,
 		onAction = {}
 	)
 }

@@ -13,50 +13,46 @@ import com.cericatto.skillpulse.ui.task.TaskScreenAction
 @Composable
 fun ConfirmationDialog(
 	item: Task,
-	onAction: (TaskScreenAction) -> Unit,
-	onDeleteItem: (Task) -> Unit,
-	showDialog: Boolean,
+	onAction: (TaskScreenAction) -> Unit
 ) {
-	if (showDialog) {
-		AlertDialog(
-			onDismissRequest = {
-				onAction(TaskScreenAction.OnShowDeleteDialog(false))
-			},
-			title = {
-				Text(
-					text = stringResource(R.string.dialog__delete_item)
-				)
-			},
-			text = {
-				Text(
-					text = stringResource(R.string.dialog__are_you_sure_delete_item)
-				)
-			},
-			confirmButton = {
-				Button(
-					onClick = {
-						onAction(TaskScreenAction.OnShowDeleteDialog(false))
-						onDeleteItem(item)
-					}
-				) {
-					Text(
-						text = stringResource(R.string.dialog__ok),
-						color = Color.White
-					)
+	AlertDialog(
+		onDismissRequest = {
+			onAction(TaskScreenAction.OnShowDeleteDialog(false))
+		},
+		title = {
+			Text(
+				text = stringResource(R.string.dialog__delete_item)
+			)
+		},
+		text = {
+			Text(
+				text = stringResource(R.string.dialog__are_you_sure_delete_item)
+			)
+		},
+		confirmButton = {
+			Button(
+				onClick = {
+					onAction(TaskScreenAction.OnShowDeleteDialog(false))
+					onAction(TaskScreenAction.OnDeleteTask(item))
 				}
-			},
-			dismissButton = {
-				Button(
-					onClick = {
-						onAction(TaskScreenAction.OnShowDeleteDialog(false))
-					}
-				) {
-					Text(
-						text = stringResource(R.string.dialog__cancel),
-						color = Color.White
-					)
-				}
+			) {
+				Text(
+					text = stringResource(R.string.dialog__ok),
+					color = Color.White
+				)
 			}
-		)
-	}
+		},
+		dismissButton = {
+			Button(
+				onClick = {
+					onAction(TaskScreenAction.OnShowDeleteDialog(false))
+				}
+			) {
+				Text(
+					text = stringResource(R.string.dialog__cancel),
+					color = Color.White
+				)
+			}
+		}
+	)
 }

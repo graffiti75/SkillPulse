@@ -1,29 +1,27 @@
 package com.cericatto.skillpulse.ui.common
 
+import android.content.res.Configuration
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -35,55 +33,27 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.cericatto.skillpulse.data.model.Task
+import com.cericatto.skillpulse.ui.common.utils.ConfirmationDialog
+import com.cericatto.skillpulse.ui.task.TaskItem
+import com.cericatto.skillpulse.ui.task.TaskScreenAction
+import com.cericatto.skillpulse.ui.task.TaskScreenState
 import com.cericatto.skillpulse.ui.theme.orange
 import kotlinx.coroutines.launch
 
 @Composable
-fun SwipeToDeleteScreen(
-	modifier: Modifier = Modifier
-) {
-	var items by remember { mutableStateOf(items()) }
-	Column(
-		modifier = modifier
-	) {
-		SwipeToDeleteList(
-			items = items,
-			onDelete = { index ->
-				items = items.toMutableList().apply {
-					removeAt(index)
-				}
-			}
-		)
-	}
-}
-
-@Composable
-fun SwipeToDeleteList(
-	items: List<String>,
-	onDelete: (Int) -> Unit
-) {
-	LazyColumn {
-		itemsIndexed(items) { index, item ->
-			SwipeableListItem(
-				item = item,
-				onDelete = { onDelete(index) },
-				content = {
-					Text(text = item)
-				}
-			)
-		}
-	}
-}
-
-@Composable
-fun SwipeableListItem(
-	item: String,
-	onDelete: () -> Unit,
+fun SwipeableTaskItem(
+	modifier: Modifier = Modifier,
+	item: Task,
+	showDialog: Boolean = false,
+	isDarkTheme: Boolean = isSystemInDarkTheme(),
+	onAction: (TaskScreenAction) -> Unit,
 	deleteThreshold: Dp = (-150).dp,
 	content: @Composable () -> Unit
 ) {
+	val outsideColor = if (isDarkTheme) Color.DarkGray else Color.White
 	var isDragging by remember { mutableStateOf(false) }
-	var dragOffset by remember { mutableStateOf(0f) }
+	var dragOffset by remember { mutableFloatStateOf(0f) }
 	val coroutineScope = rememberCoroutineScope()
 	val animatedOffset by animateDpAsState(
 		targetValue = if (isDragging) dragOffset.dp else 0.dp,
@@ -94,30 +64,35 @@ fun SwipeableListItem(
 	)
 	val backgroundColor by animateColorAsState(
 		targetValue = when {
-			animatedOffset < 0.dp -> Color.Red.copy(alpha = (-animatedOffset.value / deleteThreshold.value).coerceIn(0f, 1f))
-			else -> Color.Transparent
+			animatedOffset < 0.dp -> {
+				Color.Red.copy(
+					alpha = (-animatedOffset.value / deleteThreshold.value)
+						.coerceIn(0f, 1f)
+				)
+			}
+			else -> outsideColor
 		},
 		animationSpec = spring(stiffness = Spring.StiffnessMedium)
 	)
 
 	Box(
+		contentAlignment = Alignment.Center,
 		modifier = Modifier
 			.fillMaxWidth()
-			.height(64.dp)
 	) {
 		// Background layer with delete icon.
 		Row(
+			verticalAlignment = Alignment.CenterVertically,
+			horizontalArrangement = Arrangement.End,
 			modifier = Modifier
 				.fillMaxSize()
-				.background(backgroundColor),
-			verticalAlignment = Alignment.CenterVertically,
-			horizontalArrangement = Arrangement.End
 		) {
 			Icon(
 				imageVector = Icons.Default.Delete,
 				contentDescription = "Delete",
 				tint = orange,
 				modifier = Modifier.padding(end = 16.dp)
+					.fillMaxHeight()
 			)
 		}
 
@@ -132,7 +107,7 @@ fun SwipeableListItem(
 						onDragEnd = {
 							isDragging = false
 							if (animatedOffset < deleteThreshold) {
-								onDelete()
+								onAction(TaskScreenAction.OnShowDeleteDialog(true))
 							}
 							coroutineScope.launch {
 								dragOffset = 0f
@@ -144,7 +119,8 @@ fun SwipeableListItem(
 						}
 					) { change, dragAmount ->
 						change.consume()
-						val newOffset = (dragOffset + dragAmount).coerceAtLeast(deleteThreshold.value * 2)
+						val newOffset =
+							(dragOffset + dragAmount).coerceAtLeast(deleteThreshold.value * 2)
 						if (newOffset <= 0f) { // Only allow swipe left
 							dragOffset = newOffset
 						}
@@ -154,37 +130,64 @@ fun SwipeableListItem(
 			Row(
 				verticalAlignment = Alignment.CenterVertically,
 				modifier = Modifier
-					.background(Color.Gray)
 					.fillMaxSize()
-					.padding(10.dp)
 			) {
 				content()
 			}
 		}
 	}
+	if (showDialog) {
+		ConfirmationDialog(
+			item = item,
+			onAction = onAction
+		)
+	}
 }
 
-@Preview
+@Preview(
+	name = "Light Theme Preview",
+	uiMode = Configuration.UI_MODE_NIGHT_NO,
+	showBackground = true
+)
 @Composable
-fun SwipeToDeleteListPreview() {
-	SwipeToDeleteList(
-		items = items(),
-		onDelete = {}
-	)
-}
-
-@Preview
-@Composable
-fun SwipeableListItemPreview() {
-	SwipeableListItem(
-		item = "Item 1",
-		onDelete = {},
+fun SwipeableTaskItemPreviewLight() {
+	SwipeableTaskItem(
+		item = Task(),
+		showDialog = false,
+		onAction = {},
 		content = {
-			Text(
-				text = "Item 1",
+			TaskItem(
+				modifier = Modifier
+					.padding(top = 5.dp),
+				state = TaskScreenState().copy(loading = false),
+				task = Task(),
+				isDarkTheme = false,
+				onAction = {}
 			)
 		}
 	)
 }
 
-fun items() = List(20) { "Item $it" }
+@Preview(
+	name = "Dark Theme Preview",
+	uiMode = Configuration.UI_MODE_NIGHT_YES,
+	showBackground = true
+)
+@Composable
+fun SwipeableTaskItemPreviewDark() {
+	SwipeableTaskItem(
+		item = Task(),
+		showDialog = false,
+		onAction = {},
+		content = {
+			TaskItem(
+				modifier = Modifier
+					.padding(top = 5.dp),
+				state = TaskScreenState().copy(loading = false),
+				task = Task(),
+				isDarkTheme = true,
+				onAction = {}
+			)
+		}
+	)
+}
