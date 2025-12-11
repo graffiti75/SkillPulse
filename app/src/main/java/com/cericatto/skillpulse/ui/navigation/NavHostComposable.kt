@@ -25,7 +25,11 @@ fun NavHostComposable(
 			)
 		}
 		composable<Route.TaskScreen> {
-			TaskScreenRoot(modifier)
+			TaskScreenRoot(
+				modifier = modifier,
+				onNavigate = { navController.navigate(it) },
+				onNavigateUp = { navController.navigateUp() }
+			)
 		}
 	}
 }

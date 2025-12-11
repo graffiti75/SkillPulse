@@ -20,6 +20,7 @@ sealed interface DataError: Error {
 	}
 	enum class Firebase: DataError {
 		LOGIN,
+		LOGOUT,
 		SIGN_UP,
 		USER_LOGGED,
 		FIRESTORE_ERROR

@@ -9,6 +9,9 @@ fun DataError.asUiText(): UiText {
 		DataError.Firebase.LOGIN -> UiText.StringResource(
 			R.string.login_failed
 		)
+		DataError.Firebase.LOGOUT -> UiText.StringResource(
+			R.string.logout_failed
+		)
 		DataError.Firebase.SIGN_UP -> UiText.StringResource(
 			R.string.signup_failed
 		)

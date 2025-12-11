@@ -8,12 +8,15 @@ import com.cericatto.skillpulse.domain.auth.UserAuthentication
 import com.cericatto.skillpulse.domain.errors.Result
 import com.cericatto.skillpulse.domain.remote.RemoteDatabase
 import com.cericatto.skillpulse.ui.MessageAlert
+import com.cericatto.skillpulse.ui.UiEvent
 import com.cericatto.skillpulse.ui.UiText
 import com.cericatto.skillpulse.ui.asUiText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -28,6 +31,9 @@ class TaskScreenViewModel @Inject constructor(
 	private val _state = MutableStateFlow(TaskScreenState())
 	val state: StateFlow<TaskScreenState> = _state.asStateFlow()
 
+	private val _events = Channel<UiEvent>()
+	val events = _events.receiveAsFlow()
+
 	fun onAction(action: TaskScreenAction) {
 		when (action) {
 			is TaskScreenAction.OnDismissAlert -> dismissAlert()
@@ -35,6 +41,7 @@ class TaskScreenViewModel @Inject constructor(
 			is TaskScreenAction.OnAddTask -> addTask(action.description)
 			is TaskScreenAction.OnShowDeleteDialog -> showDeleteDialog(action.show)
 			is TaskScreenAction.OnDeleteTask -> deleteTask(action.task)
+			is TaskScreenAction.OnLogoutClick -> logout()
 		}
 	}
 
@@ -123,9 +130,35 @@ class TaskScreenViewModel @Inject constructor(
 		}
 	}
 
+	private fun logout() {
+		viewModelScope.launch {
+			when (val result = auth.logout()) {
+				is Result.Error -> {
+					_state.update {
+						it.copy(
+							alert = MessageAlert(
+								errorMessage = Pair(result.error.asUiText(), result.message ?: "")
+							)
+						)
+					}
+				}
+				is Result.Success -> {
+					closeCurrentScreen()
+				}
+			}
+		}
+	}
+
 	private fun dismissAlert() {
 		_state.update {
 			it.copy(alert = null)
+		}
+	}
+
+	private fun closeCurrentScreen() {
+		viewModelScope.launch {
+			dismissAlert()
+			_events.send(UiEvent.NavigateUp)
 		}
 	}
 }

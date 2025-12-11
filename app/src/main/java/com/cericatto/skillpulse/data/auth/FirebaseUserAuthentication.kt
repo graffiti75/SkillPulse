@@ -21,6 +21,18 @@ class FirebaseUserAuthentication(
 		}
 	}
 
+	override suspend fun logout(): Result<Boolean, DataError> {
+		return try {
+			auth.signOut()
+			Result.Success(data = true)
+		} catch (e: Exception) {
+			Result.Error(
+				error = DataError.Firebase.LOGOUT,
+				message = e.message
+			)
+		}
+	}
+
 	override suspend fun signUp(email: String, password: String): Result<Boolean, DataError> {
 		return try {
 			auth.createUserWithEmailAndPassword(email, password).await()

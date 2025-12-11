@@ -13,7 +13,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -36,24 +41,38 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cericatto.skillpulse.data.model.Task
 import com.cericatto.skillpulse.data.model.initTaskList
+import com.cericatto.skillpulse.ui.ObserveAsEvents
+import com.cericatto.skillpulse.ui.UiEvent
 import com.cericatto.skillpulse.ui.common.BottomAlert
 import com.cericatto.skillpulse.ui.common.DynamicStatusBarColor
 import com.cericatto.skillpulse.ui.common.LoadingScreen
 import com.cericatto.skillpulse.ui.common.SwipeableTaskItem
 import com.cericatto.skillpulse.ui.common.shadowModifier
 import com.cericatto.skillpulse.ui.common.utils.getDateTimeAsString
+import com.cericatto.skillpulse.ui.navigation.Route
+
 
 @Composable
 fun TaskScreenRoot(
+	onNavigate: (Route) -> Unit,
+	onNavigateUp: () -> Unit,
 	modifier: Modifier = Modifier,
 	viewModel: TaskScreenViewModel = hiltViewModel()
 ) {
 	val state by viewModel.state.collectAsStateWithLifecycle()
 	val onAction = viewModel::onAction
 
+	ObserveAsEvents(viewModel.events) { event ->
+		when (event) {
+			is UiEvent.Navigate -> onNavigate(event.route)
+			is UiEvent.NavigateUp -> onNavigateUp()
+			else -> Unit
+		}
+	}
+
 	DynamicStatusBarColor()
 	Box(
-		contentAlignment = Alignment.BottomCenter,
+		contentAlignment = Alignment.TopStart,
 		modifier = Modifier.fillMaxSize()
 	) {
 		TaskScreen(
@@ -70,6 +89,7 @@ fun TaskScreenRoot(
 	}
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskScreen(
 	isDarkTheme: Boolean = isSystemInDarkTheme(),
@@ -81,60 +101,85 @@ fun TaskScreen(
 	val textColor = if (isDarkTheme) Color.LightGray else Color.Black
 
 	var taskDescription by remember { mutableStateOf("") }
+
 	Column(
-		modifier = Modifier
+		verticalArrangement = Arrangement.Top,
+		horizontalAlignment = Alignment.CenterHorizontally,
+		modifier = modifier
 			.background(backgroundColor)
 			.fillMaxSize()
-			.padding(16.dp)
 	) {
-		Text(
-			text = "Welcome ${state.user}",
-			style = TextStyle(
-				fontSize = 20.sp,
-				color = textColor
-			),
+		// Custom header row instead of TopAppBar to avoid extra padding.
+		Box(
 			modifier = Modifier
-				.padding(10.dp)
-				.padding(bottom = 20.dp)
-		)
-		TextField(
-			value = taskDescription,
-			onValueChange = {
-				taskDescription = it
-			},
-			label = {
-				Text("Enter a task (e.g., Fix my code)")
-			},
-			modifier = Modifier.fillMaxWidth()
-		)
-		Spacer(modifier = Modifier.height(8.dp))
-		Button(
-			onClick = {
-				onAction(TaskScreenAction.OnLoadingUpdate(true))
-				onAction(TaskScreenAction.OnAddTask(description = taskDescription))
-			},
-			modifier = Modifier.fillMaxWidth()
+				.fillMaxWidth()
+				.padding(horizontal = 16.dp, vertical = 8.dp)
 		) {
-			Text("Post Task")
+			Text(
+				text = "Welcome ${state.user}",
+				style = TextStyle(
+					fontSize = 20.sp,
+					color = textColor,
+					fontWeight = FontWeight.Medium
+				),
+				modifier = Modifier.align(Alignment.CenterStart)
+			)
+			IconButton(
+				onClick = {
+					onAction(TaskScreenAction.OnLogoutClick)
+				},
+				modifier = Modifier.align(Alignment.CenterEnd)
+			) {
+				Icon(
+					imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+					contentDescription = "Logout",
+					tint = textColor
+				)
+			}
 		}
-		Spacer(modifier = Modifier.height(16.dp))
-		LazyColumn(
-			verticalArrangement = Arrangement.spacedBy(5.dp),
+
+		Column(
+			modifier = Modifier.padding(horizontal = 16.dp)
 		) {
-			items(state.tasks) { task ->
-				SwipeableTaskItem(
-					item = task,
-					showDialog = state.showDeleteDialog,
-					isDarkTheme = isDarkTheme,
-					onAction = onAction
-				) {
-					TaskItem(
-						modifier = Modifier,
-						state = state,
-						task = task,
+			TextField(
+				value = taskDescription,
+				onValueChange = {
+					taskDescription = it
+				},
+				label = {
+					Text("Enter a task (e.g., Fix my code)")
+				},
+				modifier = Modifier.fillMaxWidth()
+			)
+			Spacer(modifier = Modifier.height(8.dp))
+			Button(
+				onClick = {
+					onAction(TaskScreenAction.OnLoadingUpdate(true))
+					onAction(TaskScreenAction.OnAddTask(description = taskDescription))
+				},
+				modifier = Modifier.fillMaxWidth()
+			) {
+				Text("Post Task")
+			}
+			Spacer(modifier = Modifier.height(16.dp))
+			LazyColumn(
+				verticalArrangement = Arrangement.spacedBy(5.dp),
+			) {
+				items(state.tasks) { task ->
+					SwipeableTaskItem(
+						item = task,
+						showDialog = state.showDeleteDialog,
 						isDarkTheme = isDarkTheme,
 						onAction = onAction
-					)
+					) {
+						TaskItem(
+							modifier = Modifier,
+							state = state,
+							task = task,
+							isDarkTheme = isDarkTheme,
+							onAction = onAction
+						)
+					}
 				}
 			}
 		}

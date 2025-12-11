@@ -72,6 +72,9 @@ dependencies {
 	// Timber
 	implementation(libs.timber)
 
+	// Material Icons
+	implementation(libs.material.icons.extended)
+
 	// Tests
 	testImplementation(libs.junit)
 	androidTestImplementation(libs.androidx.junit)
