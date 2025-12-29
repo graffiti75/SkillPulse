@@ -1,0 +1,1124 @@
+20251102_1;Acordar;09:50
+20251102_2;Ficar deitado;10:25
+20251102_3;Ida ao banheiro;10:35
+20251102_4;Lavar o rosto;10:40
+20251102_5;Bate-boca com Tayane;10:45
+20251102_6;Limpar xixi da Julie;10:55
+20251102_7;Guardar a louça;11:00
+20251102_8;Comer banana;11:05
+20251102_9;Lavar o rosto;11:10
+20251102_10;Tarefas Diárias;11:15
+20251102_11;Perda de tempo no WhatsApp;11:20
+20251102_12;Leitura de notícias;11:25
+20251102_13;Mercor A.I. Interview;11:50
+20251102_14;Mercor Code Review Interview;12:20
+20251102_15;Email Mercor;12:30
+20251102_16;Cozinhar ovos;12:35
+20251102_17;Ida ao banheiro;12:40
+20251102_18;Escovar dentes;12:45
+20251102_19;Ficar com Tayane;13:20
+20251102_20;Ida ao banheiro;13:25
+20251102_21;Brincar com Julie;13:35
+20251102_22;Descascar ovos;13:40
+20251102_23;Comer ovos cozidos;13:45
+20251102_24;Cortar frutas;14:00
+20251102_25;Lavar a louça;14:10
+20251102_26;Perda de tempo no Instagram;14:30
+20251102_27;Skill Pulse;14:50
+20251102_28;Brincar com Julie;15:00
+20251102_29;Skill Pulse;15:10
+20251102_30;Almoçar;15:35
+20251102_31;Passeio com Julie;16:00
+20251102_32;Grêmio vs Corinthians;16:55
+20251102_33;Lavar a louça;17:10
+20251102_34;Grêmio vs Corinthians;18:00
+20251102_35;Guardar a louça;18:05
+20251102_36;Recolher coisas da Julie;18:15
+20251102_37;Limpar xixi da Julie;18:25
+20251102_38;Aspirar sujeira da sala;18:35
+20251102_39;Aspirar sujeira da sacada;18:40
+20251102_40;Aspirar sujeira banheiro corredor;18:45
+20251102_41;Aspirar sujeira do quarto;18:55
+20251102_42;Ida ao banheiro;19:00
+20251102_43;Dobrar roupas;19:05
+20251102_44;Bate-papo com Tayane;19:10
+20251102_45;Organizar Google Recorder;19:20
+20251102_46;Leitura de notícias;19:30
+20251102_47;Colocar edredoms Julie no varal;19:35
+20251102_48;Colocar lençol Julie para lavar;19:40
+20251102_49;Guardar a louça;19:45
+20251102_50;Organizar vídeos do Youtube;19:50
+20251102_51;Skill Pulse;20:00
+20251102_52;Jantar;20:40
+20251102_53;Mercor Code Review Interview;21:00
+20251102_54;Email Mercor;21:05
+20251102_55;Estudar Algoritmos;21:50
+20251102_56;Separar coisas para banho;21:55
+20251102_57;Ida ao banheiro;22:00
+20251102_58;Tomar banho;22:15
+20251102_59;Se arrumar;22:20
+20251102_60;Descanso;22:35
+20251102_61;Escovar dentes;22:45
+20251102_62;Ver vídeos com Tayane;23:15
+20251102_63;Ida ao banheiro;23:20
+20251102_64;Bate-papo com Tayane;23:35
+20251101_1;Acordar;06:45
+20251101_2;Ficar deitado com Tayane;07:40
+20251101_3;Cochilo;10:25
+20251101_4;Ida ao banheiro;10:40
+20251101_5;Lavar o rosto;10:45
+20251101_6;Se arrumar;10:50
+20251101_7;Brincar com Julie;11:00
+20251101_8;Guardar a louça;11:05
+20251101_9;Preparar banana com aveia;11:10
+20251101_10;Comer kiwi zespri;11:15
+20251101_11;Comer banana com aveia;11:20
+20251101_12;Descascar ovos;11:25
+20251101_13;Comer ovos cozidos;11:30
+20251101_14;Dobrar cuecas;11:35
+20251101_15;Colocar toalhas para lavar;11:40
+20251101_16;Trocar toalhas;11:45
+20251101_17;Arrumar a cama;11:50
+20251101_18;Tarefas Diárias;11:55
+20251101_19;Planilha Gastos Marfim;12:10
+20251101_20;Pedido Salvena Minoxidil;12:20
+20251101_21;Pagar Salvena Minoxidil;12:25
+20251101_22;Perda de tempo no WhatsApp;12:30
+20251101_23;Checar teste Proxify;12:35
+20251101_24;Planilha Gastos Bradesco;13:05
+20251101_25;Planilha Gastos 2025;13:20
+20251101_26;Tarefas Diárias;13:25
+20251101_27;Checar teste Proxify;13:35
+20251101_28;Esquentar comida;13:45
+20251101_29;Almoçar;14:10
+20251101_30;Comer frutas;14:20
+20251101_31;Lavar a louça;14:35
+20251101_32;Recolher lixos;14:40
+20251101_33;Colocar toalhas no varal;14:45
+20251101_34;Ida ao banheiro;14:50
+20251101_35;Lavar o rosto;14:55
+20251101_36;Checar teste Proxify;15:50
+20251101_37;Leitura de notícias;16:05
+20251101_38;Estudar curso.dev;16:20
+20251101_39;Brincar com Julie;16:25
+20251101_40;Guardar a louça;16:30
+20251101_41;Checar vagas LinkedIn;16:40
+20251101_42;Estudar Algoritmos;16:55
+20251101_43;Comer maçã;17:00
+20251101_44;Ida ao banheiro;17:05
+20251101_45;Se arrumar;17:10
+20251101_46;Passeio com Julie;18:30
+20251101_47;Trocar de roupa;18:35
+20251101_48;Levar coisas para a sala;18:40
+20251101_49;Leitura de notícias;18:45
+20251101_50;Estudar Algoritmos;19:10
+20251101_51;Leitura de notícias;19:20
+20251101_52;Estudar curso.dev;19:50
+20251101_53;Bate-papo com Tayane;19:55
+20251101_54;Separar coisas para banho;20:00
+20251101_55;Ida ao banheiro;20:05
+20251101_56;Tomar banho;20:15
+20251101_57;Passar creme nas pernas;20:20
+20251101_58;Se arrumar;20:30
+20251101_59;Jantar;21:00
+20251101_60;Lavar a louça;21:10
+20251101_61;Arrumar a cama;21:15
+20251101_62;Escovar dentes;21:25
+20251101_63;Tarefas Diárias;21:30
+20251101_64;Skill Pulse;22:00
+20251101_65;Ida ao banheiro;22:05
+20251101_66;Bate-papo com Tayane;22:40
+20251101_67;Cochilo;01:15
+20251101_68;Levar coisas da Julie para sala;01:20
+20251101_69;Ida ao banheiro;01:25
+20251101_70;Perda de tempo no WhatsApp;01:40
+20251101_71;Leitura de notícias;03:10
+20251101_72;Ida ao banheiro;03:15
+20251101_73;Leitura de notícias;04:05
+20251031_1;Acordar;07:30
+20251031_2;Ficar deitado com Tayane;08:00
+20251031_3;Ficar com Tayane;08:20
+20251031_4;Cochilo;08:45
+20251031_5;Ida ao banheiro;09:00
+20251031_6;Lavar o rosto;09:05
+20251031_7;Se arrumar;09:10
+20251031_8;Guardar a louça;09:15
+20251031_9;Bate-papo com Tayane;09:20
+20251031_10;Tarefas Diárias;09:25
+20251031_11;Cozinhar ovos;09:30
+20251031_12;Preparar banana com aveia;09:35
+20251031_13;Comer banana com aveia;09:45
+20251031_14;Descascar ovos;09:50
+20251031_15;Comer ovos cozidos;09:55
+20251031_16;Lavar a louça;10:00
+20251031_17;Leitura de notícias;10:10
+20251031_18;Arrumar a cama;10:15
+20251031_19;Conversa sobre infiltração;10:20
+20251031_20;Estudar curso.dev;10:30
+20251031_21;Comer coisas da Padaria America;10:40
+20251031_22;Comer abacaxi;10:45
+20251031_23;Ida ao Shopping Curitiba;10:55
+20251031_24;Ida a Vivara;11:00
+20251031_25;Vivara;11:15
+20251031_26;Passeio pelo shopping;11:20
+20251031_27;Passeio pela Renner;11:30
+20251031_28;Ida ao Gepetto;11:35
+20251031_29;Ida ao Marfim;11:40
+20251031_30;Trocar de roupa;11:45
+20251031_31;Ida ao banheiro;11:50
+20251031_32;Levar coisas quarto de estudos;11:55
+20251031_33;Perda de tempo no WhatsApp;12:00
+20251031_34;Checar Projudi;12:05
+20251031_35;Pagar DARF Binance IFPR 2025;12:10
+20251031_36;Estudar curso.dev;12:25
+20251031_37;Aplicar vaga Proxify;12:30
+20251031_38;Estudar curso.dev;12:45
+20251031_39;Checar Upwork;12:50
+20251031_40;Estudar curso.dev;12:55
+20251031_41;Leitura de notícias;13:10
+20251031_42;Estudar curso.dev;13:20
+20251031_43;Perda de tempo no WhatsApp;13:25
+20251031_44;Descanso;13:30
+20251031_45;Fazer limonada;13:45
+20251031_46;Almoçar;14:05
+20251031_47;Comer frutas;14:20
+20251031_48;Lavar a louça;14:40
+20251031_49;Lavar o rosto;14:45
+20251031_50;Tarefas Diárias;14:50
+20251031_51;Colocar cuecas para lavar;14:55
+20251031_52;Perda de tempo no WhatsApp;15:00
+20251031_53;Lavar chinelo;15:05
+20251031_54;Leitura de notícias;15:10
+20251031_55;Escovar dentes;15:20
+20251031_56;Perda de tempo no WhatsApp;15:25
+20251031_57;Estudar curso.dev;15:50
+20251031_58;Guardar a louça;15:55
+20251031_59;Estudar curso.dev;16:00
+20251031_60;Visita do prestador Jhonn;16:15
+20251031_61;Limpar área de serviço;16:30
+20251031_62;Colocar cuecas no varal;16:35
+20251031_63;Email Bidese infiltração;16:45
+20251031_64;Candidatura vaga N-iX;16:50
+20251031_65;Perda de tempo no WhatsApp;16:55
+20251031_66;Ida ao banheiro;17:00
+20251031_67;Estudar curso.dev;17:05
+20251031_68;Checar vagas LinkedIn;17:15
+20251031_69;Estudar curso.dev;17:20
+20251031_70;Higienizar compras da Tayane;17:25
+20251031_71;Guardar a louça;17:30
+20251031_72;Estudar curso.dev;17:35
+20251031_73;Checar vagas LinkedIn;17:45
+20251031_74;Comer palitinhos de queijo;17:55
+20251031_75;Colocar toalhas Julie para lavar;18:00
+20251031_76;Checar vagas LinkedIn;18:05
+20251031_77;Leitura de notícias;18:10
+20251031_78;Estudar curso.dev;18:25
+20251031_79;Descanso;18:35
+20251031_80;Bate-papo com Tayane;18:40
+20251031_81;Estudar curso.dev;19:05
+20251031_82;Leitura de notícias;19:25
+20251031_83;Estudar curso.dev;19:30
+20251031_84;Colocar toalhas Julie no varal;19:40
+20251031_85;Ida ao banheiro;19:45
+20251031_86;Lavar a louça;19:55
+20251031_87;Separar coisas para banho;20:00
+20251031_88;Ida ao banheiro;20:05
+20251031_89;Tomar banho;20:15
+20251031_90;Passar creme nas pernas;20:20
+20251031_91;Se arrumar;20:25
+20251031_92;Jantar;20:45
+20251031_93;Lavar a louça;20:50
+20251031_94;Perda de tempo no WhatsApp;20:55
+20251031_95;Estudar curso.dev;21:10
+20251031_96;Bate-papo com Tayane;21:15
+20251031_97;Pesquisar cinema Novo Batel;21:20
+20251031_98;Comer Doritos;21:30
+20251031_99;Comer abacaxi;21:35
+20251031_100;Ficar com Tayane no sofá;23:50
+20251031_101;Arrumar a cama;23:55
+20251031_102;Ida ao banheiro;00:00
+20251031_103;Escovar dentes;00:10
+20251031_104;Ida ao banheiro;00:15
+20251031_105;Passar creme nas mãos;00:20
+20251031_106;Bate-papo com Tayane;00:40
+20251030_1;Acordar;07:00
+20251030_2;Ficar deitado com Tayane;07:45
+20251030_3;Separar coisas para banho;07:50
+20251030_4;Ida ao banheiro;07:55
+20251030_5;Tomar banho;08:10
+20251030_6;Se arrumar;08:15
+20251030_7;Abrir cortinas da casa;08:20
+20251030_8;Tarefas Diárias;08:25
+20251030_9;Preparar banana com aveia;08:30
+20251030_10;Comer banana com aveia;08:35
+20251030_11;Descascar ovos;08:40
+20251030_12;Comer ovos cozidos;08:45
+20251030_13;Dobrar toalhas;08:50
+20251030_14;Preparação Speechify;09:30
+20251030_15;Simulado #1 Speechify;10:30
+20251030_16;Converter vídeo do simulado;10:35
+20251030_17;Bate-papo com Tayane;10:45
+20251030_18;Checar agendamento Doutor Alvaro;10:50
+20251030_19;Checar peça de vidro Jackwal;10:55
+20251030_20;Organizar pasta Speechify;11:00
+20251030_21;Ida ao banheiro;11:05
+20251030_22;Preparação Speechify;11:20
+20251030_23;Simulado #2 Speechify;12:20
+20251030_24;Preparação Speechify;12:30
+20251030_25;Esquentar comida;12:35
+20251030_26;Almoçar;12:45
+20251030_27;Comer frutas;12:50
+20251030_28;Abrir leite condensado;13:00
+20251030_29;Tomar leite condensado;13:05
+20251030_30;Ida ao banheiro;13:10
+20251030_31;Leitura de notícias;13:15
+20251030_32;Preparação Speechify;14:00
+20251030_33;Entrevista Speechify;15:15
+20251030_34;Guardar a louça;15:25
+20251030_35;Ida ao banheiro;15:30
+20251030_36;Levar lixos para fora;15:35
+20251030_37;Subir escadas;15:40
+20251030_38;Ida ao Feliccità;15:50
+20251030_39;Esperar atendimento;16:05
+20251030_40;Consulta médica;17:00
+20251030_41;Ida ao Festval;17:20
+20251030_42;Festval;17:30
+20251030_43;Ida ao posto;17:40
+20251030_44;Ida ao Marfim;17:50
+20251030_45;Esperar pais;17:55
+20251030_46;Dobrar sacolas;18:00
+20251030_47;Comer queijo;18:05
+20251030_48;Guardar Yakult;18:10
+20251030_49;Tarefas Diárias;18:15
+20251030_50;Cortar abacaxi;18:50
+20251030_51;Ida ao banheiro;18:55
+20251030_52;Ficar com Tayane;19:10
+20251030_53;Cochilo no sofá;19:40
+20251030_54;Esquentar comida;19:45
+20251030_55;Jantar;19:55
+20251030_56;Comer frutas;20:05
+20251030_57;Lavar a louça;20:20
+20251030_58;Responder email Jackwal;20:25
+20251030_59;Pagar Yakult;20:30
+20251030_60;Planilha Gastos Marfim;20:35
+20251030_61;Ida ao banheiro;20:40
+20251030_62;Arrumar a cama;20:45
+20251030_63;Planilha Gastos Marfim;20:55
+20251030_64;Ficar com Tayane;21:00
+20251030_65;Fazer vitaminha da Tayane;21:05
+20251030_66;Mudar titularidade Copel Tayane;21:20
+20251030_67;Planilha Gastos Marfim;21:25
+20251030_68;Tentar teste Speechify;21:45
+20251030_69;Testar Strudel.cc;21:50
+20251030_70;Separar coisas para banho;21:55
+20251030_71;Ida ao banheiro;22:00
+20251030_72;Tomar banho;22:10
+20251030_73;Se arrumar;22:15
+20251030_74;Escovar dentes;22:25
+20251030_75;Estudar curso.dev;22:45
+20251030_76;Ida ao banheiro;22:50
+20251030_77;Bate-papo com Tayane;23:30
+20251029_1;Acordar;08:00
+20251029_2;Ficar deitado com Tayane;08:25
+20251029_3;Ficar com Tayane;08:55
+20251029_4;Ida ao banheiro;09:05
+20251029_5;Se arrumar;09:10
+20251029_6;Cozinhar água;09:15
+20251029_7;Guardar a louça;09:20
+20251029_8;Preparar banana com aveia;09:25
+20251029_9;Comer kiwi zespri;09:30
+20251029_10;Comer banana com aveia;09:35
+20251029_11;Descascar ovos;09:40
+20251029_12;Comer ovos cozidos;09:45
+20251029_13;Lavar a louça;09:50
+20251029_14;Ida ao banheiro;10:05
+20251029_15;Recolher lixos;10:10
+20251029_16;Arrumar a cama;10:15
+20251029_17;Responder email Bidese;10:20
+20251029_18;Preparação Speechify;11:05
+20251029_19;Estudar curso.dev;11:20
+20251029_20;Preparação Speechify;11:25
+20251029_21;Perda de tempo no WhatsApp;11:40
+20251029_22;Estudar curso.dev;11:50
+20251029_23;Higienizar compras;11:55
+20251029_24;Guardar a louça;12:00
+20251029_25;Estudar curso.dev;12:45
+20251029_26;Almoçar;13:00
+20251029_27;Comer frutas;13:10
+20251029_28;Estudar curso.dev;13:15
+20251029_29;Leitura de notícias;13:40
+20251029_30;Cochilo;16:00
+20251029_31;Bate-papo com Tayane;16:05
+20251029_32;Ida ao banheiro;16:10
+20251029_33;Lavar o rosto;16:15
+20251029_34;Escovar dentes;16:25
+20251029_35;Preparação Speechify;17:10
+20251029_36;Guardar a louça;17:15
+20251029_37;Pegar chocolate;17:20
+20251029_38;Colocar edredom Julie para lavar;17:25
+20251029_39;Preparação Speechify;18:25
+20251029_40;Ajudar Tayane cacos de vidro;18:30
+20251029_41;Checar vagas do Turing;18:45
+20251029_42;Colocar edredom Julie no varal;18:50
+20251029_43;Preparação Speechify;19:55
+20251029_44;Jantar;20:15
+20251029_45;Preparação Speechify;20:25
+20251029_46;Bate-papo com Tayane;20:35
+20251029_47;Preparação Speechify;21:50
+20251029_48;Descanso no sofá;22:10
+20251029_49;Separar coisas para banho;22:15
+20251029_50;Ida ao banheiro;22:20
+20251029_51;Tomar banho;22:30
+20251029_52;Se arrumar;22:35
+20251029_53;Bate-papo com Tayane;22:40
+20251029_54;Escovar dentes;22:50
+20251029_55;Arrumar a cama;22:25
+20251029_56;Bate-papo com Tayane;22:35
+20251029_57;Descanso;22:45
+20251029_58;Perda de tempo no WhatsApp;22:50
+20251029_59;Ver jogo da Libertadores;23:55
+20251029_60;Bate-papo com Tayane;00:20
+20251028_1;Acordar;07:10
+20251028_2;Ficar deitado com Tayane;07:30
+20251028_3;Ida ao banheiro;07:40
+20251028_4;Lavar o rosto;07:50
+20251028_5;Tarefas Diárias;07:55
+20251028_6;Guardar a louça;08:00
+20251028_7;Cozinhar água;08:05
+20251028_8;Ida ao banheiro;08:15
+20251028_9;Preparar banana com aveia;08:20
+20251028_10;Bate-papo com Tayane;08:25
+20251028_11;Comer banana com aveia;08:30
+20251028_12;Comer ovos cozidos;08:35
+20251028_13;Se arrumar;08:40
+20251028_14;Esperar Uber;08:50
+20251028_15;Ida ao Pátio Batel;09:00
+20251028_16;Esperar entrada;09:05
+20251028_17;Ida a Polícia Federal;09:10
+20251028_18;Fazer novo passaporte;09:20
+20251028_19;Sair do shopping;09:30
+20251028_20;Ida ao Festval;09:45
+20251028_21;Festval;10:10
+20251028_22;Ida ao Marfim;10:20
+20251028_23;Higienizar compras;10:35
+20251028_24;Tarefas Diárias;10:40
+20251028_25;Descanso;10:45
+20251028_26;Ficar com Tayane;12:25
+20251028_27;Ida ao banheiro;12:35
+20251028_28;Perda de tempo no WhatsApp;12:40
+20251028_29;Lavar garrafa de água;12:50
+20251028_30;Cortar frutas;13:10
+20251028_31;Ficar com Tayane;14:45
+20251028_32;Ida ao banheiro;14:55
+20251028_33;Se arrumar;15:00
+20251028_34;Esquentar comida;15:05
+20251028_35;Almoçar;15:25
+20251028_36;Comer frutas;15:30
+20251028_37;Lavar a louça;15:40
+20251028_38;Catar cabelos do chão;15:45
+20251028_39;Dobrar toalhas;15:50
+20251028_40;Arrumar a cama;15:55
+20251028_41;Checar Projudi;16:10
+20251028_42;Checar Processo Valphi;17:00
+20251028_43;Higienizar compras Tayane;17:10
+20251028_44;Colocar colcha Julie no varal;17:15
+20251028_45;Checar Processo Valphi;17:35
+20251028_46;Perda de tempo no WhatsApp;17:40
+20251028_47;Email Bidese infiltração;17:45
+20251028_48;Planilha Gastos Marfim;18:35
+20251028_49;Bate-papo com Tayane;18:40
+20251028_50;Ida ao banheiro;18:45
+20251028_51;Bate-papo com Tayane;18:50
+20251028_52;Leitura de notícias;19:15
+20251028_53;Perda de tempo no WhatsApp;19:25
+20251028_54;Leitura de notícias;19:45
+20251028_55;Estudar curso.dev;19:50
+20251028_56;Leitura de notícias;20:55
+20251028_57;Jantar;21:30
+20251028_58;Lavar as mãos;21:35
+20251028_59;Leitura de notícias;21:40
+20251028_60;Estudar curso.dev;21:50
+20251028_61;Leitura de notícias;22:05
+20251028_62;Estudar curso.dev;22:15
+20251028_63;Leitura de notícias;22:25
+20251028_64;Estudar curso.dev;22:40
+20251028_65;Levar coisas para o quarto;22:45
+20251028_66;Arrumar a cama;22:50
+20251028_67;Ida ao banheiro;22:55
+20251028_68;Tomar banho;23:05
+20251028_69;Se arrumar;23:10
+20251028_70;Escovar dentes;23:20
+20251028_71;Leitura de notícias;23:25
+20251028_72;Estudar curso.dev;23:45
+20251028_73;Passar creme nas mãos;23:50
+20251028_74;Ficar com Tayane;00:10
+20251027_1;Acordar;03:10
+20251027_2;Ida ao banheiro;03:15
+20251027_3;Lavar o rosto;03:20
+20251027_4;Acordar;08:00
+20251027_5;Descanso;08:05
+20251027_6;Ida ao banheiro;08:10
+20251027_7;Lavar o rosto;08:15
+20251027_8;Bate-papo com Tayane;08:20
+20251027_9;Cozinhar ovos;08:25
+20251027_10;Preparar banana com aveia;08:30
+20251027_11;Cortar kiwi zespri;08:35
+20251027_12;Lavar a louça;08:45
+20251027_13;Comer ovo da Tayane;08:50
+20251027_14;Comer banana com aveia;09:00
+20251027_15;Descascar ovos;09:05
+20251027_16;Comer ovos cozidos;09:10
+20251027_17;Leitura de notícias;09:20
+20251027_18;Checar condomínio Bidese;09:25
+20251027_19;Planilha Gastos Bradesco;09:35
+20251027_20;Perda de tempo no Instagram;09:40
+20251027_21;Tarefas Diárias;09:45
+20251027_22;Planilha Gastos Marfim;10:25
+20251027_23;Planilha Condomínio Marfim;10:45
+20251027_24;Trocar toalhas;10:50
+20251027_25;Arrumar a cama;10:55
+20251027_26;Ida ao banheiro;11:05
+20251027_27;Perda de tempo no WhatsApp;11:10
+20251027_28;Colocar escova dentes carregar;11:15
+20251027_29;Podar a barba;11:25
+20251027_30;Tomar banho;11:45
+20251027_31;Se arrumar;11:55
+20251027_32;Perda de tempo no WhatsApp;12:00
+20251027_33;Perda de tempo no Instagram;12:05
+20251027_34;Estudar curso.dev;12:15
+20251027_35;Perda de tempo no Instagram;12:25
+20251027_36;Estudar curso.dev;12:35
+20251027_37;Perda de tempo no Instagram;12:40
+20251027_38;Estudar curso.dev;13:00
+20251027_39;Esquentar comida;13:05
+20251027_40;Almoçar;13:25
+20251027_41;Comer frutas;13:35
+20251027_42;Lavar a louça;13:40
+20251027_43;Estudar curso.dev;14:15
+20251027_44;Perda de tempo no Instagram;14:20
+20251027_45;Colocar roupas Tayane no varal;14:25
+20251027_46;Colocar toalhas para lavar;14:30
+20251027_47;Levar lixos para fora;14:35
+20251027_48;Subir escadas;14:40
+20251027_49;Escovar dentes;14:50
+20251027_50;Se arrumar;14:55
+20251027_51;Bate-papo com Tayane;15:00
+20251027_52;Estudar curso.dev;15:05
+20251027_53;Esperar pais;15:20
+20251027_54;Ida ao estacionamento Rui Barbosa;15:35
+20251027_55;Ida ao cartório;15:40
+20251027_56;Esperar;15:45
+20251027_57;Ida ao prédio do lado;15:50
+20251027_58;Esperar;16:00
+20251027_59;Casamento Rodrigo e Tayane;16:10
+20251027_60;Andar pelo centro;16:20
+20251027_61;Lojas do Pedro;16:30
+20251027_62;Ida a Praça Rui Barbosa;16:35
+20251027_63;Validar ticket estacionamento;16:40
+20251027_64;Ida ao Marfim;16:50
+20251027_65;Trocar de roupa;16:55
+20251027_66;Pegar chocolate;17:00
+20251027_67;Tarefas Diárias;17:05
+20251027_68;Organizar Google Photos;17:10
+20251027_69;Mudar privacidade Instagram;17:20
+20251027_70;Perda de tempo no Instagram;17:30
+20251027_71;Descanso;17:35
+20251027_72;Estudar curso.dev;18:10
+20251027_73;Colocar toalhas no varal;18:20
+20251027_74;Ouvir George Harrison;18:40
+20251027_75;Planilha Gastos Marfim;18:45
+20251027_76;Ida ao banheiro;18:50
+20251027_77;Bate-boca com Tayane;18:55
+20251027_78;Lavar a louça;19:00
+20251027_79;Bate-papo com Tayane;19:30
+20251027_80;Estudar curso.dev;19:35
+20251027_81;Se arrumar;19:40
+20251027_82;Esperar Uber;19:45
+20251027_83;Ida a Pamphylia;19:55
+20251027_84;Pamphylia;21:10
+20251027_85;Ida ao Pátio Batel;21:15
+20251027_86;Ida ao Bacio di Latte;21:20
+20251027_87;Bacio di Latte;21:40
+20251027_88;Ida ao banheiro;21:45
+20251027_89;Esperar Uber;21:50
+20251027_90;Ida ao Marfim;21:55
+20251027_91;Trocar de roupa;22:00
+20251027_92;Tarefas Diárias;22:05
+20251027_93;Descanso;22:30
+20251027_94;Arrumar a cama;22:35
+20251027_95;Testar Strudel.cc;23:40
+20251027_96;Ida ao banheiro;23:45
+20251027_97;Tomar banho;23:55
+20251027_98;Escovar dentes;00:05
+20251027_99;Debate com Tayane;02:20
+20251026_1;Acordar;10:10
+20251026_2;Ficar deitado;10:30
+20251026_3;Brincar com Julie;10:35
+20251026_4;Guardar a louça;10:40
+20251026_5;Cozinhar água;10:45
+20251026_6;Preparar banana com aveia;10:50
+20251026_7;Comer banana com aveia;11:00
+20251026_8;Descascar ovos;11:05
+20251026_9;Comer ovos cozidos;11:10
+20251026_10;Lavar a louça;11:15
+20251026_11;Cozinhar lentilha rosa;11:25
+20251026_12;Ida ao banheiro;11:35
+20251026_13;Se arrumar;11:40
+20251026_14;Tarefas Diárias;11:45
+20251026_15;Arrumar a cama;11:50
+20251026_16;Passeio com Julie;12:35
+20251026_17;Lavar a louça;12:40
+20251026_18;Trocar de roupa;12:45
+20251026_19;Tarefas Diárias;12:50
+20251026_20;Perda de tempo no Instagram;13:00
+20251026_21;Leitura de notícias;13:05
+20251026_22;Bate-papo com Tayane;13:15
+20251026_23;Brincar com Julie;13:20
+20251026_24;Estudar curso.dev;13:30
+20251026_25;Perda de tempo no Instagram;13:40
+20251026_26;Estudar curso.dev;14:00
+20251026_27;Almoçar;14:15
+20251026_28;Colocar marmitas nos potes;14:35
+20251026_29;Almoçar;14:40
+20251026_30;Comer frutas;14:45
+20251026_31;Lavar a louça;15:15
+20251026_32;Ida ao banheiro;15:20
+20251026_33;Estudar curso.dev;15:55
+20251026_34;Grêmio vs Juventude;16:55
+20251026_35;Descanso;17:00
+20251026_36;Estudar curso.dev;17:10
+20251026_37;Grêmio vs Juventude;18:00
+20251026_38;Descanso;18:05
+20251026_39;Guardar a louça;18:15
+20251026_40;Dar comida para Julie;18:20
+20251026_41;Lavar a louça;18:25
+20251026_42;Cortar abacaxi;18:50
+20251026_43;Recolher coisas da Julie;19:00
+20251026_44;Limpar xixi da Julie;19:10
+20251026_45;Lavar o rosto;19:15
+20251026_46;Cortar abacaxi;19:20
+20251026_47;Lavar a louça;19:25
+20251026_48;Aspirar sujeira da sala;19:35
+20251026_49;Aspirar sujeira da sacada;19:40
+20251026_50;Aspirar sujeira do quarto;19:50
+20251026_51;Aspirar sujeira banheiro suíte;19:55
+20251026_52;Separar coisas para banho;20:00
+20251026_53;Ida ao banheiro;20:05
+20251026_54;Tomar banho;20:15
+20251026_55;Se arrumar;20:20
+20251026_56;Jantar;20:40
+20251026_57;Lavar a louça;20:45
+20251026_58;Descanso;20:55
+20251026_59;Estudar curso.dev;21:10
+20251026_60;Fazer massagem na Tayane;21:30
+20251026_61;Arrumar a cama;21:35
+20251026_62;Escovar dentes;21:45
+20251026_63;Pesquisar Lellis Trattoria;21:50
+20251026_64;Pendurar lençol no varal;21:55
+20251026_65;Ida ao banheiro;22:00
+20251026_66;Bate-papo com Tayane;22:30
+20251025_1;Acordar;08:10
+20251025_2;Ida ao banheiro;08:15
+20251025_3;Ficar deitado com Tayane;09:25
+20251025_4;Guardar a louça;09:30
+20251025_5;Cozinhar água;09:35
+20251025_6;Ficar com Tayane;09:55
+20251025_7;Preparar coisas da Julie;10:10
+20251025_8;Preparar banana com aveia;10:15
+20251025_9;Preparar batida da Tayane;10:20
+20251025_10;Levar celular Tayane lá embaixo;10:25
+20251025_11;Descascar ovos;10:30
+20251025_12;Comer ovos cozidos;10:35
+20251025_13;Comer banana com aveia;10:40
+20251025_14;Ida ao banheiro;10:55
+20251025_15;Comer kiwi zespri;11:00
+20251025_16;Lavar a louça;11:05
+20251025_17;Tarefas Diárias;11:10
+20251025_18;Organizar Google Photos;11:15
+20251025_19;Leitura de notícias;11:25
+20251025_20;Perda de tempo no Instagram;11:35
+20251025_21;Leitura de notícias;11:45
+20251025_22;Perda de tempo no WhatsApp;11:50
+20251025_23;Estudar curso.dev;11:55
+20251025_24;Leitura de notícias;12:10
+20251025_25;Estudar curso.dev;12:30
+20251025_26;Leitura de notícias;12:35
+20251025_27;Estudar curso.dev;12:40
+20251025_28;Perda de tempo no Instagram;12:45
+20251025_29;Estudar curso.dev;13:00
+20251025_30;Leitura de notícias;13:05
+20251025_31;Perda de tempo no WhatsApp;13:10
+20251025_32;Estudar curso.dev;13:20
+20251025_33;Brincar com Julie;13:30
+20251025_34;Pegar comida;13:35
+20251025_35;Ligar TV;13:40
+20251025_36;Almoçar;14:15
+20251025_37;Comer frutas;14:25
+20251025_38;Comer mangada;14:30
+20251025_39;Ida ao banheiro;14:35
+20251025_40;Leitura de notícias;15:05
+20251025_41;Cochilo;18:25
+20251025_42;Perda de tempo no WhatsApp;18:30
+20251025_43;Brincar com Julie;18:35
+20251025_44;Lavar a louça;18:50
+20251025_45;Ida ao banheiro;18:55
+20251025_46;Escovar dentes;19:00
+20251025_47;Lavar o rosto;19:05
+20251025_48;Se arrumar;19:10
+20251025_49;Passeio com Julie;20:15
+20251025_50;Trocar de roupa;20:20
+20251025_51;Separar coisas para banho;20:25
+20251025_52;Ida ao banheiro;20:30
+20251025_53;Tomar banho;20:45
+20251025_54;Se arrumar;20:55
+20251025_55;Lavar a louça;21:10
+20251025_56;Debate com Tayane;21:50
+20251025_57;Arrumar sala;21:55
+20251025_58;Levar Julie para o quarto;22:00
+20251025_59;Perda de tempo no WhatsApp;22:05
+20251025_60;Perda de tempo no Instagram;22:10
+20251025_61;Estudar curso.dev;22:25
+20251025_62;Ida ao banheiro;22:30
+20251025_63;Bate-papo com Tayane;00:20
+20251025_64;Cochilo;03:35
+20251025_65;Levar coisas da Julie para sala;03:40
+20251025_66;Ida ao banheiro;03:45
+20251025_67;Leitura de notícias;05:15
+20251024_1;Acordar;07:30
+20251024_2;Guardar a louça;07:40
+20251024_3;Bate-papo com Tayane;07:45
+20251024_4;Ida ao banheiro;08:00
+20251024_5;Lavar o rosto;08:05
+20251024_6;Tarefas Diárias;08:15
+20251024_7;Lavar a louça;08:20
+20251024_8;Preparar banana com aveia;08:25
+20251024_9;Comer kiwi zespri;08:30
+20251024_10;Comer banana com aveia;08:35
+20251024_11;Descascar ovos;08:40
+20251024_12;Comer ovos cozidos;08:45
+20251024_13;Arrumar cama;08:50
+20251024_14;Dobrar roupas;09:05
+20251024_15;Ajudar Tayane;09:10
+20251024_16;Recolher lixos;09:15
+20251024_17;Catar cabelos do chão;09:20
+20251024_18;Levar lixos para fora;09:25
+20251024_19;Esperar Uber;09:25
+20251024_20;Ida ao Pátio Batel;09:35
+20251024_21;Ida a entrada lateral;09:45
+20251024_22;Esperar na fila;09:55
+20251024_23;Esperar Uber;10:00
+20251024_24;Ida ao Marfim;10:10
+20251024_25;Pegar notebook;10:15
+20251024_26;Esperar Uber;10:20
+20251024_27;Ida ao Pátio Batel;10:30
+20251024_28;Ida a Polícia Federal;10:35
+20251024_29;Esperar na fila;10:40
+20251024_30;Esperar atendimento;10:45
+20251024_31;Conversa com Sandro Bastides;10:50
+20251024_32;Sair do shopping;10:55
+20251024_33;Ida ao Festval;11:10
+20251024_34;Festval;11:15
+20251024_35;Ida ao Shopping Curitiba;11:20
+20251024_36;Ida a Lojas Americanas;11:25
+20251024_37;Lojas Americanas;11:30
+20251024_38;Ida ao Marfim;11:40
+20251024_39;Trocar de roupa;11:45
+20251024_40;Lavar o rosto;11:50
+20251024_41;Tarefas Diárias;11:55
+20251024_42;Higienizar compras;12:00
+20251024_43;Guardar a louça;12:05
+20251024_44;Abrir chocolate;12:10
+20251024_45;Planilha Gastos Marfim;12:15
+20251024_46;Pagar Vivo;12:20
+20251024_47;Tentar checar Projudi;12:30
+20251024_48;Perda de tempo no Instagram;12:55
+20251024_49;Lavar potes da Julie;13:00
+20251024_50;Esquentar comida;13:05
+20251024_51;Almoçar;13:15
+20251024_52;Comer frutas;13:20
+20251024_53;Perda de tempo no WhatsApp;13:25
+20251024_54;Perda de tempo no Instagram;13:30
+20251024_55;Perda de tempo no WhatsApp;13:35
+20251024_56;Descanso;13:40
+20251024_57;Leitura de notícias;13:50
+20251024_58;Cochilo;14:30
+20251024_59;Responder email Bidese;14:35
+20251024_60;Descanso;15:25
+20251024_61;Estudar curso.dev;15:40
+20251024_62;Ida ao banheiro;15:45
+20251024_63;Lavar a louça;15:50
+20251024_64;Estudar curso.dev;16:00
+20251024_65;Perda de tempo no WhatsApp;16:25
+20251024_66;Estudar curso.dev;16:45
+20251024_67;Perda de tempo no WhatsApp;16:50
+20251024_68;Estudar curso.dev;17:05
+20251024_69;Perda de tempo no WhatsApp;17:10
+20251024_70;Estudar curso.dev;17:15
+20251024_71;Perda de tempo no WhatsApp;17:20
+20251024_72;Estudar curso.dev;17:25
+20251024_73;Perda de tempo no Instagram;17:30
+20251024_74;Leitura de notícias;17:45
+20251024_75;Estudar curso.dev;17:55
+20251024_76;Leitura de notícias;18:10
+20251024_77;Comer queijo;18:15
+20251024_78;Lavar o rosto;18:20
+20251024_79;Estudar curso.dev;18:40
+20251024_80;Perda de tempo no WhatsApp;18:45
+20251024_81;Estudar curso.dev;18:50
+20251024_82;Bate-papo com Tayane;18:55
+20251024_83;Estudar curso.dev;19:00
+20251024_84;Comer frango;19:10
+20251024_85;Comer frutas;19:15
+20251024_86;Lavar a louça;19:25
+20251024_87;Se arrumar;19:30
+20251024_88;Estudar curso.dev;19:35
+20251024_89;Se arrumar;19:40
+20251024_90;Esperar Uber;19:50
+20251024_91;Ida ao Christian Bove;20:05
+20251024_92;Bate-papo com Christian Bove;00:35
+20251024_93;Esperar Uber;00:40
+20251024_94;Ida ao Marfim;00:50
+20251024_95;Trocar de roupa;00:55
+20251024_96;Arrumar a cama;01:00
+20251024_97;Ida ao banheiro;01:05
+20251024_98;Lavar o rosto;01:10
+20251024_99;Escovar dentes;01:20
+20251024_100;Ida ao banheiro;01:25
+20251024_101;Tomar banho;01:40
+20251024_102;Se arrumar;01:45
+20251023_1;Acordar;07:00
+20251023_2;Ficar com Tayane;07:40
+20251023_3;Ida ao banheiro;07:55
+20251023_4;Lavar o rosto;08:00
+20251023_5;Se arrumar;08:05
+20251023_6;Guardar a louça;08:10
+20251023_7;Preparar banana com aveia;08:15
+20251023_8;Cozinhar ovos;08:20
+20251023_9;Comer kiwi zespri;08:25
+20251023_10;Lavar a louça;08:30
+20251023_11;Comer banana com aveia;08:35
+20251023_12;Descascar ovos;08:40
+20251023_13;Dar tchau para Tayane;08:45
+20251023_14;Comer ovos cozidos;08:50
+20251023_15;Ida ao banheiro;09:05
+20251023_16;Lavar o rosto;09:10
+20251023_17;Leitura de notícias;09:55
+20251023_18;Perda de tempo no Instagram;10:10
+20251023_19;Cochilo;12:30
+20251023_20;Descanso;13:00
+20251023_21;Ida ao banheiro;13:05
+20251023_22;Lavar o rosto;13:10
+20251023_23;Perda de tempo no WhatsApp;13:15
+20251023_24;Cortar frango;13:35
+20251023_25;Lavar a louça;13:40
+20251023_26;Cozinhar frango;14:00
+20251023_27;Almoçar;14:15
+20251023_28;Cortar frutas;14:25
+20251023_29;Lavar a louça;14:35
+20251023_30;Lavar o rosto;14:40
+20251023_31;Sacar dinheiro Avenue;14:45
+20251023_32;Reiniciar MacBook Pro;14:50
+20251023_33;Planilha Gastos Marfim;14:55
+20251023_34;Planilha Gastos Bradesco;15:20
+20251023_35;Estudar curso.dev;15:45
+20251023_36;Ida ao banheiro;16:00
+20251023_37;Conversa sobre infiltração;16:05
+20251023_38;Estudar curso.dev;16:30
+20251023_39;Perda de tempo no Instagram;16:35
+20251023_40;Tirar mofo do banheiro;17:00
+20251023_41;Guardar a louça;17:05
+20251023_42;Comer frutas;17:10
+20251023_43;Separar coisas para banho;17:15
+20251023_44;Ida ao banheiro;17:20
+20251023_45;Tomar banho;17:40
+20251023_46;Passar creme nas pernas;17:45
+20251023_47;Se arrumar;17:55
+20251023_48;Descanso;18:00
+20251023_49;Perda de tempo no WhatsApp;18:10
+20251023_50;Estudar curso.dev;18:40
+20251023_51;Jantar;19:20
+20251023_52;Lavar a louça;19:35
+20251023_53;Comer pão com doce de leite;19:45
+20251023_54;Lavar as mãos;19:50
+20251023_55;Estudar curso.dev;20:00
+20251023_56;Leitura de notícias;20:15
+20251023_57;Estudar curso.dev;21:10
+20251023_58;Leitura de notícias;21:35
+20251023_59;Perda de tempo no Instagram;21:40
+20251023_60;Leitura de notícias;21:45
+20251023_61;Estudar curso.dev;21:50
+20251023_62;Bate-papo com Tayane;21:55
+20251023_63;Estudar curso.dev;22:00
+20251023_64;Leitura de notícias;22:15
+20251023_65;Estudar curso.dev;22:35
+20251023_66;Arrumar a cama;22:40
+20251023_67;Ida ao banheiro;22:45
+20251023_68;Escovar dentes;22:55
+20251023_69;Programar despertador;23:00
+20251023_70;Estudar curso.dev;23:15
+20251023_71;Ida ao banheiro;23:20
+20251023_72;Passar creme nas mãos;23:25
+20251023_73;Bate-papo com Tayane;00:40
+20251023_74;Cochilo;03:05
+20251023_75;Ida ao banheiro;03:10
+20251022_1;Acordar;08:10
+20251022_2;Ida ao banheiro;08:20
+20251022_3;Lavar o rosto;08:25
+20251022_4;Se arrumar;08:30
+20251022_5;Tarefas Diárias;08:35
+20251022_6;Organizar Google Photos;08:40
+20251022_7;Lavar a louça;08:45
+20251022_8;Dar tchau para Tayane;08:50
+20251022_9;Lavar a louça;09:05
+20251022_10;Preparar banana com aveia;09:10
+20251022_11;Comer banana com aveia;09:15
+20251022_12;Catar cabelos do chão;09:20
+20251022_13;Arrumar a cama;08:25
+20251022_14;Descascar ovos;09:30
+20251022_15;Comer ovos cozidos;09:35
+20251022_16;Recolher lixos;09:40
+20251022_17;Perda de tempo no Instagram;10:20
+20251022_18;Perda de tempo no WhatsApp;10:25
+20251022_19;Estudar curso.dev;10:30
+20251022_20;Perda de tempo no WhatsApp;10:35
+20251022_21;Estudar curso.dev;10:40
+20251022_22;Perda de tempo no WhatsApp;10:50
+20251022_23;Estudar curso.dev;10:55
+20251022_24;Leitura de notícias;11:10
+20251022_25;Estudar curso.dev;11:15
+20251022_26;Comer mangada;11:20
+20251022_27;Leitura de notícias;11:25
+20251022_28;Estudar curso.dev;11:40
+20251022_29;Leitura de notícias;11:45
+20251022_30;Estudar curso.dev;12:00
+20251022_31;Sacar dinheiro Avenue;12:05
+20251022_32;Checar aplicativo eTitulo;12:10
+20251022_33;Colocar toalhas no varal;12:15
+20251022_34;Perda de tempo no WhatsApp;12:20
+20251022_35;Estudar curso.dev;12:35
+20251022_36;Leitura de notícias;13:00
+20251022_37;Esquentar comida;13:05
+20251022_38;Almoçar;13:15
+20251022_39;Comer frutas;13:25
+20251022_40;Ida ao banheiro;13:30
+20251022_41;Se arrumar;13:35
+20251022_42;Colocar roupas escuras no varal;13:40
+20251022_43;Levar lixos para fora;13:45
+20251022_44;Esperar Uber;13:55
+20251022_45;Ida aos pais;14:05
+20251022_46;Ida ao estacionamento;14:10
+20251022_47;Ida ao Condor;14:20
+20251022_48;Condor;15:05
+20251022_49;Ida ao Festval;15:10
+20251022_50;Festval;15:30
+20251022_51;Ida ao Marfim;15:40
+20251022_52;Levar compras para cima;15:45
+20251022_53;Higienizar compras;16:05
+20251022_54;Colocar roupas brancas para lavar;16:10
+20251022_55;Tarefas Diárias;16:15
+20251022_56;Se arrumar;16:20
+20251022_57;Colocar queijos nas marmitas;16:30
+20251022_58;Lavar uvas;16:50
+20251022_59;Perda de tempo no Instagram;17:10
+20251022_60;Estudar curso.dev;17:15
+20251022_61;Comer uvas;17:20
+20251022_62;Colocar roupas brancas no varal;17:25
+20251022_63;Ida ao banheiro;17:30
+20251022_64;Estudar curso.dev;17:40
+20251022_65;Descanso;17:50
+20251022_66;Estudar curso.dev;18:15
+20251022_67;Cochilo no sofá;18:30
+20251022_68;Estudar curso.dev;18:45
+20251022_69;Leitura de notícias;18:50
+20251022_70;Bate-papo com Tayane;19:15
+20251022_71;Jantar;19:55
+20251022_72;Lavar a louça;20:05
+20251022_73;Ida ao banheiro;20:10
+20251022_74;Leitura de notícias;20:25
+20251022_75;Perda de tempo no Instagram;20:35
+20251022_76;Estudar iOS;20:45
+20251022_77;Leitura de notícias;20:50
+20251022_78;Estudar iOS;21:35
+20251022_79;Separar coisas para banho;21:40
+20251022_80;Tarefas Diárias;21:45
+20251022_81;Tomar banho;22:00
+20251022_82;Passar creme nas pernas;22:05
+20251022_83;Escovar dentes;22:15
+20251022_84;Bate-papo com Tayane;22:20
+20251022_85;Perda de tempo no Instagram;22:30
+20251022_86;Leitura de notícias;22:40
+20251022_87;Estudar N8N;22:55
+20251021_1;Acordar;06:00
+20251021_2;Ida ao banheiro;06:05
+20251021_3;Lavar o rosto;06:10
+20251021_4;Ficar deitado com Tayane;07:00
+20251021_5;Cochilo;07:25
+20251021_6;Ficar deitado com Tayane;08:20
+20251021_7;Cochilo;08:50
+20251021_8;Tarefas Diárias;08:55
+20251021_9;Bate-papo com Tayane;09:00
+20251021_10;Ida ao banheiro;09:15
+20251021_11;Lavar o rosto;09:20
+20251021_12;Se arrumar;09:25
+20251021_13;Ajudar Tayane com varal;09:30
+20251021_14;Ajudar Tayane;09:35
+20251021_15;Cozinhar água;09:40
+20251021_16;Perda de tempo no WhatsApp;09:45
+20251021_17;Lavar a louça;10:00
+20251021_18;Preparar banana com aveia;10:05
+20251021_19;Descascar ovos;10:10
+20251021_20;Comer ovos cozidos;10:15
+20251021_21;Comer banana com aveia;10:20
+20251021_22;Dobrar roupas;10:25
+20251021_23;Lavar a louça;10:30
+20251021_24;Arrumar a cama;10:35
+20251021_25;Guardar roupas;10:40
+20251021_26;Colocar colcha Julie para lavar;10:45
+20251021_27;Perda de tempo no WhatsApp;10:50
+20251021_28;Estudar N8N;10:55
+20251021_29;Perda de tempo no WhatsApp;11:05
+20251021_30;Estudar N8N;11:10
+20251021_31;Atualizar LinkedIn;13:10
+20251021_32;Secar a louça;13:15
+20251021_33;Esquentar comida;13:20
+20251021_34;Tarefas Diárias;13:25
+20251021_35;Almoçar;13:35
+20251021_36;Cortar frutas;14:00
+20251021_37;Lavar a louça;14:05
+20251021_38;Lavar o rosto;14:10
+20251021_39;Ida ao banheiro;14:15
+20251021_40;Estudar N8N;15:00
+20251021_41;Checar Projudi;15:05
+20251021_42;Estudar N8N;15:25
+20251021_43;Estudar curso.dev;15:45
+20251021_44;Descanso;15:55
+20251021_45;Bate-papo com Rafaela Talita;16:00
+20251021_46;Estudar curso.dev;16:10
+20251021_47;Descanso;16:20
+20251021_48;Estudar curso.dev;17:00
+20251021_49;Perda de tempo no WhatsApp;17:05
+20251021_50;Descanso;17:10
+20251021_51;Erguer halteres;17:15
+20251021_52;Ida ao banheiro;17:25
+20251021_53;Separar coisas para banho;17:30
+20251021_54;Tarefas Diárias;17:35
+20251021_55;Tomar banho;17:50
+20251021_56;Passar creme nas pernas;17:55
+20251021_57;Se arrumar;18:05
+20251021_58;Bate-papo com Tayane;18:10
+20251021_59;Higienizar compras;18:15
+20251021_60;Cozinhar macarrão;18:50
+20251021_61;Jantar;19:10
+20251021_62;Lavar a louça;19:20
+20251021_63;Lavar as mãos;19:25
+20251021_64;Lavar alface e rúcula;20:15
+20251021_65;Lavar a louça;20:20
+20251021_66;Lavar o rosto;20:25
+20251021_67;Estudar curso.dev;20:45
+20251021_68;Leitura de notícias;20:55
+20251021_69;Estudar curso.dev;21:00
+20251021_70;Leitura de notícias;21:10
+20251021_71;Estudar curso.dev;21:35
+20251021_72;Ficar no sofá com Tayane;23:25
+20251021_73;Tarefas Diárias;23:30
+20251021_74;Arrumar a cama;23:35
+20251021_75;Ida ao banheiro;23:40
+20251021_76;Escovar dentes;23:45
+20251021_77;Estudar curso.dev;00:00
+20251021_78;Ida ao banheiro;00:05
+20251021_79;Passar creme nas mãos;00:10
+20251021_80;Ficar com Tayane;00:30
+20251020_1;Acordar;05:10
+20251020_2;Ida ao banheiro;05:15
+20251020_3;Lavar o rosto;05:20
+20251020_4;Cochilo;06:50
+20251020_5;Ficar deitado com Tayane;07:10
+20251020_6;Cochilo;07:50
+20251020_7;Ficar deitado;08:00
+20251020_8;Ida ao banheiro;08:15
+20251020_9;Lavar o rosto;08:20
+20251020_10;Se arrumar;08:25
+20251020_11;Secar a louça;08:30
+20251020_12;Tirar roupas da máquina de lavar;08:35
+20251020_13;Dobrar roupas;08:40
+20251020_14;Lavar a louça;08:45
+20251020_15;Ajudar Tayane;08:50
+20251020_16;Lavar a louça;08:55
+20251020_17;Preparar banana com aveia;09:00
+20251020_18;Descascar ovos;09:05
+20251020_19;Comer ovos cozidos;09:10
+20251020_20;Comer banana com aveia;09:15
+20251020_21;Catar cabelos do chão;09:20
+20251020_22;Colocar roupas Tayane no varal;09:25
+20251020_23;Tirar roupas de cama;09:30
+20251020_24;Colocar lençóis para lavar;09:35
+20251020_25;Limpar bancada do quarto;09:40
+20251020_26;Limpar bancada da TV;09:45
+20251020_27;Limpar mesa da sala;09:50
+20251020_28;Limpar chão da área de serviço;09:55
+20251020_29;Lavar chinelo;10:00
+20251020_30;Limpar chão da sala;10:15
+20251020_31;Perda de tempo no Instagram;10:25
+20251020_32;Perda de tempo no WhatsApp;10:30
+20251020_33;Checar login LATAM;10:40
+20251020_34;Call com LATAM;10:55
+20251020_35;Colocar lençóis no varal;11:05
+20251020_36;Agendamento passaporte novo;11:55
+20251020_37;Perda de tempo no WhatsApp;12:00
+20251020_38;Limpar bagunça álcool gel;12:10
+20251020_39;Guardar a louça;12:15
+20251020_40;Recolher lixos;12:25
+20251020_41;Tomar leite condensado;12:35
+20251020_42;Tarefas Diárias;12:40
+20251020_43;Checar Débitos Justiça Eleitoral;13:10
+20251020_44;Esquentar comida;13:15
+20251020_45;Almoçar;13:25
+20251020_46;Reagendamento passaporte novo;13:30
+20251020_47;Ida ao banheiro;13:35
+20251020_48;Se arrumar;13:40
+20251020_49;Levar lixos para fora;13:45
+20251020_50;Esperar Uber;13:50
+20251020_51;Ida ao TRE;14:00
+20251020_52;Esperar atendimento;14:05
+20251020_53;Atendimento;14:15
+20251020_54;Esperar Uber;14:20
+20251020_55;Ida ao Marfim;14:30
+20251020_56;Trocar de roupa;14:35
+20251020_57;Perda de tempo no WhatsApp;14:40
+20251020_58;Planilha Gastos Marfim;14:50
+20251020_59;Planilha Gastos Bradesco;15:15
+20251020_60;Perda de tempo no Instagram;15:20
+20251020_61;Estudar curso.dev;15:45
+20251020_62;Receber zelador Marcio;15:50
+20251020_63;Comer frutas;15:55
+20251020_64;Estudar curso.dev;16:30
+20251020_65;Descanso;16:50
+20251020_66;Ida ao banheiro;16:55
+20251020_67;Estudar curso.dev;17:05
+20251020_68;Cochilo no sofá;17:30
+20251020_69;Estudar curso.dev;17:50
+20251020_70;Perda de tempo no WhatsApp;18:15
+20251020_71;Perda de tempo no Instagram;18:20
+20251020_72;Descanso;18:25
+20251020_73;Lavar a louça;18:35
+20251020_74;Organizar toalhas;18:40
+20251020_75;Arrumar a cama;18:50
+20251020_76;Estudar curso.dev;19:05
+20251020_77;Jantar;19:40
+20251020_78;Leitura de notícias;19:55
+20251020_79;Estudar curso.dev;20:10
+20251020_80;Estudar iOS;20:30
+20251020_81;Ida ao banheiro;20:35
+20251020_82;Perda de tempo no LinkedIn;20:45
+20251020_83;Estudar iOS;21:15
+20251020_84;Comer banana;21:20
+20251020_85;Ida ao banheiro;21:25
+20251020_86;Lavar o rosto;21:30
+20251020_87;Escovar dentes;21:40
+20251020_88;Tarefas Diárias;21:45
+20251020_89;Estudar N8N;21:50
+20251020_90;Ida ao banheiro;21:55
+20251020_91;Tomar banho;22:05
+20251020_92;Se arrumar;22:10
+20251020_93;Passar creme nas pernas;22:15
+20251020_94;Bate-papo com Tayane;22:40
