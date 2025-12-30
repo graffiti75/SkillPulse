@@ -161,23 +161,27 @@ fun TaskScreen(
 				Text("Post Task")
 			}
 			Spacer(modifier = Modifier.height(16.dp))
-			LazyColumn(
-				verticalArrangement = Arrangement.spacedBy(5.dp),
-			) {
-				items(state.tasks) { task ->
-					SwipeableTaskItem(
-						item = task,
-						showDialog = state.showDeleteDialog,
-						isDarkTheme = isDarkTheme,
-						onAction = onAction
-					) {
-						TaskItem(
-							modifier = Modifier,
-							state = state,
-							task = task,
+			if (state.loading) {
+				LoadingScreen()
+			} else {
+				LazyColumn(
+					verticalArrangement = Arrangement.spacedBy(5.dp),
+				) {
+					items(state.tasks) { task ->
+						SwipeableTaskItem(
+							item = task,
+							showDialog = state.showDeleteDialog,
 							isDarkTheme = isDarkTheme,
 							onAction = onAction
-						)
+						) {
+							TaskItem(
+								modifier = Modifier,
+								state = state,
+								task = task,
+								isDarkTheme = isDarkTheme,
+								onAction = onAction
+							)
+						}
 					}
 				}
 			}
@@ -194,33 +198,29 @@ fun TaskItem(
 	onAction: (TaskScreenAction) -> Unit
 ) {
 	val borderColor = if (isDarkTheme) Color.DarkGray else Color.White
-	if (state.loading) {
-		LoadingScreen()
-	} else {
-		Column(
-			verticalArrangement = Arrangement.Center,
-			horizontalAlignment = Alignment.Start,
-			modifier = modifier
-				.background(color = borderColor)
-				.shadowModifier(outsideColor = borderColor)
-		) {
-			StyledText(
-				title = "ID",
-				content = task.id
-			)
-			StyledText(
-				title = "Description",
-				content = task.description
-			)
-			StyledText(
-				title = "Start Time",
-				content = task.startTime.formatDateString()
-			)
-			StyledText(
-				title = "End Time",
-				content = task.endTime.formatDateString()
-			)
-		}
+	Column(
+		verticalArrangement = Arrangement.Center,
+		horizontalAlignment = Alignment.Start,
+		modifier = modifier
+			.background(color = borderColor)
+			.shadowModifier(outsideColor = borderColor)
+	) {
+		StyledText(
+			title = "ID",
+			content = task.id
+		)
+		StyledText(
+			title = "Description",
+			content = task.description
+		)
+		StyledText(
+			title = "Start Time",
+			content = task.startTime.formatDateString()
+		)
+		StyledText(
+			title = "End Time",
+			content = task.endTime.formatDateString()
+		)
 	}
 }
 
@@ -272,7 +272,7 @@ fun TaskScreenPreviewLight() {
 		onAction = {},
 		state = TaskScreenState().copy(
 			tasks = initTaskList(),
-			loading = false
+			loading = true
 		)
 	)
 }
@@ -290,7 +290,7 @@ fun TaskScreenPreviewDark() {
 		onAction = {},
 		state = TaskScreenState().copy(
 			tasks = initTaskList(),
-			loading = false
+			loading = true
 		)
 	)
 }
