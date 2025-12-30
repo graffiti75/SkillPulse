@@ -6,6 +6,7 @@ import com.cericatto.skillpulse.domain.errors.DataError
 import com.cericatto.skillpulse.domain.errors.Result
 import com.cericatto.skillpulse.domain.remote.RemoteDatabase
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -18,6 +19,8 @@ class FirebaseRemoteDatabase(
 		try {
 			// Perform a one-time fetch from Firestore
 			val snapshot = db.collection("tasks")
+				.orderBy("timestamp", Query.Direction.DESCENDING)
+				.limit(100)
 				.get()
 				.await() // Suspends until the query completes.
 			val tasks = snapshot.documents.mapNotNull { it.toTask() }

@@ -48,9 +48,8 @@ import com.cericatto.skillpulse.ui.common.DynamicStatusBarColor
 import com.cericatto.skillpulse.ui.common.LoadingScreen
 import com.cericatto.skillpulse.ui.common.SwipeableTaskItem
 import com.cericatto.skillpulse.ui.common.shadowModifier
-import com.cericatto.skillpulse.ui.common.utils.getDateTimeAsString
+import com.cericatto.skillpulse.ui.common.utils.formatDateString
 import com.cericatto.skillpulse.ui.navigation.Route
-
 
 @Composable
 fun TaskScreenRoot(
@@ -206,16 +205,20 @@ fun TaskItem(
 				.shadowModifier(outsideColor = borderColor)
 		) {
 			StyledText(
+				title = "ID",
+				content = task.id
+			)
+			StyledText(
 				title = "Description",
 				content = task.description
 			)
 			StyledText(
 				title = "Start Time",
-				content = task.startTime.getDateTimeAsString()
+				content = task.startTime.formatDateString()
 			)
 			StyledText(
 				title = "End Time",
-				content = task.endTime.getDateTimeAsString()
+				content = task.endTime.formatDateString()
 			)
 		}
 	}

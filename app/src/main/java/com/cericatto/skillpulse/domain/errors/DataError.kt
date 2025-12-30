@@ -23,7 +23,8 @@ sealed interface DataError: Error {
 		LOGOUT,
 		SIGN_UP,
 		USER_LOGGED,
-		FIRESTORE_ERROR
+		FIRESTORE_ERROR,
+		GOOGLE_PLAY_SERVICES
 	}
 }
 

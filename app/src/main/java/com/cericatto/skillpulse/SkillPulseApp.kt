@@ -10,7 +10,7 @@ class SkillPulseApp : Application() {
 	override fun onCreate() {
 		super.onCreate()
 
-		/// Initialize Firebase.
+		// Initialize Firebase.
 		FirebaseApp.initializeApp(this)
 
 		// Plant a debug tree for logging in debug builds

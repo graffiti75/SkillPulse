@@ -21,6 +21,9 @@ fun DataError.asUiText(): UiText {
 		DataError.Firebase.FIRESTORE_ERROR -> UiText.StringResource(
 			R.string.firestore_error
 		)
+		DataError.Firebase.GOOGLE_PLAY_SERVICES -> UiText.StringResource(
+			R.string.google_play_services_error
+		)
 
 		// Local
 		DataError.Local.DISK_FULL -> UiText.StringResource(

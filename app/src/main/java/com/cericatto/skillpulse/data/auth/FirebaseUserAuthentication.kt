@@ -5,6 +5,7 @@ import com.cericatto.skillpulse.domain.errors.DataError
 import com.cericatto.skillpulse.domain.errors.Result
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 
 class FirebaseUserAuthentication(
 	private val auth: FirebaseAuth
@@ -13,7 +14,15 @@ class FirebaseUserAuthentication(
 		return try {
 			auth.signInWithEmailAndPassword(email, password).await()
 			Result.Success(data = true)
+		} catch (e: SecurityException) {
+			Timber.e(e, "Security exception during login - likely Google Play " +
+				"Services issue")
+			Result.Error(
+				error = DataError.Firebase.GOOGLE_PLAY_SERVICES,
+				message = "Google Play Services error: ${e.message}"
+			)
 		} catch (e: Exception) {
+			Timber.e(e, "Unexpected error during login")
 			Result.Error(
 				error = DataError.Firebase.LOGIN,
 				message = e.message
@@ -37,7 +46,15 @@ class FirebaseUserAuthentication(
 		return try {
 			auth.createUserWithEmailAndPassword(email, password).await()
 			Result.Success(data = true)
+		} catch (e: SecurityException) {
+			Timber.e(e, "Security exception during sign up - likely Google Play " +
+				"Services issue")
+			Result.Error(
+				error = DataError.Firebase.GOOGLE_PLAY_SERVICES,
+				message = "Google Play Services error: ${e.message}"
+			)
 		} catch (e: Exception) {
+			Timber.e(e, "Unexpected error during sign up")
 			Result.Error(
 				error = DataError.Firebase.SIGN_UP,
 				message = e.message
@@ -54,7 +71,15 @@ class FirebaseUserAuthentication(
 			} else {
 				Result.Success(data = "")
 			}
+		} catch (e: SecurityException) {
+			Timber.e(e, "Security exception checking user - likely Google Play " +
+				"Services issue")
+			Result.Error(
+				error = DataError.Firebase.GOOGLE_PLAY_SERVICES,
+				message = "Google Play Services error: ${e.message}"
+			)
 		} catch (e: Exception) {
+			Timber.e(e, "Error checking logged user")
 			Result.Error(
 				error = DataError.Firebase.USER_LOGGED,
 				message = e.message

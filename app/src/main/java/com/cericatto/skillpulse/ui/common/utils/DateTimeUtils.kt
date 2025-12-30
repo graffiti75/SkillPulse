@@ -20,3 +20,9 @@ fun Long.toZonedDateTime(zoneId: String = ""): ZonedDateTime {
 
 fun Long.getDateTimeAsString(pattern: String = "MMM d yyyy, HH:mm") =
 	this.toZonedDateTime().getDateTimeAsString(pattern)
+
+fun String.formatDateString(): String {
+	val inputDateTime = ZonedDateTime.parse(this)
+	val formatter = DateTimeFormatter.ofPattern("MMM d yyyy, H:mm", Locale.ENGLISH)
+	return inputDateTime.format(formatter)
+}
