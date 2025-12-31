@@ -1,21 +1,29 @@
 package com.cericatto.skillpulse.ui.task
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.FilterListOff
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -93,15 +101,16 @@ fun TaskScreenRoot(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskScreen(
+	modifier: Modifier = Modifier,
 	isDarkTheme: Boolean = isSystemInDarkTheme(),
 	onAction: (TaskScreenAction) -> Unit,
-	state: TaskScreenState,
-	modifier: Modifier = Modifier
+	state: TaskScreenState
 ) {
 	val backgroundColor = if (isDarkTheme) Color.DarkGray else Color.White
 	val textColor = if (isDarkTheme) Color.LightGray else Color.Black
 
-	var taskDescription by remember { mutableStateOf("") }
+	var filterDate by remember { mutableStateOf("") }
+	var isFilterVisible by remember { mutableStateOf(false) }
 
 	Column(
 		verticalArrangement = Arrangement.Top,
@@ -110,7 +119,7 @@ fun TaskScreen(
 			.background(backgroundColor)
 			.fillMaxSize()
 	) {
-		// Custom header row instead of TopAppBar to avoid extra padding.
+		// Custom header row
 		Box(
 			modifier = Modifier
 				.fillMaxWidth()
@@ -125,44 +134,77 @@ fun TaskScreen(
 				),
 				modifier = Modifier.align(Alignment.CenterStart)
 			)
-			IconButton(
-				onClick = {
-					onAction(TaskScreenAction.OnLogoutClick)
-				},
+			Row(
 				modifier = Modifier.align(Alignment.CenterEnd)
 			) {
-				Icon(
-					imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-					contentDescription = "Logout",
-					tint = textColor
-				)
+				// Filter toggle icon
+				IconButton(
+					onClick = {
+						isFilterVisible = !isFilterVisible
+						if (!isFilterVisible) {
+							filterDate = ""
+							onAction(TaskScreenAction.OnClearFilter)
+						}
+					}
+				) {
+					Icon(
+						imageVector = if (isFilterVisible) Icons.Default.FilterListOff else Icons.Default.FilterList,
+						contentDescription = "Toggle Filter",
+						tint = textColor
+					)
+				}
+				// Logout icon
+				IconButton(
+					onClick = {
+						onAction(TaskScreenAction.OnLogoutClick)
+					}
+				) {
+					Icon(
+						imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+						contentDescription = "Logout",
+						tint = textColor
+					)
+				}
 			}
 		}
 
 		Column(
 			modifier = Modifier.padding(horizontal = 16.dp)
 		) {
-			TextField(
-				value = taskDescription,
-				onValueChange = {
-					taskDescription = it
-				},
-				label = {
-					Text("Enter a task (e.g., Fix my code)")
-				},
-				modifier = Modifier.fillMaxWidth()
-			)
-			Spacer(modifier = Modifier.height(8.dp))
-			Button(
-				onClick = {
-					onAction(TaskScreenAction.OnLoadingUpdate(true))
-					onAction(TaskScreenAction.OnAddTask(description = taskDescription))
-				},
-				modifier = Modifier.fillMaxWidth()
+			// Filter TextField (hidden by default)
+			AnimatedVisibility(
+				visible = isFilterVisible,
+				enter = expandVertically() + fadeIn(),
+				exit = shrinkVertically() + fadeOut()
 			) {
-				Text("Post Task")
+				Row(
+					modifier = Modifier
+						.fillMaxWidth()
+						.padding(bottom = 16.dp),
+					verticalAlignment = Alignment.CenterVertically
+				) {
+					TextField(
+						value = filterDate,
+						onValueChange = { filterDate = it },
+						label = { Text("Filter by date (e.g., 2025-12-25)") },
+						modifier = Modifier.weight(1f),
+						singleLine = true
+					)
+					Spacer(modifier = Modifier.width(8.dp))
+					IconButton(
+						onClick = {
+							onAction(TaskScreenAction.OnFilterByDate(filterDate))
+						}
+					) {
+						Icon(
+							imageVector = Icons.Default.Search,
+							contentDescription = "Search",
+							tint = textColor
+						)
+					}
+				}
 			}
-			Spacer(modifier = Modifier.height(16.dp))
+
 			if (state.loading) {
 				LoadingScreen()
 			} else {
@@ -178,14 +220,13 @@ fun TaskScreen(
 						) {
 							TaskItem(
 								modifier = Modifier,
-								state = state,
 								task = task,
-								isDarkTheme = isDarkTheme,
-								onAction = onAction
+								isDarkTheme = isDarkTheme
 							)
 						}
 					}
 
+					// Pagination: Load more when reaching the end
 					if (state.canLoadMore) {
 						item {
 							LaunchedEffect(Unit) {
@@ -212,10 +253,8 @@ fun TaskScreen(
 @Composable
 fun TaskItem(
 	modifier: Modifier = Modifier,
-	state: TaskScreenState,
 	task: Task,
-	isDarkTheme: Boolean,
-	onAction: (TaskScreenAction) -> Unit
+	isDarkTheme: Boolean
 ) {
 	val borderColor = if (isDarkTheme) Color.DarkGray else Color.White
 	Column(
@@ -324,10 +363,8 @@ fun TaskScreenPreviewDark() {
 fun TaskItemPreviewLight() {
 	TaskItem(
 		modifier = Modifier,
-		state = TaskScreenState(),
 		task = Task(),
-		isDarkTheme = false,
-		onAction = {}
+		isDarkTheme = false
 	)
 }
 
@@ -340,9 +377,7 @@ fun TaskItemPreviewLight() {
 fun TaskItemPreviewDark() {
 	TaskItem(
 		modifier = Modifier,
-		state = TaskScreenState(),
 		task = Task(),
-		isDarkTheme = true,
-		onAction = {}
+		isDarkTheme = true
 	)
 }

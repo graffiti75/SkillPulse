@@ -37,7 +37,6 @@ import com.cericatto.skillpulse.data.model.Task
 import com.cericatto.skillpulse.ui.common.utils.ConfirmationDialog
 import com.cericatto.skillpulse.ui.task.TaskItem
 import com.cericatto.skillpulse.ui.task.TaskScreenAction
-import com.cericatto.skillpulse.ui.task.TaskScreenState
 import com.cericatto.skillpulse.ui.theme.orange
 import kotlinx.coroutines.launch
 
@@ -159,10 +158,8 @@ fun SwipeableTaskItemPreviewLight() {
 			TaskItem(
 				modifier = Modifier
 					.padding(top = 5.dp),
-				state = TaskScreenState().copy(loading = false),
 				task = Task(),
-				isDarkTheme = false,
-				onAction = {}
+				isDarkTheme = false
 			)
 		}
 	)
@@ -183,10 +180,8 @@ fun SwipeableTaskItemPreviewDark() {
 			TaskItem(
 				modifier = Modifier
 					.padding(top = 5.dp),
-				state = TaskScreenState().copy(loading = false),
 				task = Task(),
-				isDarkTheme = true,
-				onAction = {}
+				isDarkTheme = true
 			)
 		}
 	)

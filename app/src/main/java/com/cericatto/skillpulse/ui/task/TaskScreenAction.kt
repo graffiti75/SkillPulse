@@ -10,4 +10,6 @@ sealed interface TaskScreenAction {
 	data class OnDeleteTask(val task: Task) : TaskScreenAction
 	data object OnLogoutClick : TaskScreenAction
 	data object LoadMoreTasks : TaskScreenAction
+	data class OnFilterByDate(val date: String) : TaskScreenAction
+	data object OnClearFilter : TaskScreenAction
 }

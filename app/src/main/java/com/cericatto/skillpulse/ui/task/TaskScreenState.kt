@@ -11,5 +11,7 @@ data class TaskScreenState(
 	val showDeleteDialog : Boolean = false,
 	val itemToDelete : Task? = null,
 	val canLoadMore: Boolean = true,
-	val loadingMore: Boolean = false
+	val loadingMore: Boolean = false,
+	val isFilterVisible: Boolean = false,
+	val filterDate: String = ""
 )

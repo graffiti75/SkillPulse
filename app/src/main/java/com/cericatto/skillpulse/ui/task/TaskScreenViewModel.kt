@@ -35,6 +35,7 @@ class TaskScreenViewModel @Inject constructor(
 	val events = _events.receiveAsFlow()
 
 	private var lastTimestamp: String? = null
+	private var allTasks: List<Task> = emptyList()
 
 	fun onAction(action: TaskScreenAction) {
 		when (action) {
@@ -45,6 +46,8 @@ class TaskScreenViewModel @Inject constructor(
 			is TaskScreenAction.OnDeleteTask -> deleteTask(action.task)
 			is TaskScreenAction.OnLogoutClick -> logout()
 			is TaskScreenAction.LoadMoreTasks -> loadMoreTasks()
+			is TaskScreenAction.OnFilterByDate -> filterTasksByDate(action.date)
+			is TaskScreenAction.OnClearFilter -> clearFilter()
 		}
 	}
 
@@ -78,6 +81,7 @@ class TaskScreenViewModel @Inject constructor(
 				}
 				is Result.Success -> {
 					val tasks = result.data
+					allTasks = tasks
 					lastTimestamp = tasks.lastOrNull()?.timestamp
 					Timber.d("Tasks loaded! Here they are: ${tasks}")
 					_state.update {
@@ -102,6 +106,7 @@ class TaskScreenViewModel @Inject constructor(
 				is Result.Success -> {
 					val newTasks = result.data
 					lastTimestamp = newTasks.lastOrNull()?.timestamp
+					allTasks = allTasks + newTasks
 					_state.update {
 						it.copy(
 							loadingMore = false,
@@ -152,6 +157,38 @@ class TaskScreenViewModel @Inject constructor(
 					}
 				}
 			}
+		}
+	}
+
+	private fun filterTasksByDate(date: String) {
+		if (date.isBlank()) return
+
+		/*
+		val filteredTasks = allTasks.filter { task ->
+			task.timestamp.contains(date) ||
+			task.startTime.contains(date) ||
+			task.endTime.contains(date)
+		}
+		 */
+		val filteredTasks = allTasks.filter { task ->
+			task.startTime.contains(date)
+		}
+		_state.update {
+			it.copy(
+				tasks = filteredTasks,
+				filterDate = date,
+				canLoadMore = false
+			)
+		}
+	}
+
+	private fun clearFilter() {
+		_state.update {
+			it.copy(
+				tasks = allTasks,
+				filterDate = "",
+				canLoadMore = allTasks.size >= 20
+			)
 		}
 	}
 
