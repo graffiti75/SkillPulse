@@ -34,6 +34,8 @@ class TaskScreenViewModel @Inject constructor(
 	private val _events = Channel<UiEvent>()
 	val events = _events.receiveAsFlow()
 
+	private var lastTimestamp: String? = null
+
 	fun onAction(action: TaskScreenAction) {
 		when (action) {
 			is TaskScreenAction.OnDismissAlert -> dismissAlert()
@@ -42,6 +44,7 @@ class TaskScreenViewModel @Inject constructor(
 			is TaskScreenAction.OnShowDeleteDialog -> showDeleteDialog(action.show)
 			is TaskScreenAction.OnDeleteTask -> deleteTask(action.task)
 			is TaskScreenAction.OnLogoutClick -> logout()
+			is TaskScreenAction.LoadMoreTasks -> loadMoreTasks()
 		}
 	}
 
@@ -57,8 +60,11 @@ class TaskScreenViewModel @Inject constructor(
 	}
 
 	private fun loadTasks() {
+		_state.update { it.copy(loading = true) }
+		lastTimestamp = null
+
 		viewModelScope.launch {
-			when (val result = db.loadTasks()) {
+			when (val result = db.loadTasks(lastTimestamp)) {
 				is Result.Error -> {
 					Timber.e("Tasks couldn't be loaded: ${result.message}")
 					_state.update {
@@ -71,11 +77,47 @@ class TaskScreenViewModel @Inject constructor(
 					}
 				}
 				is Result.Success -> {
-					Timber.d("Tasks loaded! Here they are: ${result.data}")
+					val tasks = result.data
+					lastTimestamp = tasks.lastOrNull()?.timestamp
+					Timber.d("Tasks loaded! Here they are: ${tasks}")
 					_state.update {
 						it.copy(
-							tasks = result.data,
-							loading = false
+							loading = false,
+							tasks = tasks,
+							canLoadMore = tasks.size == 20
+						)
+					}
+				}
+			}
+		}
+	}
+
+	private fun loadMoreTasks() {
+		if (_state.value.loadingMore || !_state.value.canLoadMore) return
+
+		viewModelScope.launch {
+			_state.update { it.copy(loadingMore = true) }
+
+			when (val result = db.loadTasks(lastTimestamp)) {
+				is Result.Success -> {
+					val newTasks = result.data
+					lastTimestamp = newTasks.lastOrNull()?.timestamp
+					_state.update {
+						it.copy(
+							loadingMore = false,
+							tasks = it.tasks + newTasks,
+							canLoadMore = newTasks.size == 20
+						)
+					}
+				}
+				is Result.Error -> {
+					_state.update {
+						it.copy(
+							loadingMore = false,
+							alert = MessageAlert(
+								errorMessage = Pair(result.error.asUiText(),
+									result.message ?: "Failed to load more tasks")
+							),
 						)
 					}
 				}

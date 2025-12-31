@@ -16,12 +16,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -181,6 +183,24 @@ fun TaskScreen(
 								isDarkTheme = isDarkTheme,
 								onAction = onAction
 							)
+						}
+					}
+
+					if (state.canLoadMore) {
+						item {
+							LaunchedEffect(Unit) {
+								onAction(TaskScreenAction.LoadMoreTasks)
+							}
+							if (state.loadingMore) {
+								Box(
+									modifier = Modifier
+										.fillMaxWidth()
+										.padding(16.dp),
+									contentAlignment = Alignment.Center
+								) {
+									CircularProgressIndicator()
+								}
+							}
 						}
 					}
 				}

@@ -5,6 +5,6 @@ import com.cericatto.skillpulse.domain.errors.DataError
 import com.cericatto.skillpulse.domain.errors.Result
 
 interface RemoteDatabase {
-	suspend fun loadTasks(): Result<List<Task>, DataError>
+	suspend fun loadTasks(lastTimestamp: String?): Result<List<Task>, DataError>
 	suspend fun addTask(description: String): Result<Boolean, DataError>
 }

@@ -9,4 +9,5 @@ sealed interface TaskScreenAction {
 	data class OnShowDeleteDialog(val show: Boolean) : TaskScreenAction
 	data class OnDeleteTask(val task: Task) : TaskScreenAction
 	data object OnLogoutClick : TaskScreenAction
+	data object LoadMoreTasks : TaskScreenAction
 }

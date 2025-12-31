@@ -9,5 +9,7 @@ data class TaskScreenState(
 	val user : String = "",
 	val tasks : List<Task> = emptyList(),
 	val showDeleteDialog : Boolean = false,
-	val itemToDelete : Task? = null
+	val itemToDelete : Task? = null,
+	val canLoadMore: Boolean = true,
+	val loadingMore: Boolean = false
 )

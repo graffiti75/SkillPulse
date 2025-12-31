@@ -15,14 +15,20 @@ import java.util.UUID
 class FirebaseRemoteDatabase(
 	private val db: FirebaseFirestore
 ): RemoteDatabase {
-	override suspend fun loadTasks(): Result<List<Task>, DataError> = withContext(Dispatchers.IO) {
+	override suspend fun loadTasks(lastTimestamp: String?)
+		: Result<List<Task>, DataError> = withContext(Dispatchers.IO) {
 		try {
 			// Perform a one-time fetch from Firestore
-			val snapshot = db.collection("tasks")
+			var query = db.collection("tasks")
 				.orderBy("timestamp", Query.Direction.DESCENDING)
-				.limit(100)
-				.get()
-				.await() // Suspends until the query completes.
+				.limit(20)
+
+			// If we have a lastTimestamp, start after it for pagination
+			if (lastTimestamp != null) {
+				query = query.startAfter(lastTimestamp)
+			}
+
+			val snapshot = query.get().await()
 			val tasks = snapshot.documents.mapNotNull { it.toTask() }
 			Result.Success(tasks)
 		} catch (e: Exception) {
