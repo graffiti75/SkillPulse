@@ -1,5 +1,14 @@
 package com.cericatto.skillpulse.ui.task
 
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material.icons.filled.DateRange
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.derivedStateOf
 import android.content.res.Configuration
@@ -113,12 +122,51 @@ fun TaskScreen(
 
 	var filterDate by remember { mutableStateOf("") }
 	var isFilterVisible by remember { mutableStateOf(false) }
+	var showDatePicker by remember { mutableStateOf(false) }
+
+	// DatePicker state
+	val datePickerState = rememberDatePickerState()
 
 	// Track scroll position
 	val listState = rememberLazyListState()
 	val currentItem by remember {
 		derivedStateOf {
 			listState.firstVisibleItemIndex + 1
+		}
+	}
+
+	// Replace the DatePicker Dialog block with:
+	if (showDatePicker) {
+		DatePickerDialog(
+			onDismissRequest = { showDatePicker = false },
+			confirmButton = {
+				TextButton(
+					onClick = {
+						val selectedDate = datePickerState.selectedDateMillis
+						if (selectedDate != null) {
+							val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+							val date = Instant.ofEpochMilli(selectedDate)
+								.atZone(ZoneId.of("UTC"))
+								.toLocalDate()
+							filterDate = date.format(formatter)
+						}
+						showDatePicker = false
+					}
+				) {
+					Text("OK")
+				}
+			},
+			dismissButton = {
+				TextButton(
+					onClick = {
+						showDatePicker = false
+					}
+				) {
+					Text("Cancel")
+				}
+			}
+		) {
+			DatePicker(state = datePickerState)
 		}
 	}
 
@@ -211,12 +259,22 @@ fun TaskScreen(
 						onValueChange = { filterDate = it },
 						label = { Text("Filter by date (e.g., 2025-12-25)") },
 						modifier = Modifier.weight(1f),
-						singleLine = true
+						singleLine = true,
+						trailingIcon = {
+							IconButton(onClick = { showDatePicker = true }) {
+								Icon(
+									imageVector = Icons.Default.DateRange,
+									contentDescription = "Select date"
+								)
+							}
+						}
 					)
 					Spacer(modifier = Modifier.width(8.dp))
 					IconButton(
 						onClick = {
-							onAction(TaskScreenAction.OnFilterByDate(filterDate))
+							if (filterDate.isNotBlank()) {
+								onAction(TaskScreenAction.OnFilterByDate(filterDate))
+							}
 						}
 					) {
 						Icon(

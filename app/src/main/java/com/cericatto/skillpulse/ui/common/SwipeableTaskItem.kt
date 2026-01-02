@@ -76,7 +76,7 @@ fun SwipeableTaskItem(
 
 	Box(
 		contentAlignment = Alignment.Center,
-		modifier = Modifier
+		modifier = modifier
 			.fillMaxWidth()
 	) {
 		// Background layer with delete icon.
