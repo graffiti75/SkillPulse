@@ -1,5 +1,7 @@
 package com.cericatto.skillpulse.ui.task
 
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.derivedStateOf
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -112,6 +114,14 @@ fun TaskScreen(
 	var filterDate by remember { mutableStateOf("") }
 	var isFilterVisible by remember { mutableStateOf(false) }
 
+	// Track scroll position
+	val listState = rememberLazyListState()
+	val currentItem by remember {
+		derivedStateOf {
+			listState.firstVisibleItemIndex + 1
+		}
+	}
+
 	Column(
 		verticalArrangement = Arrangement.Top,
 		horizontalAlignment = Alignment.CenterHorizontally,
@@ -135,8 +145,21 @@ fun TaskScreen(
 				modifier = Modifier.align(Alignment.CenterStart)
 			)
 			Row(
-				modifier = Modifier.align(Alignment.CenterEnd)
+				modifier = Modifier.align(Alignment.CenterEnd),
+				verticalAlignment = Alignment.CenterVertically
 			) {
+				// Scroll position indicator
+				if (state.tasks.isNotEmpty()) {
+					Text(
+						text = "$currentItem/${state.tasks.size}",
+						style = TextStyle(
+							fontSize = 14.sp,
+							color = textColor,
+							fontWeight = FontWeight.Normal
+						),
+						modifier = Modifier.padding(end = 8.dp)
+					)
+				}
 				// Filter toggle icon
 				IconButton(
 					onClick = {
@@ -209,6 +232,7 @@ fun TaskScreen(
 				LoadingScreen()
 			} else {
 				LazyColumn(
+					state = listState,
 					verticalArrangement = Arrangement.spacedBy(5.dp),
 				) {
 					items(state.tasks) { task ->
