@@ -1,16 +1,5 @@
 package com.cericatto.skillpulse.ui.task
 
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.material.icons.filled.DateRange
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.runtime.derivedStateOf
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -30,19 +19,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.FilterListOff
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -71,6 +67,9 @@ import com.cericatto.skillpulse.ui.common.SwipeableTaskItem
 import com.cericatto.skillpulse.ui.common.shadowModifier
 import com.cericatto.skillpulse.ui.common.utils.formatDateString
 import com.cericatto.skillpulse.ui.navigation.Route
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun TaskScreenRoot(
@@ -118,14 +117,10 @@ fun TaskScreen(
 	state: TaskScreenState
 ) {
 	val backgroundColor = if (isDarkTheme) Color.DarkGray else Color.White
-	val textColor = if (isDarkTheme) Color.LightGray else Color.Black
 
 	var filterDate by remember { mutableStateOf("") }
 	var isFilterVisible by remember { mutableStateOf(false) }
 	var showDatePicker by remember { mutableStateOf(false) }
-
-	// DatePicker state
-	val datePickerState = rememberDatePickerState()
 
 	// Track scroll position
 	val listState = rememberLazyListState()
@@ -135,10 +130,132 @@ fun TaskScreen(
 		}
 	}
 
-	// Replace the DatePicker Dialog block with:
+	TaskScreenDatePicker(
+		showDatePicker = showDatePicker,
+		onDismiss = { showDatePicker = false },
+		onDateSelected = { selectedDate -> filterDate = selectedDate }
+	)
+
+	Column(
+		verticalArrangement = Arrangement.Top,
+		horizontalAlignment = Alignment.CenterHorizontally,
+		modifier = modifier
+			.background(backgroundColor)
+			.fillMaxSize()
+	) {
+		TaskScreenTopHeader(
+			user = state.user,
+			taskCount = state.tasks.size,
+			currentItem = currentItem,
+			isFilterVisible = isFilterVisible,
+			isDarkTheme = isDarkTheme,
+			onFilterToggle = {
+				isFilterVisible = !isFilterVisible
+				if (!isFilterVisible) {
+					filterDate = ""
+					onAction(TaskScreenAction.OnClearFilter)
+				}
+			},
+			onLogoutClick = { onAction(TaskScreenAction.OnLogoutClick) }
+		)
+
+		Column(
+			modifier = Modifier.padding(horizontal = 16.dp)
+		) {
+			TaskScreenFilterTextField(
+				isFilterVisible = isFilterVisible,
+				filterDate = filterDate,
+				onFilterDateChange = { filterDate = it },
+				onDatePickerClick = { showDatePicker = true },
+				onSearchClick = {
+					if (filterDate.isNotBlank()) {
+						onAction(TaskScreenAction.OnFilterByDate(filterDate))
+					}
+				},
+				isDarkTheme = isDarkTheme
+			)
+
+			TaskScreenItems(
+				isLoading = state.loading,
+				tasks = state.tasks,
+				showDeleteDialog = state.showDeleteDialog,
+				canLoadMore = state.canLoadMore,
+				loadingMore = state.loadingMore,
+				listState = listState,
+				isDarkTheme = isDarkTheme,
+				onAction = onAction
+			)
+		}
+	}
+}
+
+@Composable
+private fun TaskScreenItems(
+	isLoading: Boolean,
+	tasks: List<Task>,
+	showDeleteDialog: Boolean,
+	canLoadMore: Boolean,
+	loadingMore: Boolean,
+	listState: androidx.compose.foundation.lazy.LazyListState,
+	isDarkTheme: Boolean,
+	onAction: (TaskScreenAction) -> Unit
+) {
+	if (isLoading) {
+		LoadingScreen()
+	} else {
+		LazyColumn(
+			state = listState,
+			verticalArrangement = Arrangement.spacedBy(5.dp),
+		) {
+			items(tasks) { task ->
+				SwipeableTaskItem(
+					item = task,
+					showDialog = showDeleteDialog,
+					isDarkTheme = isDarkTheme,
+					onAction = onAction
+				) {
+					TaskItem(
+						modifier = Modifier,
+						task = task,
+						isDarkTheme = isDarkTheme
+					)
+				}
+			}
+
+			// Pagination: Load more when reaching the end
+			if (canLoadMore) {
+				item {
+					LaunchedEffect(Unit) {
+						onAction(TaskScreenAction.LoadMoreTasks)
+					}
+					if (loadingMore) {
+						Box(
+							modifier = Modifier
+								.fillMaxWidth()
+								.padding(16.dp),
+							contentAlignment = Alignment.Center
+						) {
+							CircularProgressIndicator()
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TaskScreenDatePicker(
+	showDatePicker: Boolean,
+	onDismiss: () -> Unit,
+	onDateSelected: (String) -> Unit
+) {
 	if (showDatePicker) {
+		val datePickerState = rememberDatePickerState()
+
 		DatePickerDialog(
-			onDismissRequest = { showDatePicker = false },
+			onDismissRequest = onDismiss,
 			confirmButton = {
 				TextButton(
 					onClick = {
@@ -148,20 +265,16 @@ fun TaskScreen(
 							val date = Instant.ofEpochMilli(selectedDate)
 								.atZone(ZoneId.of("UTC"))
 								.toLocalDate()
-							filterDate = date.format(formatter)
+							onDateSelected(date.format(formatter))
 						}
-						showDatePicker = false
+						onDismiss()
 					}
 				) {
 					Text("OK")
 				}
 			},
 			dismissButton = {
-				TextButton(
-					onClick = {
-						showDatePicker = false
-					}
-				) {
+				TextButton(onClick = onDismiss) {
 					Text("Cancel")
 				}
 			}
@@ -169,164 +282,122 @@ fun TaskScreen(
 			DatePicker(state = datePickerState)
 		}
 	}
+}
 
-	Column(
-		verticalArrangement = Arrangement.Top,
-		horizontalAlignment = Alignment.CenterHorizontally,
-		modifier = modifier
-			.background(backgroundColor)
-			.fillMaxSize()
+@Composable
+private fun TaskScreenTopHeader(
+	user: String,
+	taskCount: Int,
+	currentItem: Int,
+	isFilterVisible: Boolean,
+	isDarkTheme: Boolean,
+	onFilterToggle: () -> Unit,
+	onLogoutClick: () -> Unit
+) {
+	val textColor = if (isDarkTheme) Color.LightGray else Color.Black
+
+	Box(
+		modifier = Modifier
+			.fillMaxWidth()
+			.padding(horizontal = 16.dp, vertical = 8.dp)
 	) {
-		// Custom header row
-		Box(
-			modifier = Modifier
-				.fillMaxWidth()
-				.padding(horizontal = 16.dp, vertical = 8.dp)
+		Text(
+			text = "Welcome $user",
+			style = TextStyle(
+				fontSize = 20.sp,
+				color = textColor,
+				fontWeight = FontWeight.Medium
+			),
+			modifier = Modifier.align(Alignment.CenterStart)
+		)
+		Row(
+			modifier = Modifier.align(Alignment.CenterEnd),
+			verticalAlignment = Alignment.CenterVertically
 		) {
-			Text(
-				text = "Welcome ${state.user}",
-				style = TextStyle(
-					fontSize = 20.sp,
-					color = textColor,
-					fontWeight = FontWeight.Medium
-				),
-				modifier = Modifier.align(Alignment.CenterStart)
-			)
-			Row(
-				modifier = Modifier.align(Alignment.CenterEnd),
-				verticalAlignment = Alignment.CenterVertically
-			) {
-				// Scroll position indicator
-				if (state.tasks.isNotEmpty()) {
-					Text(
-						text = "$currentItem/${state.tasks.size}",
-						style = TextStyle(
-							fontSize = 14.sp,
-							color = textColor,
-							fontWeight = FontWeight.Normal
-						),
-						modifier = Modifier.padding(end = 8.dp)
-					)
-				}
-				// Filter toggle icon
-				IconButton(
-					onClick = {
-						isFilterVisible = !isFilterVisible
-						if (!isFilterVisible) {
-							filterDate = ""
-							onAction(TaskScreenAction.OnClearFilter)
-						}
-					}
-				) {
-					Icon(
-						imageVector = if (isFilterVisible) Icons.Default.FilterListOff else Icons.Default.FilterList,
-						contentDescription = "Toggle Filter",
-						tint = textColor
-					)
-				}
-				// Logout icon
-				IconButton(
-					onClick = {
-						onAction(TaskScreenAction.OnLogoutClick)
-					}
-				) {
-					Icon(
-						imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-						contentDescription = "Logout",
-						tint = textColor
-					)
-				}
+			// Scroll position indicator
+			if (taskCount > 0) {
+				Text(
+					text = "$currentItem/$taskCount",
+					style = TextStyle(
+						fontSize = 14.sp,
+						color = textColor,
+						fontWeight = FontWeight.Normal
+					),
+					modifier = Modifier.padding(end = 8.dp)
+				)
+			}
+			// Filter toggle icon
+			IconButton(onClick = onFilterToggle) {
+				Icon(
+					imageVector = if (isFilterVisible) Icons.Default.FilterListOff else Icons.Default.FilterList,
+					contentDescription = "Toggle Filter",
+					tint = textColor
+				)
+			}
+			// Logout icon
+			IconButton(onClick = onLogoutClick) {
+				Icon(
+					imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+					contentDescription = "Logout",
+					tint = textColor
+				)
 			}
 		}
+	}
+}
 
-		Column(
-			modifier = Modifier.padding(horizontal = 16.dp)
+@Composable
+private fun TaskScreenFilterTextField(
+	isFilterVisible: Boolean,
+	filterDate: String,
+	onFilterDateChange: (String) -> Unit,
+	onDatePickerClick: () -> Unit,
+	onSearchClick: () -> Unit,
+	isDarkTheme: Boolean
+) {
+	val textColor = if (isDarkTheme) Color.LightGray else Color.Black
+
+	AnimatedVisibility(
+		visible = isFilterVisible,
+		enter = expandVertically() + fadeIn(),
+		exit = shrinkVertically() + fadeOut()
+	) {
+		Row(
+			modifier = Modifier
+				.fillMaxWidth()
+				.padding(bottom = 16.dp),
+			verticalAlignment = Alignment.CenterVertically
 		) {
-			// Filter TextField (hidden by default)
-			AnimatedVisibility(
-				visible = isFilterVisible,
-				enter = expandVertically() + fadeIn(),
-				exit = shrinkVertically() + fadeOut()
-			) {
-				Row(
-					modifier = Modifier
-						.fillMaxWidth()
-						.padding(bottom = 16.dp),
-					verticalAlignment = Alignment.CenterVertically
-				) {
-					TextField(
-						value = filterDate,
-						onValueChange = { filterDate = it },
-						label = { Text("Filter by date (e.g., 2025-12-25)") },
-						modifier = Modifier.weight(1f),
-						singleLine = true,
-						trailingIcon = {
-							IconButton(onClick = { showDatePicker = true }) {
-								Icon(
-									imageVector = Icons.Default.DateRange,
-									contentDescription = "Select date"
-								)
-							}
-						}
-					)
-					Spacer(modifier = Modifier.width(8.dp))
-					IconButton(
-						onClick = {
-							if (filterDate.isNotBlank()) {
-								onAction(TaskScreenAction.OnFilterByDate(filterDate))
-							}
-						}
-					) {
+			TextField(
+				value = filterDate,
+				onValueChange = onFilterDateChange,
+				label = {
+					Text("Filter by date (e.g., 2025-12-25)")
+				},
+				modifier = Modifier.weight(1f),
+				singleLine = true,
+				trailingIcon = {
+					IconButton(onClick = onDatePickerClick) {
 						Icon(
-							imageVector = Icons.Default.Search,
-							contentDescription = "Search",
-							tint = textColor
+							imageVector = Icons.Default.DateRange,
+							contentDescription = "Select date",
+//							tint = textColor
 						)
 					}
 				}
-			}
+			)
 
-			if (state.loading) {
-				LoadingScreen()
-			} else {
-				LazyColumn(
-					state = listState,
-					verticalArrangement = Arrangement.spacedBy(5.dp),
-				) {
-					items(state.tasks) { task ->
-						SwipeableTaskItem(
-							item = task,
-							showDialog = state.showDeleteDialog,
-							isDarkTheme = isDarkTheme,
-							onAction = onAction
-						) {
-							TaskItem(
-								modifier = Modifier,
-								task = task,
-								isDarkTheme = isDarkTheme
-							)
-						}
-					}
+			Spacer(modifier = Modifier.width(8.dp))
 
-					// Pagination: Load more when reaching the end
-					if (state.canLoadMore) {
-						item {
-							LaunchedEffect(Unit) {
-								onAction(TaskScreenAction.LoadMoreTasks)
-							}
-							if (state.loadingMore) {
-								Box(
-									modifier = Modifier
-										.fillMaxWidth()
-										.padding(16.dp),
-									contentAlignment = Alignment.Center
-								) {
-									CircularProgressIndicator()
-								}
-							}
-						}
-					}
-				}
+			IconButton(
+				onClick = onSearchClick,
+//				enabled = filterDate.isNotBlank()
+			) {
+				Icon(
+					imageVector = Icons.Default.Search,
+					contentDescription = "Search",
+					tint = if (filterDate.isNotBlank()) textColor else textColor.copy(alpha = 0.4f)
+				)
 			}
 		}
 	}
