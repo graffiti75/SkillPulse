@@ -12,9 +12,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -24,18 +27,24 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,10 +56,11 @@ import com.cericatto.skillpulse.ui.common.BottomAlert
 import com.cericatto.skillpulse.ui.common.DynamicStatusBarColor
 import com.cericatto.skillpulse.ui.common.LoadingScreen
 import com.cericatto.skillpulse.ui.navigation.Route
-import com.cericatto.skillpulse.ui.task.TaskScreenAction
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+
 
 @Composable
 fun EditScreenRoot(
@@ -97,25 +107,32 @@ fun EditScreen(
 	state: EditScreenState
 ) {
 	val backgroundColor = if (isDarkTheme) Color.DarkGray else Color.White
-	val textColor = if (isDarkTheme) Color.LightGray else Color.Black
 
-	var showStartDatePicker by remember { mutableStateOf(false) }
-	var showEndDatePicker by remember { mutableStateOf(false) }
+	// Focus requesters for keyboard navigation
+	val focusManager = LocalFocusManager.current
+	val descriptionFocusRequester = remember { FocusRequester() }
+	val startTimeFocusRequester = remember { FocusRequester() }
+	val endTimeFocusRequester = remember { FocusRequester() }
 
-	// Date Pickers
-	EditScreenDatePicker(
-		showDatePicker = showStartDatePicker,
-		onDismiss = { showStartDatePicker = false },
-		onDateSelected = { selectedDate ->
-			onAction(EditScreenAction.OnStartTimeChange(selectedDate))
+	// DateTimePicker states
+	var showStartDateTimePicker by remember { mutableStateOf(false) }
+	var showEndDateTimePicker by remember { mutableStateOf(false) }
+
+	// DateTimePickers
+
+	EditScreenDateTimePicker(
+		showPicker = showStartDateTimePicker,
+		onDismiss = { showStartDateTimePicker = false },
+		onDateTimeSelected = { selectedDateTime ->
+			onAction(EditScreenAction.OnStartTimeChange(selectedDateTime))
 		}
 	)
 
-	EditScreenDatePicker(
-		showDatePicker = showEndDatePicker,
-		onDismiss = { showEndDatePicker = false },
-		onDateSelected = { selectedDate ->
-			onAction(EditScreenAction.OnEndTimeChange(selectedDate))
+	EditScreenDateTimePicker(
+		showPicker = showEndDateTimePicker,
+		onDismiss = { showEndDateTimePicker = false },
+		onDateTimeSelected = { selectedDateTime ->
+			onAction(EditScreenAction.OnEndTimeChange(selectedDateTime))
 		}
 	)
 
@@ -150,7 +167,13 @@ fun EditScreen(
 					label = { Text("Task ID") },
 					modifier = Modifier.fillMaxWidth(),
 					enabled = false,
-					singleLine = true
+					singleLine = true,
+					keyboardOptions = KeyboardOptions(
+						imeAction = ImeAction.Next
+					),
+					keyboardActions = KeyboardActions(
+						onNext = { descriptionFocusRequester.requestFocus() }
+					)
 				)
 
 				// Description
@@ -158,9 +181,17 @@ fun EditScreen(
 					value = state.description,
 					onValueChange = { onAction(EditScreenAction.OnDescriptionChange(it)) },
 					label = { Text("Description") },
-					modifier = Modifier.fillMaxWidth(),
+					modifier = Modifier.fillMaxWidth()
+						.focusRequester(descriptionFocusRequester),
 					minLines = 3,
-					maxLines = 5
+					maxLines = 5,
+					keyboardOptions = KeyboardOptions(
+						keyboardType = KeyboardType.Text,
+						imeAction = ImeAction.Next
+					),
+					keyboardActions = KeyboardActions(
+						onNext = { startTimeFocusRequester.requestFocus() }
+					)
 				)
 
 				// Start Time
@@ -168,10 +199,18 @@ fun EditScreen(
 					value = state.startTime,
 					onValueChange = { onAction(EditScreenAction.OnStartTimeChange(it)) },
 					label = { Text("Start Time") },
-					modifier = Modifier.fillMaxWidth(),
+					modifier = Modifier.fillMaxWidth()
+						.focusRequester(startTimeFocusRequester),
 					singleLine = true,
+					readOnly = true,
+					keyboardOptions = KeyboardOptions(
+						imeAction = ImeAction.Next
+					),
+					keyboardActions = KeyboardActions(
+						onNext = { endTimeFocusRequester.requestFocus() }
+					),
 					trailingIcon = {
-						IconButton(onClick = { showStartDatePicker = true }) {
+						IconButton(onClick = { showStartDateTimePicker = true }) {
 							Icon(
 								imageVector = Icons.Default.DateRange,
 								contentDescription = "Select start date"
@@ -185,10 +224,18 @@ fun EditScreen(
 					value = state.endTime,
 					onValueChange = { onAction(EditScreenAction.OnEndTimeChange(it)) },
 					label = { Text("End Time") },
-					modifier = Modifier.fillMaxWidth(),
+					modifier = Modifier.fillMaxWidth()
+						.focusRequester(endTimeFocusRequester),
 					singleLine = true,
+					readOnly = true,
+					keyboardOptions = KeyboardOptions(
+						imeAction = ImeAction.Done
+					),
+					keyboardActions = KeyboardActions(
+						onDone = { focusManager.clearFocus() }
+					),
 					trailingIcon = {
-						IconButton(onClick = { showEndDatePicker = true }) {
+						IconButton(onClick = { showEndDateTimePicker = true }) {
 							Icon(
 								imageVector = Icons.Default.DateRange,
 								contentDescription = "Select end date"
@@ -254,41 +301,149 @@ private fun EditScreenTopHeader(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun EditScreenDatePicker(
-	showDatePicker: Boolean,
+private fun EditScreenDateTimePicker(
+	showPicker: Boolean,
 	onDismiss: () -> Unit,
-	onDateSelected: (String) -> Unit
+	onDateTimeSelected: (String) -> Unit
+) {
+	var showDatePicker by remember { mutableStateOf(true) }
+	var showTimePicker by remember { mutableStateOf(false) }
+	var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
+
+	val datePickerState = rememberDatePickerState()
+	val timePickerState = rememberTimePickerState(
+		initialHour = 12,
+		initialMinute = 0,
+		is24Hour = true
+	)
+
+	if (showPicker) {
+		EditScreenShowDatePicker(
+			showDatePicker = showDatePicker,
+			datePickerState = datePickerState,
+			onDateSelected = { date ->
+				selectedDate = date
+				showDatePicker = false
+				showTimePicker = true
+			},
+			onCancel = {
+				showDatePicker = true
+				showTimePicker = false
+				onDismiss()
+			}
+		)
+
+		EditScreenShowTimePicker(
+			showTimePicker = showTimePicker,
+			selectedDate = selectedDate,
+			timePickerState = timePickerState,
+			onDateTimeSelected = { dateTimeString ->
+				onDateTimeSelected(dateTimeString)
+				showDatePicker = true
+				showTimePicker = false
+				selectedDate = null
+				onDismiss()
+			},
+			onBack = {
+				showDatePicker = true
+				showTimePicker = false
+			},
+			onCancel = {
+				showDatePicker = true
+				showTimePicker = false
+				selectedDate = null
+				onDismiss()
+			}
+		)
+	}
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun EditScreenShowDatePicker(
+	showDatePicker: Boolean,
+	datePickerState: androidx.compose.material3.DatePickerState,
+	onDateSelected: (LocalDate) -> Unit,
+	onCancel: () -> Unit
 ) {
 	if (showDatePicker) {
-		val datePickerState = rememberDatePickerState()
-
 		DatePickerDialog(
-			onDismissRequest = onDismiss,
+			onDismissRequest = onCancel,
 			confirmButton = {
 				TextButton(
 					onClick = {
-						val selectedDate = datePickerState.selectedDateMillis
-						if (selectedDate != null) {
-							val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-							val date = Instant.ofEpochMilli(selectedDate)
-								.atZone(ZoneId.of("UTC"))
-								.toLocalDateTime()
-							onDateSelected(date.format(formatter))
+						val selectedDateMillis = datePickerState.selectedDateMillis
+						if (selectedDateMillis != null) {
+							val date = Instant.ofEpochMilli(selectedDateMillis)
+								.atZone(ZoneId.systemDefault())
+								.toLocalDate()
+							onDateSelected(date)
 						}
-						onDismiss()
 					}
 				) {
-					Text("OK")
+					Text("Next")
 				}
 			},
 			dismissButton = {
-				TextButton(onClick = onDismiss) {
+				TextButton(onClick = onCancel) {
 					Text("Cancel")
 				}
 			}
 		) {
 			DatePicker(state = datePickerState)
 		}
+	}
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun EditScreenShowTimePicker(
+	showTimePicker: Boolean,
+	selectedDate: LocalDate?,
+	timePickerState: androidx.compose.material3.TimePickerState,
+	onDateTimeSelected: (String) -> Unit,
+	onBack: () -> Unit,
+	onCancel: () -> Unit
+) {
+	if (showTimePicker && selectedDate != null) {
+		AlertDialog(
+			onDismissRequest = onCancel,
+			title = { Text("Select Time") },
+			text = {
+				Box(
+					modifier = Modifier.fillMaxWidth(),
+					contentAlignment = Alignment.Center
+				) {
+					TimePicker(state = timePickerState)
+				}
+			},
+			confirmButton = {
+				TextButton(
+					onClick = {
+						// Create ZonedDateTime with system timezone for ISO 8601 format
+						val zonedDateTime = selectedDate
+							.atTime(timePickerState.hour, timePickerState.minute, 0)
+							.atZone(ZoneId.systemDefault())
+
+						// Format as ISO 8601 with timezone offset (e.g., 2025-12-24T22:15:00-03:00)
+						val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+						onDateTimeSelected(zonedDateTime.format(formatter))
+					}
+				) {
+					Text("OK")
+				}
+			},
+			dismissButton = {
+				Row {
+					TextButton(onClick = onBack) {
+						Text("Back")
+					}
+					TextButton(onClick = onCancel) {
+						Text("Cancel")
+					}
+				}
+			}
+		)
 	}
 }
 
