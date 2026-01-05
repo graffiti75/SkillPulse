@@ -5,6 +5,7 @@
     <string name="signup_success">User created successfully!</string>
 
     <string name="add_task_success">Task added successfully!</string>
+    <string name="update_task_success">Task updated successfully!</string>
 
     <string name="dialog__ok">OK</string>
     <string name="dialog__cancel">Cancel</string>

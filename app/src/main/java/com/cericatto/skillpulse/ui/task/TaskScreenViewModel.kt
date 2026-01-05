@@ -11,6 +11,7 @@ import com.cericatto.skillpulse.ui.MessageAlert
 import com.cericatto.skillpulse.ui.UiEvent
 import com.cericatto.skillpulse.ui.UiText
 import com.cericatto.skillpulse.ui.asUiText
+import com.cericatto.skillpulse.ui.navigation.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,6 +49,8 @@ class TaskScreenViewModel @Inject constructor(
 			is TaskScreenAction.LoadMoreTasks -> loadMoreTasks()
 			is TaskScreenAction.OnFilterByDate -> filterTasksByDate(action.date)
 			is TaskScreenAction.OnClearFilter -> clearFilter()
+			is TaskScreenAction.OnTaskClick -> navigateToEditScreen(action.task)
+			is TaskScreenAction.OnScreenResume -> refreshTasks()
 		}
 	}
 
@@ -232,6 +235,26 @@ class TaskScreenViewModel @Inject constructor(
 		_state.update {
 			it.copy(alert = null)
 		}
+	}
+
+	private fun navigateToEditScreen(task: Task) {
+		viewModelScope.launch {
+			_events.send(
+				UiEvent.Navigate(
+					Route.EditScreen(
+						taskId = task.id,
+						description = task.description,
+						startTime = task.startTime,
+						endTime = task.endTime
+					)
+				)
+			)
+		}
+	}
+
+	private fun refreshTasks() {
+		Timber.d("Refreshing tasks")
+		loadTasks()
 	}
 
 	private fun closeCurrentScreen() {

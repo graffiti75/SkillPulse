@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -87,6 +88,10 @@ fun TaskScreenRoot(
 			is UiEvent.NavigateUp -> onNavigateUp()
 			else -> Unit
 		}
+	}
+
+	LaunchedEffect(Unit) {
+		onAction(TaskScreenAction.OnScreenResume)
 	}
 
 	DynamicStatusBarColor()
@@ -217,7 +222,8 @@ private fun TaskScreenItems(
 					TaskItem(
 						modifier = Modifier,
 						task = task,
-						isDarkTheme = isDarkTheme
+						isDarkTheme = isDarkTheme,
+						onClick = { onAction(TaskScreenAction.OnTaskClick(task)) }
 					)
 				}
 			}
@@ -407,7 +413,8 @@ private fun TaskScreenFilterTextField(
 fun TaskItem(
 	modifier: Modifier = Modifier,
 	task: Task,
-	isDarkTheme: Boolean
+	isDarkTheme: Boolean,
+	onClick: () -> Unit = {}
 ) {
 	val borderColor = if (isDarkTheme) Color.DarkGray else Color.White
 	Column(
@@ -416,6 +423,7 @@ fun TaskItem(
 		modifier = modifier
 			.background(color = borderColor)
 			.shadowModifier(outsideColor = borderColor)
+			.clickable { onClick() }
 	) {
 		StyledText(
 			title = "ID",

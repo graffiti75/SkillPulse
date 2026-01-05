@@ -12,4 +12,6 @@ sealed interface TaskScreenAction {
 	data object LoadMoreTasks : TaskScreenAction
 	data class OnFilterByDate(val date: String) : TaskScreenAction
 	data object OnClearFilter : TaskScreenAction
+	data class OnTaskClick(val task: Task) : TaskScreenAction
+	data object OnScreenResume : TaskScreenAction
 }

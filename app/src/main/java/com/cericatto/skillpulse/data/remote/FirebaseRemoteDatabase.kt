@@ -61,4 +61,46 @@ class FirebaseRemoteDatabase(
 			)
 		}
 	}
+
+	override suspend fun updateTask(
+		taskId: String,
+		description: String,
+		startTime: String,
+		endTime: String
+	): Result<Boolean, DataError> = withContext(Dispatchers.IO) {
+		try {
+			// Find the document with the matching taskId
+			val querySnapshot = db.collection("tasks")
+				.whereEqualTo("id", taskId)
+				.get()
+				.await()
+
+			if (querySnapshot.documents.isEmpty()) {
+				return@withContext Result.Error(
+					error = DataError.Firebase.FIRESTORE_ERROR,
+					message = "Task not found"
+				)
+			}
+
+			// Update the first matching document
+			val documentId = querySnapshot.documents.first().id
+			val updates = hashMapOf<String, Any>(
+				"description" to description,
+				"startTime" to startTime,
+				"endTime" to endTime
+			)
+
+			db.collection("tasks")
+				.document(documentId)
+				.update(updates)
+				.await()
+
+			Result.Success(true)
+		} catch (e: Exception) {
+			Result.Error(
+				error = DataError.Firebase.FIRESTORE_ERROR,
+				message = e.message ?: "Failed to update task"
+			)
+		}
+	}
 }

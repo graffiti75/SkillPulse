@@ -8,4 +8,12 @@ sealed interface Route {
 
 	@Serializable
 	data object TaskScreen: Route
+
+	@Serializable
+	data class EditScreen(
+		val taskId: String,
+		val description: String,
+		val startTime: String,
+		val endTime: String
+	): Route
 }
