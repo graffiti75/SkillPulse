@@ -16,4 +16,7 @@ sealed interface Route {
 		val startTime: String,
 		val endTime: String
 	): Route
+
+	@Serializable
+	data object AddScreen: Route
 }

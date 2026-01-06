@@ -10,7 +10,7 @@ import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.util.UUID
+import java.time.format.DateTimeFormatter
 
 class FirebaseRemoteDatabase(
 	private val db: FirebaseFirestore
@@ -40,18 +40,29 @@ class FirebaseRemoteDatabase(
 	}
 
 	override suspend fun addTask(
-		description: String
+		description: String,
+		startTime: String,
+		endTime: String
 	): Result<Boolean, DataError> = withContext(Dispatchers.IO) {
 		try {
+			// Generate ID in format YYYYMMDD_N
+			val taskId = generateTaskId(startTime)
+
+			// Use ISO format for timestamp to match existing data format
+			val timestamp = java.time.ZonedDateTime.now()
+				.truncatedTo(java.time.temporal.ChronoUnit.SECONDS)
+				.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+
 			val task = hashMapOf(
-				"id" to UUID.randomUUID().toString(),
+				"id" to taskId,
 				"description" to description,
-				"timestamp" to System.currentTimeMillis(),
-				"startTime" to System.currentTimeMillis(),
-				"endTime" to System.currentTimeMillis(),
+				"timestamp" to timestamp,
+				"startTime" to startTime,
+				"endTime" to endTime,
 			)
 			db.collection("tasks")
-				.add(task)
+				.document(taskId)
+				.set(task)
 				.await() // Suspends until the write completes
 			Result.Success(true)
 		} catch (e: Exception) {
@@ -102,5 +113,32 @@ class FirebaseRemoteDatabase(
 				message = e.message ?: "Failed to update task"
 			)
 		}
+	}
+
+	private suspend fun generateTaskId(startTime: String): String {
+		// Parse the startTime (ISO 8601 format: 2026-01-02T14:00:00-03:00)
+		val zonedDateTime = java.time.ZonedDateTime.parse(startTime)
+		val datePrefix = zonedDateTime.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+
+		// Query all tasks with IDs starting with today's date prefix
+		val snapshot = db.collection("tasks")
+			.orderBy("id", Query.Direction.DESCENDING)
+			.get()
+			.await()
+
+		// Find the highest number for today's date
+		var maxNumber = 0
+		for (document in snapshot.documents) {
+			val id = document.getString("id") ?: continue
+			if (id.startsWith(datePrefix + "_")) {
+				val numberPart = id.substringAfter("_").toIntOrNull() ?: 0
+				if (numberPart > maxNumber) {
+					maxNumber = numberPart
+				}
+			}
+		}
+
+		// Return the next ID
+		return "${datePrefix}_${maxNumber + 1}"
 	}
 }

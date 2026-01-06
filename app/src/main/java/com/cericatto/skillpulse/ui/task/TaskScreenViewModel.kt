@@ -2,14 +2,12 @@ package com.cericatto.skillpulse.ui.task
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cericatto.skillpulse.R
 import com.cericatto.skillpulse.data.model.Task
 import com.cericatto.skillpulse.domain.auth.UserAuthentication
 import com.cericatto.skillpulse.domain.errors.Result
 import com.cericatto.skillpulse.domain.remote.RemoteDatabase
 import com.cericatto.skillpulse.ui.MessageAlert
 import com.cericatto.skillpulse.ui.UiEvent
-import com.cericatto.skillpulse.ui.UiText
 import com.cericatto.skillpulse.ui.asUiText
 import com.cericatto.skillpulse.ui.navigation.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,7 +40,6 @@ class TaskScreenViewModel @Inject constructor(
 		when (action) {
 			is TaskScreenAction.OnDismissAlert -> dismissAlert()
 			is TaskScreenAction.OnLoadingUpdate -> updateLoading(action.loading)
-			is TaskScreenAction.OnAddTask -> addTask(action.description)
 			is TaskScreenAction.OnShowDeleteDialog -> showDeleteDialog(action.show)
 			is TaskScreenAction.OnDeleteTask -> deleteTask(action.task)
 			is TaskScreenAction.OnLogoutClick -> logout()
@@ -51,6 +48,7 @@ class TaskScreenViewModel @Inject constructor(
 			is TaskScreenAction.OnClearFilter -> clearFilter()
 			is TaskScreenAction.OnTaskClick -> navigateToEditScreen(action.task)
 			is TaskScreenAction.OnScreenResume -> refreshTasks()
+			is TaskScreenAction.OnAddTaskClick -> navigateToAddScreen()
 		}
 	}
 
@@ -127,36 +125,6 @@ class TaskScreenViewModel @Inject constructor(
 									result.message ?: "Failed to load more tasks")
 							),
 						)
-					}
-				}
-			}
-		}
-	}
-
-	private fun addTask(description: String) {
-		viewModelScope.launch {
-			when (val result = db.addTask(description)) {
-				is Result.Error -> {
-					_state.update {
-						it.copy(
-							alert = MessageAlert(
-								errorMessage = Pair(result.error.asUiText(), result.message ?: "")
-							)
-						)
-					}
-				}
-				is Result.Success -> {
-					val added = result.data
-					if (added) {
-						_state.update {
-							it.copy(
-								loading = false,
-								alert = MessageAlert(
-									successMessage = UiText.StringResource(R.string.add_task_success)
-								)
-							)
-						}
-						loadTasks()
 					}
 				}
 			}
@@ -255,6 +223,12 @@ class TaskScreenViewModel @Inject constructor(
 	private fun refreshTasks() {
 		Timber.d("Refreshing tasks")
 		loadTasks()
+	}
+
+	private fun navigateToAddScreen() {
+		viewModelScope.launch {
+			_events.send(UiEvent.Navigate(Route.AddScreen))
+		}
 	}
 
 	private fun closeCurrentScreen() {

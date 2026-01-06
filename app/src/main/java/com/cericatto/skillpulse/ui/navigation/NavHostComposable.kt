@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.cericatto.skillpulse.ui.add.AddScreenRoot
 import com.cericatto.skillpulse.ui.edit.EditScreenRoot
 import com.cericatto.skillpulse.ui.login.LoginScreenRoot
 import com.cericatto.skillpulse.ui.task.TaskScreenRoot
@@ -34,6 +35,13 @@ fun NavHostComposable(
 		}
 		composable<Route.EditScreen> {
 			EditScreenRoot(
+				modifier = modifier,
+				onNavigate = { navController.navigate(it) },
+				onNavigateUp = { navController.navigateUp() }
+			)
+		}
+		composable<Route.AddScreen> {
+			AddScreenRoot(
 				modifier = modifier,
 				onNavigate = { navController.navigate(it) },
 				onNavigateUp = { navController.navigateUp() }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +24,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.FilterListOff
@@ -31,6 +33,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -141,56 +144,88 @@ fun TaskScreen(
 		onDateSelected = { selectedDate -> filterDate = selectedDate }
 	)
 
-	Column(
-		verticalArrangement = Arrangement.Top,
-		horizontalAlignment = Alignment.CenterHorizontally,
+	Box(
 		modifier = modifier
 			.background(backgroundColor)
 			.fillMaxSize()
 	) {
-		TaskScreenTopHeader(
-			user = state.user,
-			taskCount = state.tasks.size,
-			currentItem = currentItem,
-			isFilterVisible = isFilterVisible,
-			isDarkTheme = isDarkTheme,
-			onFilterToggle = {
-				isFilterVisible = !isFilterVisible
-				if (!isFilterVisible) {
-					filterDate = ""
-					onAction(TaskScreenAction.OnClearFilter)
-				}
-			},
-			onLogoutClick = { onAction(TaskScreenAction.OnLogoutClick) }
-		)
-
 		Column(
-			modifier = Modifier.padding(horizontal = 16.dp)
+			verticalArrangement = Arrangement.Top,
+			horizontalAlignment = Alignment.CenterHorizontally,
+			modifier = modifier
+				.background(backgroundColor)
+				.fillMaxSize()
 		) {
-			TaskScreenFilterTextField(
+			TaskScreenTopHeader(
+				user = state.user,
+				taskCount = state.tasks.size,
+				currentItem = currentItem,
 				isFilterVisible = isFilterVisible,
-				filterDate = filterDate,
-				onFilterDateChange = { filterDate = it },
-				onDatePickerClick = { showDatePicker = true },
-				onSearchClick = {
-					if (filterDate.isNotBlank()) {
-						onAction(TaskScreenAction.OnFilterByDate(filterDate))
+				isDarkTheme = isDarkTheme,
+				onFilterToggle = {
+					isFilterVisible = !isFilterVisible
+					if (!isFilterVisible) {
+						filterDate = ""
+						onAction(TaskScreenAction.OnClearFilter)
 					}
 				},
-				isDarkTheme = isDarkTheme
+				onLogoutClick = { onAction(TaskScreenAction.OnLogoutClick) }
 			)
 
-			TaskScreenItems(
-				isLoading = state.loading,
-				tasks = state.tasks,
-				showDeleteDialog = state.showDeleteDialog,
-				canLoadMore = state.canLoadMore,
-				loadingMore = state.loadingMore,
-				listState = listState,
-				isDarkTheme = isDarkTheme,
-				onAction = onAction
-			)
+			Column(
+				modifier = Modifier.padding(horizontal = 16.dp)
+			) {
+				TaskScreenFilterTextField(
+					isFilterVisible = isFilterVisible,
+					filterDate = filterDate,
+					onFilterDateChange = { filterDate = it },
+					onDatePickerClick = { showDatePicker = true },
+					onSearchClick = {
+						if (filterDate.isNotBlank()) {
+							onAction(TaskScreenAction.OnFilterByDate(filterDate))
+						}
+					},
+					isDarkTheme = isDarkTheme
+				)
+
+				TaskScreenItems(
+					isLoading = state.loading,
+					tasks = state.tasks,
+					showDeleteDialog = state.showDeleteDialog,
+					canLoadMore = state.canLoadMore,
+					loadingMore = state.loadingMore,
+					listState = listState,
+					isDarkTheme = isDarkTheme,
+					onAction = onAction
+				)
+			}
 		}
+
+		// FAB to add new task
+		TaskScreenFab(
+			isDarkTheme = isDarkTheme,
+			onClick = { onAction(TaskScreenAction.OnAddTaskClick) }
+		)
+	}
+}
+
+@Composable
+private fun BoxScope.TaskScreenFab(
+	isDarkTheme: Boolean,
+	onClick: () -> Unit
+) {
+	FloatingActionButton(
+		onClick = onClick,
+		modifier = Modifier
+			.align(Alignment.BottomEnd)  // Now works because we're in BoxScope
+			.padding(16.dp),
+		containerColor = if (isDarkTheme) Color(0xFF90CAF9) else Color(0xFF1976D2)
+	) {
+		Icon(
+			imageVector = Icons.Default.Add,
+			contentDescription = "Add Task",
+			tint = if (isDarkTheme) Color.Black else Color.White
+		)
 	}
 }
 

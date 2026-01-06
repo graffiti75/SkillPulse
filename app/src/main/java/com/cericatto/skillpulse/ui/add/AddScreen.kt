@@ -1,4 +1,4 @@
-package com.cericatto.skillpulse.ui.edit
+package com.cericatto.skillpulse.ui.add
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -61,13 +61,12 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-
 @Composable
-fun EditScreenRoot(
+fun AddScreenRoot(
 	onNavigate: (Route) -> Unit,
 	onNavigateUp: () -> Unit,
 	modifier: Modifier = Modifier,
-	viewModel: EditScreenViewModel = hiltViewModel()
+	viewModel: AddScreenViewModel = hiltViewModel()
 ) {
 	val state by viewModel.state.collectAsStateWithLifecycle()
 	val onAction = viewModel::onAction
@@ -84,14 +83,14 @@ fun EditScreenRoot(
 		contentAlignment = Alignment.TopStart,
 		modifier = Modifier.fillMaxSize()
 	) {
-		EditScreen(
+		AddScreen(
 			modifier = modifier,
 			onAction = onAction,
 			state = state
 		)
 		state.alert?.let {
 			BottomAlert(
-				onDismiss = { onAction(EditScreenAction.OnDismissAlert) },
+				onDismiss = { onAction(AddScreenAction.OnDismissAlert) },
 				alert = it
 			)
 		}
@@ -100,11 +99,11 @@ fun EditScreenRoot(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditScreen(
+fun AddScreen(
 	modifier: Modifier = Modifier,
 	isDarkTheme: Boolean = isSystemInDarkTheme(),
-	onAction: (EditScreenAction) -> Unit,
-	state: EditScreenState
+	onAction: (AddScreenAction) -> Unit,
+	state: AddScreenState
 ) {
 	val backgroundColor = if (isDarkTheme) Color.DarkGray else Color.White
 
@@ -119,20 +118,19 @@ fun EditScreen(
 	var showEndDateTimePicker by remember { mutableStateOf(false) }
 
 	// DateTimePickers
-
-	EditScreenDateTimePicker(
+	AddScreenDateTimePicker(
 		showPicker = showStartDateTimePicker,
 		onDismiss = { showStartDateTimePicker = false },
 		onDateTimeSelected = { selectedDateTime ->
-			onAction(EditScreenAction.OnStartTimeChange(selectedDateTime))
+			onAction(AddScreenAction.OnStartTimeChange(selectedDateTime))
 		}
 	)
 
-	EditScreenDateTimePicker(
+	AddScreenDateTimePicker(
 		showPicker = showEndDateTimePicker,
 		onDismiss = { showEndDateTimePicker = false },
 		onDateTimeSelected = { selectedDateTime ->
-			onAction(EditScreenAction.OnEndTimeChange(selectedDateTime))
+			onAction(AddScreenAction.OnEndTimeChange(selectedDateTime))
 		}
 	)
 
@@ -144,9 +142,9 @@ fun EditScreen(
 			.fillMaxSize()
 	) {
 		// Header
-		EditScreenTopHeader(
+		AddScreenTopHeader(
 			isDarkTheme = isDarkTheme,
-			onBackClick = { onAction(EditScreenAction.OnBackClick) }
+			onBackClick = { onAction(AddScreenAction.OnBackClick) }
 		)
 
 		if (state.loading) {
@@ -160,28 +158,14 @@ fun EditScreen(
 			) {
 				Spacer(modifier = Modifier.height(8.dp))
 
-				// Task ID (read-only)
-				OutlinedTextField(
-					value = state.taskId,
-					onValueChange = { },
-					label = { Text("Task ID") },
-					modifier = Modifier.fillMaxWidth(),
-					enabled = false,
-					singleLine = true,
-					keyboardOptions = KeyboardOptions(
-						imeAction = ImeAction.Next
-					),
-					keyboardActions = KeyboardActions(
-						onNext = { descriptionFocusRequester.requestFocus() }
-					)
-				)
-
 				// Description
 				OutlinedTextField(
 					value = state.description,
-					onValueChange = { onAction(EditScreenAction.OnDescriptionChange(it)) },
+					onValueChange = { onAction(AddScreenAction.OnDescriptionChange(it)) },
 					label = { Text("Description") },
-					modifier = Modifier.fillMaxWidth()
+					placeholder = { Text("Enter task description") },
+					modifier = Modifier
+						.fillMaxWidth()
 						.focusRequester(descriptionFocusRequester),
 					minLines = 3,
 					maxLines = 5,
@@ -197,9 +181,11 @@ fun EditScreen(
 				// Start Time
 				OutlinedTextField(
 					value = state.startTime,
-					onValueChange = { onAction(EditScreenAction.OnStartTimeChange(it)) },
+					onValueChange = { onAction(AddScreenAction.OnStartTimeChange(it)) },
 					label = { Text("Start Time") },
-					modifier = Modifier.fillMaxWidth()
+					placeholder = { Text("Select start date and time") },
+					modifier = Modifier
+						.fillMaxWidth()
 						.focusRequester(startTimeFocusRequester),
 					singleLine = true,
 					readOnly = true,
@@ -213,7 +199,7 @@ fun EditScreen(
 						IconButton(onClick = { showStartDateTimePicker = true }) {
 							Icon(
 								imageVector = Icons.Default.DateRange,
-								contentDescription = "Select start date"
+								contentDescription = "Select start date and time"
 							)
 						}
 					}
@@ -222,9 +208,11 @@ fun EditScreen(
 				// End Time
 				OutlinedTextField(
 					value = state.endTime,
-					onValueChange = { onAction(EditScreenAction.OnEndTimeChange(it)) },
+					onValueChange = { onAction(AddScreenAction.OnEndTimeChange(it)) },
 					label = { Text("End Time") },
-					modifier = Modifier.fillMaxWidth()
+					placeholder = { Text("Select end date and time") },
+					modifier = Modifier
+						.fillMaxWidth()
 						.focusRequester(endTimeFocusRequester),
 					singleLine = true,
 					readOnly = true,
@@ -238,7 +226,7 @@ fun EditScreen(
 						IconButton(onClick = { showEndDateTimePicker = true }) {
 							Icon(
 								imageVector = Icons.Default.DateRange,
-								contentDescription = "Select end date"
+								contentDescription = "Select end date and time"
 							)
 						}
 					}
@@ -248,11 +236,14 @@ fun EditScreen(
 
 				// Save Button
 				Button(
-					onClick = { onAction(EditScreenAction.OnSaveClick) },
+					onClick = {
+						focusManager.clearFocus()
+						onAction(AddScreenAction.OnSaveClick)
+					},
 					modifier = Modifier.fillMaxWidth()
 				) {
 					Text(
-						text = "Save Changes",
+						text = "Add Task",
 						style = TextStyle(
 							fontSize = 16.sp,
 							fontWeight = FontWeight.Medium
@@ -265,7 +256,7 @@ fun EditScreen(
 }
 
 @Composable
-private fun EditScreenTopHeader(
+private fun AddScreenTopHeader(
 	isDarkTheme: Boolean,
 	onBackClick: () -> Unit
 ) {
@@ -288,7 +279,7 @@ private fun EditScreenTopHeader(
 				)
 			}
 			Text(
-				text = "Edit Task",
+				text = "Add Task",
 				style = TextStyle(
 					fontSize = 20.sp,
 					color = textColor,
@@ -301,7 +292,7 @@ private fun EditScreenTopHeader(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun EditScreenDateTimePicker(
+private fun AddScreenDateTimePicker(
 	showPicker: Boolean,
 	onDismiss: () -> Unit,
 	onDateTimeSelected: (String) -> Unit
@@ -318,7 +309,7 @@ private fun EditScreenDateTimePicker(
 	)
 
 	if (showPicker) {
-		EditScreenShowDatePicker(
+		AddScreenShowDatePicker(
 			showDatePicker = showDatePicker,
 			datePickerState = datePickerState,
 			onDateSelected = { date ->
@@ -333,7 +324,7 @@ private fun EditScreenDateTimePicker(
 			}
 		)
 
-		EditScreenShowTimePicker(
+		AddScreenShowTimePicker(
 			showTimePicker = showTimePicker,
 			selectedDate = selectedDate,
 			timePickerState = timePickerState,
@@ -360,7 +351,7 @@ private fun EditScreenDateTimePicker(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun EditScreenShowDatePicker(
+private fun AddScreenShowDatePicker(
 	showDatePicker: Boolean,
 	datePickerState: androidx.compose.material3.DatePickerState,
 	onDateSelected: (LocalDate) -> Unit,
@@ -397,7 +388,7 @@ private fun EditScreenShowDatePicker(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun EditScreenShowTimePicker(
+private fun AddScreenShowTimePicker(
 	showTimePicker: Boolean,
 	selectedDate: LocalDate?,
 	timePickerState: androidx.compose.material3.TimePickerState,
@@ -453,17 +444,12 @@ private fun EditScreenShowTimePicker(
 	showBackground = true
 )
 @Composable
-fun EditScreenPreviewLight() {
-	EditScreen(
+fun AddScreenPreviewLight() {
+	AddScreen(
 		isDarkTheme = false,
 		modifier = Modifier,
 		onAction = {},
-		state = EditScreenState(
-			taskId = "123e4567-e89b-12d3-a456-426614174000",
-			description = "Sample task description",
-			startTime = "2025-01-05 10:00:00",
-			endTime = "2025-01-05 18:00:00"
-		)
+		state = AddScreenState()
 	)
 }
 
@@ -473,16 +459,30 @@ fun EditScreenPreviewLight() {
 	showBackground = true
 )
 @Composable
-fun EditScreenPreviewDark() {
-	EditScreen(
+fun AddScreenPreviewDark() {
+	AddScreen(
 		isDarkTheme = true,
 		modifier = Modifier,
 		onAction = {},
-		state = EditScreenState(
-			taskId = "123e4567-e89b-12d3-a456-426614174000",
+		state = AddScreenState()
+	)
+}
+
+@Preview(
+	name = "Light Theme Preview - Filled",
+	uiMode = Configuration.UI_MODE_NIGHT_NO,
+	showBackground = true
+)
+@Composable
+fun AddScreenPreviewLightFilled() {
+	AddScreen(
+		isDarkTheme = false,
+		modifier = Modifier,
+		onAction = {},
+		state = AddScreenState(
 			description = "Sample task description",
-			startTime = "2025-01-05 10:00:00",
-			endTime = "2025-01-05 18:00:00"
+			startTime = "2025-01-05T10:00:00-03:00",
+			endTime = "2025-01-05T18:00:00-03:00"
 		)
 	)
 }
