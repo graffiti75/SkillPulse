@@ -18,5 +18,7 @@ sealed interface Route {
 	): Route
 
 	@Serializable
-	data object AddScreen: Route
+	data class AddScreen(
+		val suggestionsJson: String = "[]"
+	): Route
 }

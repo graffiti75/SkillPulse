@@ -7,4 +7,6 @@ sealed interface AddScreenAction {
 	data class OnEndTimeChange(val endTime: String) : AddScreenAction
 	data object OnSaveClick : AddScreenAction
 	data object OnBackClick : AddScreenAction
+	data class OnSuggestionClick(val suggestion: String) : AddScreenAction
+	data object OnDismissSuggestions : AddScreenAction
 }

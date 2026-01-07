@@ -1,5 +1,6 @@
 package com.cericatto.skillpulse.ui.add
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cericatto.skillpulse.R
@@ -22,7 +23,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddScreenViewModel @Inject constructor(
-	private val db: RemoteDatabase
+	private val db: RemoteDatabase,
+	savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
 	private val _state = MutableStateFlow(AddScreenState())
@@ -32,7 +34,20 @@ class AddScreenViewModel @Inject constructor(
 	val events = _events.receiveAsFlow()
 
 	init {
-		Timber.d("AddScreen initialized")
+		// Get suggestions from navigation arguments
+		val suggestionsJson = savedStateHandle.get<String>("suggestionsJson") ?: ""
+		val suggestions = parseSuggestions(suggestionsJson)
+
+		_state.update { it.copy(suggestions = suggestions) }
+		Timber.d("AddScreen initialized with ${suggestions.size} suggestions")
+	}
+
+	private fun parseSuggestions(suggestionsJson: String): List<String> {
+		return if (suggestionsJson.isBlank()) {
+			emptyList()
+		} else {
+			suggestionsJson.split("|||").filter { it.isNotBlank() }
+		}
 	}
 
 	fun onAction(action: AddScreenAction) {
@@ -43,11 +58,33 @@ class AddScreenViewModel @Inject constructor(
 			is AddScreenAction.OnEndTimeChange -> updateEndTime(action.endTime)
 			is AddScreenAction.OnSaveClick -> addTask()
 			is AddScreenAction.OnBackClick -> navigateBack()
+			is AddScreenAction.OnSuggestionClick -> selectSuggestion(action.suggestion)
+			is AddScreenAction.OnDismissSuggestions -> dismissSuggestions()
 		}
 	}
 
 	private fun updateDescription(description: String) {
-		_state.update { it.copy(description = description) }
+		_state.update {
+			it.copy(
+				description = description,
+				showSuggestions = description.isNotBlank() && it.suggestions.any { suggestion ->
+					suggestion.contains(description, ignoreCase = true)
+				}
+			)
+		}
+	}
+
+	private fun selectSuggestion(suggestion: String) {
+		_state.update {
+			it.copy(
+				description = suggestion,
+				showSuggestions = false
+			)
+		}
+	}
+
+	private fun dismissSuggestions() {
+		_state.update { it.copy(showSuggestions = false) }
 	}
 
 	private fun updateStartTime(startTime: String) {

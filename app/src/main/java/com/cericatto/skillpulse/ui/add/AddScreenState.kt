@@ -7,5 +7,7 @@ data class AddScreenState(
 	val alert: MessageAlert? = null,
 	val description: String = "",
 	val startTime: String = "",
-	val endTime: String = ""
+	val endTime: String = "",
+	val suggestions: List<String> = emptyList(),
+	val showSuggestions: Boolean = false
 )

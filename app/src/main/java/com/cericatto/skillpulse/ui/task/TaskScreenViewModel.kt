@@ -2,6 +2,7 @@ package com.cericatto.skillpulse.ui.task
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cericatto.skillpulse.ITEMS_LIMIT
 import com.cericatto.skillpulse.data.model.Task
 import com.cericatto.skillpulse.domain.auth.UserAuthentication
 import com.cericatto.skillpulse.domain.errors.Result
@@ -25,7 +26,7 @@ import javax.inject.Inject
 class TaskScreenViewModel @Inject constructor(
 	private val auth: UserAuthentication,
 	private val db: RemoteDatabase
-): ViewModel() {
+) : ViewModel() {
 
 	private val _state = MutableStateFlow(TaskScreenState())
 	val state: StateFlow<TaskScreenState> = _state.asStateFlow()
@@ -84,12 +85,17 @@ class TaskScreenViewModel @Inject constructor(
 					val tasks = result.data
 					allTasks = tasks
 					lastTimestamp = tasks.lastOrNull()?.timestamp
+
+					// Extract unique descriptions for suggestions
+					val descriptions = tasks.map { it.description }.toSet()
+
 					Timber.d("Tasks loaded! Here they are: ${tasks}")
 					_state.update {
 						it.copy(
 							loading = false,
 							tasks = tasks,
-							canLoadMore = tasks.size == 20
+							descriptions = descriptions,
+							canLoadMore = tasks.size == ITEMS_LIMIT.toInt()
 						)
 					}
 				}
@@ -108,21 +114,27 @@ class TaskScreenViewModel @Inject constructor(
 					val newTasks = result.data
 					lastTimestamp = newTasks.lastOrNull()?.timestamp
 					allTasks = allTasks + newTasks
+					// Add new descriptions to the existing set
+					val newDescriptions = newTasks.map { it.description }.toSet()
 					_state.update {
 						it.copy(
 							loadingMore = false,
 							tasks = it.tasks + newTasks,
-							canLoadMore = newTasks.size == 20
+							descriptions = it.descriptions + newDescriptions,
+							canLoadMore = newTasks.size == ITEMS_LIMIT.toInt()
 						)
 					}
 				}
+
 				is Result.Error -> {
 					_state.update {
 						it.copy(
 							loadingMore = false,
 							alert = MessageAlert(
-								errorMessage = Pair(result.error.asUiText(),
-									result.message ?: "Failed to load more tasks")
+								errorMessage = Pair(
+									result.error.asUiText(),
+									result.message ?: "Failed to load more tasks"
+								)
 							),
 						)
 					}
@@ -227,7 +239,17 @@ class TaskScreenViewModel @Inject constructor(
 
 	private fun navigateToAddScreen() {
 		viewModelScope.launch {
-			_events.send(UiEvent.Navigate(Route.AddScreen))
+			// Convert descriptions to JSON string for navigation
+			val suggestionsJson = _state.value.descriptions.joinToString(
+				separator = "|||"
+			)
+			_events.send(
+				UiEvent.Navigate(
+					Route.AddScreen(
+						suggestionsJson = suggestionsJson
+					)
+				)
+			)
 		}
 	}
 

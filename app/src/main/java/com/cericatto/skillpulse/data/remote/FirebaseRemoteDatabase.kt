@@ -1,5 +1,6 @@
 package com.cericatto.skillpulse.data.remote
 
+import com.cericatto.skillpulse.ITEMS_LIMIT
 import com.cericatto.skillpulse.data.mappers.toTask
 import com.cericatto.skillpulse.data.model.Task
 import com.cericatto.skillpulse.domain.errors.DataError
@@ -21,7 +22,7 @@ class FirebaseRemoteDatabase(
 			// Perform a one-time fetch from Firestore
 			var query = db.collection("tasks")
 				.orderBy("timestamp", Query.Direction.DESCENDING)
-				.limit(20)
+				.limit(ITEMS_LIMIT)
 
 			// If we have a lastTimestamp, start after it for pagination
 			if (lastTimestamp != null) {

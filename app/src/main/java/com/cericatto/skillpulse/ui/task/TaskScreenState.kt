@@ -13,5 +13,6 @@ data class TaskScreenState(
 	val canLoadMore: Boolean = true,
 	val loadingMore: Boolean = false,
 	val isFilterVisible: Boolean = false,
-	val filterDate: String = ""
+	val filterDate: String = "",
+	val descriptions: Set<String> = emptySet()
 )

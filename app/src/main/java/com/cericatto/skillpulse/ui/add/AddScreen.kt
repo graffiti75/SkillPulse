@@ -2,6 +2,7 @@ package com.cericatto.skillpulse.ui.add
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,7 +12,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -19,6 +23,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -50,6 +56,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cericatto.skillpulse.SUGGESTIONS_LIMIT
 import com.cericatto.skillpulse.ui.ObserveAsEvents
 import com.cericatto.skillpulse.ui.UiEvent
 import com.cericatto.skillpulse.ui.common.BottomAlert
@@ -158,25 +165,46 @@ fun AddScreen(
 			) {
 				Spacer(modifier = Modifier.height(8.dp))
 
-				// Description
-				OutlinedTextField(
-					value = state.description,
-					onValueChange = { onAction(AddScreenAction.OnDescriptionChange(it)) },
-					label = { Text("Description") },
-					placeholder = { Text("Enter task description") },
-					modifier = Modifier
-						.fillMaxWidth()
-						.focusRequester(descriptionFocusRequester),
-					minLines = 3,
-					maxLines = 5,
-					keyboardOptions = KeyboardOptions(
-						keyboardType = KeyboardType.Text,
-						imeAction = ImeAction.Next
-					),
-					keyboardActions = KeyboardActions(
-						onNext = { startTimeFocusRequester.requestFocus() }
-					)
-				)
+				// Description with suggestions
+				Box {
+					Column {
+						OutlinedTextField(
+							value = state.description,
+							onValueChange = { onAction(AddScreenAction.OnDescriptionChange(it)) },
+							label = { Text("Description") },
+							placeholder = { Text("Enter task description") },
+							modifier = Modifier
+								.fillMaxWidth()
+								.focusRequester(descriptionFocusRequester),
+							minLines = 3,
+							maxLines = 5,
+							keyboardOptions = KeyboardOptions(
+								keyboardType = KeyboardType.Text,
+								imeAction = ImeAction.Next
+							),
+							keyboardActions = KeyboardActions(
+								onNext = { startTimeFocusRequester.requestFocus() }
+							)
+						)
+
+						// Suggestions dropdown
+						if (state.showSuggestions) {
+							val filteredSuggestions = state.suggestions.filter {
+								it.contains(state.description, ignoreCase = true) &&
+									it.lowercase() != state.description.lowercase()
+							}
+							if (filteredSuggestions.isNotEmpty()) {
+								AddScreenSuggestionsDropdown(
+									suggestions = filteredSuggestions,
+									isDarkTheme = isDarkTheme,
+									onSuggestionClick = { suggestion ->
+										onAction(AddScreenAction.OnSuggestionClick(suggestion))
+									}
+								)
+							}
+						}
+					}
+				}
 
 				// Start Time
 				OutlinedTextField(
@@ -286,6 +314,40 @@ private fun AddScreenTopHeader(
 					fontWeight = FontWeight.Medium
 				)
 			)
+		}
+	}
+}
+
+@Composable
+private fun AddScreenSuggestionsDropdown(
+	suggestions: List<String>,
+	isDarkTheme: Boolean,
+	onSuggestionClick: (String) -> Unit
+) {
+	val backgroundColor = if (isDarkTheme) Color(0xFF424242) else Color(0xFFF5F5F5)
+	val textColor = if (isDarkTheme) Color.White else Color.Black
+
+	Card(
+		modifier = Modifier
+			.fillMaxWidth()
+			.heightIn(max = 200.dp),
+		colors = CardDefaults.cardColors(containerColor = backgroundColor),
+		elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+	) {
+		LazyColumn {
+			items(suggestions.take(SUGGESTIONS_LIMIT)) { suggestion ->
+				Text(
+					text = suggestion,
+					modifier = Modifier
+						.fillMaxWidth()
+						.clickable { onSuggestionClick(suggestion) }
+						.padding(horizontal = 16.dp, vertical = 12.dp),
+					style = TextStyle(
+						fontSize = 14.sp,
+						color = textColor
+					)
+				)
+			}
 		}
 	}
 }
