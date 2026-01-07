@@ -21,6 +21,13 @@ serialization = "1.7.3"
 
 materialIconsExtended = "1.7.4"
 
+# Test dependencies
+mockk = "1.13.8"
+coroutinesTest = "1.7.3"
+turbine = "1.0.0"
+truth = "1.1.5"
+archCoreTesting = "2.2.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -50,6 +57,13 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 
 material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+
+# Test libraries
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesTest" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+truth = { module = "com.google.truth:truth", version.ref = "truth" }
+arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "archCoreTesting" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
