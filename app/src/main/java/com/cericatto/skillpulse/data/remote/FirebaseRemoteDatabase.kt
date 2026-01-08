@@ -22,7 +22,7 @@ class FirebaseRemoteDatabase(
 			// Perform a one-time fetch from Firestore
 			var query = db.collection("tasks")
 				.orderBy("timestamp", Query.Direction.DESCENDING)
-				.limit(ITEMS_LIMIT)
+				.limit(ITEMS_LIMIT.toLong())
 
 			// If we have a lastTimestamp, start after it for pagination
 			if (lastTimestamp != null) {

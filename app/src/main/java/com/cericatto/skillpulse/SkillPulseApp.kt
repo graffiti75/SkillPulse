@@ -5,7 +5,7 @@ import com.google.firebase.FirebaseApp
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
-const val ITEMS_LIMIT = 50L
+const val ITEMS_LIMIT = 50
 const val SUGGESTIONS_LIMIT = 10
 
 @HiltAndroidApp

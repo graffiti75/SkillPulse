@@ -95,7 +95,7 @@ class TaskScreenViewModel @Inject constructor(
 							loading = false,
 							tasks = tasks,
 							descriptions = descriptions,
-							canLoadMore = tasks.size == ITEMS_LIMIT.toInt()
+							canLoadMore = tasks.size == ITEMS_LIMIT
 						)
 					}
 				}
@@ -121,7 +121,7 @@ class TaskScreenViewModel @Inject constructor(
 							loadingMore = false,
 							tasks = it.tasks + newTasks,
 							descriptions = it.descriptions + newDescriptions,
-							canLoadMore = newTasks.size == ITEMS_LIMIT.toInt()
+							canLoadMore = newTasks.size == ITEMS_LIMIT
 						)
 					}
 				}
@@ -170,7 +170,7 @@ class TaskScreenViewModel @Inject constructor(
 			it.copy(
 				tasks = allTasks,
 				filterDate = "",
-				canLoadMore = allTasks.size >= 20
+				canLoadMore = allTasks.size >= ITEMS_LIMIT
 			)
 		}
 	}
