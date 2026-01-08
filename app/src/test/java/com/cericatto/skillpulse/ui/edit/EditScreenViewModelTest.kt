@@ -137,7 +137,7 @@ class EditScreenViewModelTest {
 	}
 
 	@Test
-	fun `OnSaveClick sets loading to true during save`() = runTest {
+	fun `OnSaveClick sets loading to true during save`() {
 		viewModel = createViewModel()
 
 		viewModel.onAction(EditScreenAction.OnSaveClick)
@@ -147,7 +147,7 @@ class EditScreenViewModelTest {
 	}
 
 	@Test
-	fun `OnSaveClick with database error shows error alert`() = runTest {
+	fun `OnSaveClick with database error shows error alert`() {
 		fakeRemoteDatabase.shouldReturnError = true
 		fakeRemoteDatabase.errorToReturn = DataError.Firebase.FIRESTORE_ERROR
 		viewModel = createViewModel()
@@ -160,7 +160,7 @@ class EditScreenViewModelTest {
 	}
 
 	@Test
-	fun `OnSaveClick preserves taskId`() = runTest {
+	fun `OnSaveClick preserves taskId`() {
 		viewModel = createViewModel(taskId = "original_task_id")
 
 		viewModel.onAction(EditScreenAction.OnDescriptionChange("Modified"))
@@ -186,7 +186,7 @@ class EditScreenViewModelTest {
 	// ==================== Alert Tests ====================
 
 	@Test
-	fun `OnDismissAlert clears alert`() = runTest {
+	fun `OnDismissAlert clears alert`() {
 		fakeRemoteDatabase.shouldReturnError = true
 		viewModel = createViewModel()
 

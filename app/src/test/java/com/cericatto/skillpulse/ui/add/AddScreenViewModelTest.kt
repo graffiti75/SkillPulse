@@ -224,7 +224,7 @@ class AddScreenViewModelTest {
 	}
 
 	@Test
-	fun `OnSaveClick sets loading to true during save`() = runTest {
+	fun `OnSaveClick sets loading to true during save`() {
 		viewModel = createViewModel()
 
 		viewModel.onAction(AddScreenAction.OnDescriptionChange("Test task"))
@@ -237,7 +237,7 @@ class AddScreenViewModelTest {
 	}
 
 	@Test
-	fun `OnSaveClick with database error shows error alert`() = runTest {
+	fun `OnSaveClick with database error shows error alert`() {
 		fakeRemoteDatabase.shouldReturnError = true
 		fakeRemoteDatabase.errorToReturn = DataError.Firebase.FIRESTORE_ERROR
 		viewModel = createViewModel()

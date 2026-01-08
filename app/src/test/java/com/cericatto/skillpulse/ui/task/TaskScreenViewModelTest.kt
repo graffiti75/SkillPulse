@@ -53,7 +53,7 @@ class TaskScreenViewModelTest {
 	// ==================== Initialization Tests ====================
 
 	@Test
-	fun `initial state loads tasks on creation`() = runTest {
+	fun `initial state loads tasks on creation`() {
 		addSampleTasks(3)
 		viewModel = createViewModel()
 
@@ -62,7 +62,7 @@ class TaskScreenViewModelTest {
 	}
 
 	@Test
-	fun `initial state with empty database has empty tasks list`() = runTest {
+	fun `initial state with empty database has empty tasks list`() {
 		viewModel = createViewModel()
 
 		assertThat(viewModel.state.value.tasks).isEmpty()
@@ -70,7 +70,7 @@ class TaskScreenViewModelTest {
 	}
 
 	@Test
-	fun `initial state extracts descriptions from tasks`() = runTest {
+	fun `initial state extracts descriptions from tasks`() {
 		addSampleTasks(3)
 		viewModel = createViewModel()
 
@@ -81,7 +81,7 @@ class TaskScreenViewModelTest {
 	}
 
 	@Test
-	fun `initial state with database error shows error alert`() = runTest {
+	fun `initial state with database error shows error alert`() {
 		fakeRemoteDatabase.shouldReturnError = true
 		viewModel = createViewModel()
 
@@ -127,7 +127,7 @@ class TaskScreenViewModelTest {
 	// ==================== Delete Task Tests ====================
 
 	@Test
-	fun `OnDeleteTask removes task from list`() = runTest {
+	fun `OnDeleteTask removes task from list`() {
 		addSampleTasks(3)
 		viewModel = createViewModel()
 
@@ -139,7 +139,7 @@ class TaskScreenViewModelTest {
 	}
 
 	@Test
-	fun `OnDeleteTask with non-existent task does not change list`() = runTest {
+	fun `OnDeleteTask with non-existent task does not change list`() {
 		addSampleTasks(3)
 		viewModel = createViewModel()
 
@@ -205,7 +205,7 @@ class TaskScreenViewModelTest {
 	}
 
 	@Test
-	fun `OnLogoutClick with error shows error alert`() = runTest {
+	fun `OnLogoutClick with error shows error alert`() {
 		fakeUserAuthentication.shouldReturnError = true
 		viewModel = createViewModel()
 
@@ -218,7 +218,7 @@ class TaskScreenViewModelTest {
 	// ==================== Load More Tasks Tests ====================
 
 	@Test
-	fun `LoadMoreTasks appends new tasks`() = runTest {
+	fun `LoadMoreTasks appends new tasks`() {
 		// Add initial tasks
 		repeat(ITEMS_LIMIT) { index ->
 			fakeRemoteDatabase.addTaskToFake(
@@ -252,7 +252,7 @@ class TaskScreenViewModelTest {
 	}
 
 	@Test
-	fun `LoadMoreTasks does nothing when already loading`() = runTest {
+	fun `LoadMoreTasks does nothing when already loading`() {
 		addSampleTasks(ITEMS_LIMIT)
 		viewModel = createViewModel()
 
@@ -267,7 +267,7 @@ class TaskScreenViewModelTest {
 	}
 
 	@Test
-	fun `LoadMoreTasks does nothing when canLoadMore is false`() = runTest {
+	fun `LoadMoreTasks does nothing when canLoadMore is false`() {
 		addSampleTasks(5) // Less than 50, so canLoadMore will be false
 		viewModel = createViewModel()
 
@@ -281,7 +281,7 @@ class TaskScreenViewModelTest {
 	// ==================== Filter Tests ====================
 
 	@Test
-	fun `OnFilterByDate filters tasks by startTime`() = runTest {
+	fun `OnFilterByDate filters tasks by startTime`() {
 		fakeRemoteDatabase.addTaskToFake(
 			Task(id = "1", description = "Task 1", startTime = "2026-01-05T10:00:00-03:00")
 		)
@@ -300,7 +300,7 @@ class TaskScreenViewModelTest {
 	}
 
 	@Test
-	fun `OnFilterByDate with blank date does nothing`() = runTest {
+	fun `OnFilterByDate with blank date does nothing`() {
 		addSampleTasks(3)
 		viewModel = createViewModel()
 
@@ -311,7 +311,7 @@ class TaskScreenViewModelTest {
 	}
 
 	@Test
-	fun `OnClearFilter restores all tasks`() = runTest {
+	fun `OnClearFilter restores all tasks`() {
 		fakeRemoteDatabase.addTaskToFake(
 			Task(id = "1", description = "Task 1", startTime = "2026-01-05T10:00:00-03:00")
 		)
@@ -331,7 +331,7 @@ class TaskScreenViewModelTest {
 	// ==================== Refresh Tests ====================
 
 	@Test
-	fun `OnScreenResume refreshes tasks`() = runTest {
+	fun `OnScreenResume refreshes tasks`() {
 		addSampleTasks(3)
 		viewModel = createViewModel()
 
@@ -348,7 +348,7 @@ class TaskScreenViewModelTest {
 	// ==================== Alert Tests ====================
 
 	@Test
-	fun `OnDismissAlert clears alert`() = runTest {
+	fun `OnDismissAlert clears alert`() {
 		fakeRemoteDatabase.shouldReturnError = true
 		viewModel = createViewModel()
 
@@ -362,7 +362,7 @@ class TaskScreenViewModelTest {
 	// ==================== Descriptions Tests ====================
 
 	@Test
-	fun `descriptions are unique`() = runTest {
+	fun `descriptions are unique`() {
 		fakeRemoteDatabase.addTaskToFake(
 			Task(id = "1", description = "Same description", timestamp = "2026-01-01T10:00:00-03:00")
 		)
