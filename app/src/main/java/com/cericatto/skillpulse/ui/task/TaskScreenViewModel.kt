@@ -184,6 +184,7 @@ class TaskScreenViewModel @Inject constructor(
 	}
 
 	private fun deleteTask(task: Task) {
+		allTasks = allTasks.filter { it.id != task.id }
 		val newTasks = _state.value.tasks.filter { it.id != task.id }
 		_state.update { state ->
 			state.copy(

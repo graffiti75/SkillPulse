@@ -50,6 +50,22 @@ class TaskScreenViewModelTest {
 		}
 	}
 
+	private fun addTasksWithDifferentDates(count: Int) {
+		repeat(count) { index ->
+			val day = (index % 28) + 1
+			val month = if (index < 28) "01" else "02"
+			fakeRemoteDatabase.addTaskToFake(
+				Task(
+					id = "task_$index",
+					description = "Task $index description",
+					timestamp = "2026-$month-${String.format("%02d", day)}T10:00:00-03:00",
+					startTime = "2026-$month-${String.format("%02d", day)}T09:00:00-03:00",
+					endTime = "2026-$month-${String.format("%02d", day)}T11:00:00-03:00"
+				)
+			)
+		}
+	}
+
 	// ==================== Initialization Tests ====================
 
 	@Test
@@ -375,5 +391,321 @@ class TaskScreenViewModelTest {
 		viewModel = createViewModel()
 
 		assertThat(viewModel.state.value.descriptions).hasSize(2)
+	}
+
+	// ==================== COMPLEX TESTS: StateFlow Emission ====================
+
+	@Test
+	fun `state flow emits loading true then false after tasks load`() = runTest {
+		fakeRemoteDatabase.addTaskToFake(Task(id = "1", description = "Task 1"))
+
+		viewModel = createViewModel()
+
+		viewModel.state.test {
+			val state = awaitItem()
+			assertThat(state.loading).isFalse()
+			assertThat(state.tasks).hasSize(1)
+		}
+	}
+
+	@Test
+	fun `state flow maintains task order after multiple state updates`() {
+		listOf("First", "Second", "Third").forEachIndexed { index, desc ->
+			fakeRemoteDatabase.addTaskToFake(
+				Task(
+					id = "task_$index",
+					description = desc,
+					timestamp = "2026-01-0${index + 1}T10:00:00-03:00"
+				)
+			)
+		}
+		viewModel = createViewModel()
+
+		val taskDescriptions = viewModel.state.value.tasks.map { it.description }
+		assertThat(taskDescriptions).containsExactly("Third", "Second", "First").inOrder()
+	}
+
+	// ==================== COMPLEX TESTS: Filter Business Logic ====================
+
+	@Test
+	fun `filter preserves allTasks while updating displayed tasks`() {
+		fakeRemoteDatabase.addTaskToFake(
+			Task(id = "1", description = "Monday Task", startTime = "2026-01-05T10:00:00-03:00")
+		)
+		fakeRemoteDatabase.addTaskToFake(
+			Task(id = "2", description = "Tuesday Task", startTime = "2026-01-06T10:00:00-03:00")
+		)
+		fakeRemoteDatabase.addTaskToFake(
+			Task(id = "3", description = "Monday Task 2", startTime = "2026-01-05T14:00:00-03:00")
+		)
+		viewModel = createViewModel()
+
+		assertThat(viewModel.state.value.tasks).hasSize(3)
+
+		viewModel.onAction(TaskScreenAction.OnFilterByDate("2026-01-05"))
+		assertThat(viewModel.state.value.tasks).hasSize(2)
+
+		viewModel.onAction(TaskScreenAction.OnClearFilter)
+		assertThat(viewModel.state.value.tasks).hasSize(3)
+	}
+
+	@Test
+	fun `filter returns empty list when no tasks match date`() {
+		fakeRemoteDatabase.addTaskToFake(
+			Task(id = "1", description = "Task", startTime = "2026-01-05T10:00:00-03:00")
+		)
+		viewModel = createViewModel()
+
+		viewModel.onAction(TaskScreenAction.OnFilterByDate("2026-12-25"))
+
+		assertThat(viewModel.state.value.tasks).isEmpty()
+		assertThat(viewModel.state.value.filterDate).isEqualTo("2026-12-25")
+	}
+
+	@Test
+	fun `filter disables canLoadMore to prevent pagination during filter`() {
+		addTasksWithDifferentDates(55)
+		viewModel = createViewModel()
+
+		viewModel.onAction(TaskScreenAction.OnFilterByDate("2026-01-05"))
+
+		assertThat(viewModel.state.value.canLoadMore).isFalse()
+	}
+
+	@Test
+	fun `multiple sequential filters work correctly`() {
+		fakeRemoteDatabase.addTaskToFake(
+			Task(id = "1", startTime = "2026-01-05T10:00:00-03:00")
+		)
+		fakeRemoteDatabase.addTaskToFake(
+			Task(id = "2", startTime = "2026-01-06T10:00:00-03:00")
+		)
+		fakeRemoteDatabase.addTaskToFake(
+			Task(id = "3", startTime = "2026-01-07T10:00:00-03:00")
+		)
+		viewModel = createViewModel()
+
+		viewModel.onAction(TaskScreenAction.OnFilterByDate("2026-01-05"))
+		assertThat(viewModel.state.value.tasks).hasSize(1)
+
+		viewModel.onAction(TaskScreenAction.OnFilterByDate("2026-01-06"))
+		assertThat(viewModel.state.value.tasks).hasSize(1)
+		assertThat(viewModel.state.value.tasks.first().id).isEqualTo("2")
+	}
+
+	// ==================== COMPLEX TESTS: Descriptions Extraction ====================
+
+	@Test
+	fun `descriptions are passed correctly to AddScreen navigation`() = runTest {
+		fakeRemoteDatabase.addTaskToFake(
+			Task(id = "1", description = "Task A", timestamp = "2026-01-01T10:00:00-03:00")
+		)
+		fakeRemoteDatabase.addTaskToFake(
+			Task(id = "2", description = "Task B", timestamp = "2026-01-02T10:00:00-03:00")
+		)
+		viewModel = createViewModel()
+
+		viewModel.events.test {
+			viewModel.onAction(TaskScreenAction.OnAddTaskClick)
+
+			val event = awaitItem() as UiEvent.Navigate
+			val route = event.route as Route.AddScreen
+
+			assertThat(route.suggestionsJson).contains("Task A")
+			assertThat(route.suggestionsJson).contains("Task B")
+			assertThat(route.suggestionsJson).contains("|||")
+		}
+	}
+
+	// ==================== COMPLEX TESTS: Delete Task ====================
+
+	@Test
+	fun `delete task updates both displayed list and preserves filter state`() {
+		fakeRemoteDatabase.addTaskToFake(
+			Task(id = "1", description = "Task 1", startTime = "2026-01-05T10:00:00-03:00")
+		)
+		fakeRemoteDatabase.addTaskToFake(
+			Task(id = "2", description = "Task 2", startTime = "2026-01-05T14:00:00-03:00")
+		)
+		viewModel = createViewModel()
+
+		viewModel.onAction(TaskScreenAction.OnFilterByDate("2026-01-05"))
+		assertThat(viewModel.state.value.tasks).hasSize(2)
+
+		val taskToDelete = viewModel.state.value.tasks.first()
+		viewModel.onAction(TaskScreenAction.OnDeleteTask(taskToDelete))
+
+		assertThat(viewModel.state.value.tasks).hasSize(1)
+		assertThat(viewModel.state.value.filterDate).isEqualTo("2026-01-05")
+	}
+
+	@Test
+	fun `delete all tasks results in empty state`() {
+		fakeRemoteDatabase.addTaskToFake(Task(id = "1", description = "Task 1"))
+		fakeRemoteDatabase.addTaskToFake(Task(id = "2", description = "Task 2"))
+		viewModel = createViewModel()
+
+		val tasks = viewModel.state.value.tasks.toList()
+		tasks.forEach { task ->
+			viewModel.onAction(TaskScreenAction.OnDeleteTask(task))
+		}
+
+		assertThat(viewModel.state.value.tasks).isEmpty()
+	}
+
+	// ==================== COMPLEX TESTS: Navigation Data Integrity ====================
+
+	@Test
+	fun `navigating to EditScreen passes all task fields correctly`() = runTest {
+		val testTask = Task(
+			id = "unique_id_123",
+			description = "Test Description with Special Characters: @#$%",
+			timestamp = "2026-01-06T10:00:00-03:00",
+			startTime = "2026-01-06T09:30:00-03:00",
+			endTime = "2026-01-06T17:45:00-03:00"
+		)
+		fakeRemoteDatabase.addTaskToFake(testTask)
+		viewModel = createViewModel()
+
+		viewModel.events.test {
+			viewModel.onAction(TaskScreenAction.OnTaskClick(testTask))
+
+			val event = awaitItem() as UiEvent.Navigate
+			val route = event.route as Route.EditScreen
+
+			assertThat(route.taskId).isEqualTo("unique_id_123")
+			assertThat(route.description).isEqualTo("Test Description with Special Characters: @#\$%")
+			assertThat(route.startTime).isEqualTo("2026-01-06T09:30:00-03:00")
+			assertThat(route.endTime).isEqualTo("2026-01-06T17:45:00-03:00")
+		}
+	}
+
+	// ==================== COMPLEX TESTS: Error Recovery ====================
+
+	@Test
+	fun `state is valid after database error during initial load`() {
+		fakeRemoteDatabase.shouldReturnError = true
+		fakeRemoteDatabase.errorToReturn = DataError.Firebase.FIRESTORE_ERROR
+
+		viewModel = createViewModel()
+
+		assertThat(viewModel.state.value.loading).isFalse()
+		assertThat(viewModel.state.value.alert).isNotNull()
+		assertThat(viewModel.state.value.tasks).isEmpty()
+	}
+
+	@Test
+	fun `can retry loading after error by refreshing`() {
+		fakeRemoteDatabase.shouldReturnError = true
+		viewModel = createViewModel()
+
+		assertThat(viewModel.state.value.alert).isNotNull()
+
+		fakeRemoteDatabase.shouldReturnError = false
+		fakeRemoteDatabase.addTaskToFake(Task(id = "1", description = "Task 1"))
+
+		viewModel.onAction(TaskScreenAction.OnDismissAlert)
+		viewModel.onAction(TaskScreenAction.OnScreenResume)
+
+		assertThat(viewModel.state.value.tasks).hasSize(1)
+		assertThat(viewModel.state.value.loading).isFalse()
+	}
+
+	@Test
+	fun `logout error does not affect task list`() {
+		fakeRemoteDatabase.addTaskToFake(Task(id = "1", description = "Task 1"))
+		fakeUserAuthentication.shouldReturnError = true
+		viewModel = createViewModel()
+
+		val tasksBefore = viewModel.state.value.tasks.toList()
+
+		viewModel.onAction(TaskScreenAction.OnLogoutClick)
+
+		assertThat(viewModel.state.value.tasks).isEqualTo(tasksBefore)
+		assertThat(viewModel.state.value.alert).isNotNull()
+	}
+
+	// ==================== COMPLEX TESTS: Pagination Edge Cases ====================
+
+	@Test
+	fun `canLoadMore is false when less than page size tasks returned`() {
+		repeat(5) { index ->
+			fakeRemoteDatabase.addTaskToFake(
+				Task(id = "task_$index", timestamp = "2026-01-0${index + 1}T10:00:00-03:00")
+			)
+		}
+		viewModel = createViewModel()
+
+		assertThat(viewModel.state.value.canLoadMore).isFalse()
+	}
+
+	@Test
+	fun `LoadMoreTasks is ignored when canLoadMore is false`() {
+		repeat(5) { index ->
+			fakeRemoteDatabase.addTaskToFake(
+				Task(id = "task_$index", timestamp = "2026-01-0${index + 1}T10:00:00-03:00")
+			)
+		}
+		viewModel = createViewModel()
+
+		val taskCountBefore = viewModel.state.value.tasks.size
+
+		viewModel.onAction(TaskScreenAction.LoadMoreTasks)
+
+		assertThat(viewModel.state.value.tasks).hasSize(taskCountBefore)
+		assertThat(viewModel.state.value.loadingMore).isFalse()
+	}
+
+	// ==================== COMPLEX TESTS: Complete User Journey ====================
+
+	@Test
+	fun `complete user journey - load, filter, clear, delete, navigate`() = runTest {
+		fakeRemoteDatabase.addTaskToFake(
+			Task(id = "1", description = "Monday Meeting", startTime = "2026-01-05T10:00:00-03:00", timestamp = "2026-01-05T10:00:00-03:00")
+		)
+		fakeRemoteDatabase.addTaskToFake(
+			Task(id = "2", description = "Tuesday Review", startTime = "2026-01-06T14:00:00-03:00", timestamp = "2026-01-06T14:00:00-03:00")
+		)
+		fakeRemoteDatabase.addTaskToFake(
+			Task(id = "3", description = "Monday Standup", startTime = "2026-01-05T09:00:00-03:00", timestamp = "2026-01-05T09:00:00-03:00")
+		)
+
+		viewModel = createViewModel()
+		assertThat(viewModel.state.value.tasks).hasSize(3)
+		assertThat(viewModel.state.value.descriptions).hasSize(3)
+
+		viewModel.onAction(TaskScreenAction.OnFilterByDate("2026-01-05"))
+		assertThat(viewModel.state.value.tasks).hasSize(2)
+		assertThat(viewModel.state.value.tasks.map { it.description })
+			.containsExactly("Monday Meeting", "Monday Standup")
+
+		val taskToDelete = viewModel.state.value.tasks.first()
+		viewModel.onAction(TaskScreenAction.OnDeleteTask(taskToDelete))
+		assertThat(viewModel.state.value.tasks).hasSize(1)
+
+		viewModel.onAction(TaskScreenAction.OnClearFilter)
+		assertThat(viewModel.state.value.tasks).hasSize(2)
+
+		viewModel.events.test {
+			viewModel.onAction(TaskScreenAction.OnAddTaskClick)
+			val event = awaitItem() as UiEvent.Navigate
+			assertThat(event.route).isInstanceOf(Route.AddScreen::class.java)
+		}
+	}
+
+	@Test
+	fun `refresh after external data change loads new tasks`() {
+		fakeRemoteDatabase.addTaskToFake(Task(id = "1", description = "Original Task"))
+		viewModel = createViewModel()
+
+		assertThat(viewModel.state.value.tasks).hasSize(1)
+
+		fakeRemoteDatabase.addTaskToFake(
+			Task(id = "2", description = "New Task", timestamp = "2026-01-10T10:00:00-03:00")
+		)
+
+		viewModel.onAction(TaskScreenAction.OnScreenResume)
+
+		assertThat(viewModel.state.value.tasks).hasSize(2)
 	}
 }

@@ -1,5 +1,6 @@
 package com.cericatto.skillpulse.fakes
 
+import com.cericatto.skillpulse.ITEMS_LIMIT
 import com.cericatto.skillpulse.data.model.Task
 import com.cericatto.skillpulse.domain.errors.DataError
 import com.cericatto.skillpulse.domain.errors.Result
@@ -31,7 +32,7 @@ class FakeRemoteDatabase : RemoteDatabase {
 			} else {
 				0
 			}
-			val endIndex = minOf(startIndex + 50, sortedTasks.size)
+			val endIndex = minOf(startIndex + ITEMS_LIMIT, sortedTasks.size)
 			Result.Success(sortedTasks.subList(startIndex, endIndex))
 		}
 	}

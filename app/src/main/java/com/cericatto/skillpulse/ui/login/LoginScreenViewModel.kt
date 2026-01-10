@@ -46,6 +46,33 @@ class LoginScreenViewModel @Inject constructor(
 	}
 
 	private fun login(email: String, password: String) {
+		if (email.isBlank()) {
+			_state.update {
+				it.copy(
+					alert = MessageAlert(
+						errorMessage = Pair(
+							UiText.StringResource(R.string.validation_error),
+							"Email cannot be empty"
+						)
+					)
+				)
+			}
+			return
+		}
+
+		if (password.isBlank()) {
+			_state.update {
+				it.copy(
+					alert = MessageAlert(
+						errorMessage = Pair(
+							UiText.StringResource(R.string.validation_error),
+							"Password cannot be empty"
+						)
+					)
+				)
+			}
+			return
+		}
 		viewModelScope.launch {
 			when (val result = auth.login(email, password)) {
 				is Result.Error -> {
