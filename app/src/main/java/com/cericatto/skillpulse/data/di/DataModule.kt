@@ -70,10 +70,10 @@ object DataModule {
 
 	@Provides
 	@Singleton
-	fun provideRickMortyApi(
+	fun provideApi(
 		client: OkHttpClient,
 		moshi: Moshi
-	): RickMortyApi {
+	): Api {
 		return Retrofit.Builder()
 			.baseUrl(BASE_URL)
 			.addConverterFactory(MoshiConverterFactory.create(moshi))
@@ -85,10 +85,10 @@ object DataModule {
 	@Provides
 	@Singleton
 	fun provideRepository(
-		db: RedditDatabase,
-		api: RickMortyApi
-	): RickMortyRepository {
-		return RickMortyRepositoryImpl(
+		db: Database,
+		api: Api
+	): Repository {
+		return RepositoryImpl(
 			dao = db.dao,
 			api = api
 		)
@@ -96,11 +96,11 @@ object DataModule {
 
 	@Provides
 	@Singleton
-	fun provideRickMortyDatabase(app: Application): RedditDatabase {
+	fun provideDatabase(app: Application): Database {
 		return Room.databaseBuilder(
 			app,
-			RedditDatabase::class.java,
-			"reddit_db"
+			Database::class.java,
+			"db"
 		).build()
 	}
 
