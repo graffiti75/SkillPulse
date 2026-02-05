@@ -25,6 +25,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -128,6 +129,7 @@ private fun LoginScreen(
 					text = "Password"
 				)
 			},
+			visualTransformation = PasswordVisualTransformation(),
 			keyboardOptions = KeyboardOptions(
 				keyboardType = KeyboardType.Password,
 				imeAction = ImeAction.Done
