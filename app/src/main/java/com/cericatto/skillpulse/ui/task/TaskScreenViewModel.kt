@@ -58,11 +58,42 @@ class TaskScreenViewModel @Inject constructor(
 	init {
 		Timber.d("Loading tasks")
 		loadTasks()
+		getLoggedUser()
 	}
 
 	private fun updateLoading(loading: Boolean) {
 		_state.update {
 			it.copy(loading = loading)
+		}
+	}
+
+	private fun getLoggedUser() {
+		viewModelScope.launch {
+			when (val result = auth.userLogged()) {
+				is Result.Error -> {
+					Timber.d("Couldn't get user name: ${result.message}")
+					_state.update {
+						it.copy(loading = false)
+					}
+				}
+				is Result.Success -> {
+					val userEmail = result.data
+					if (userEmail.isNotBlank()) {
+						Timber.d("User $userEmail logged in now")
+						_state.update {
+							it.copy(
+								user = userEmail.split("@")[0],
+								loading = false
+							)
+						}
+					} else {
+						Timber.d("No user logged in")
+						_state.update {
+							it.copy(loading = false)
+						}
+					}
+				}
+			}
 		}
 	}
 

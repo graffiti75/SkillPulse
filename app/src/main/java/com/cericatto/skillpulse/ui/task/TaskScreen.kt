@@ -349,7 +349,7 @@ private fun TaskScreenTopHeader(
 			.padding(horizontal = 16.dp, vertical = 8.dp)
 	) {
 		Text(
-			text = "Welcome $user",
+			text = "Welcome \"$user\"",
 			style = TextStyle(
 				fontSize = 20.sp,
 				color = textColor,
