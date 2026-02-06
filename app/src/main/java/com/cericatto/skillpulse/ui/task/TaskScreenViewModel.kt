@@ -3,12 +3,14 @@ package com.cericatto.skillpulse.ui.task
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cericatto.skillpulse.ITEMS_LIMIT
+import com.cericatto.skillpulse.R
 import com.cericatto.skillpulse.data.model.Task
 import com.cericatto.skillpulse.domain.auth.UserAuthentication
 import com.cericatto.skillpulse.domain.errors.Result
 import com.cericatto.skillpulse.domain.remote.RemoteDatabase
 import com.cericatto.skillpulse.ui.MessageAlert
 import com.cericatto.skillpulse.ui.UiEvent
+import com.cericatto.skillpulse.ui.UiText
 import com.cericatto.skillpulse.ui.asUiText
 import com.cericatto.skillpulse.ui.navigation.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,8 +43,8 @@ class TaskScreenViewModel @Inject constructor(
 		when (action) {
 			is TaskScreenAction.OnDismissAlert -> dismissAlert()
 			is TaskScreenAction.OnLoadingUpdate -> updateLoading(action.loading)
-			is TaskScreenAction.OnShowDeleteDialog -> showDeleteDialog(action.show)
-			is TaskScreenAction.OnDeleteTask -> deleteTask(action.task)
+			is TaskScreenAction.OnShowDeleteDialog -> showDeleteDialog(action.task)
+			is TaskScreenAction.OnConfirmDeleteTask -> confirmDeleteTask()
 			is TaskScreenAction.OnLogoutClick -> logout()
 			is TaskScreenAction.LoadMoreTasks -> loadMoreTasks()
 			is TaskScreenAction.OnFilterByDate -> filterTasksByDate(action.date)
@@ -175,21 +177,53 @@ class TaskScreenViewModel @Inject constructor(
 		}
 	}
 
-	private fun showDeleteDialog(show: Boolean) {
+	private fun confirmDeleteTask() {
+		val task = _state.value.itemToDelete ?: return
+		deleteTask(task)
+	}
+
+	private fun showDeleteDialog(task: Task?) {
 		_state.update { state ->
 			state.copy(
-				showDeleteDialog = show
+				showDeleteDialog = task != null,
+				itemToDelete = task
 			)
 		}
 	}
 
 	private fun deleteTask(task: Task) {
-		allTasks = allTasks.filter { it.id != task.id }
-		val newTasks = _state.value.tasks.filter { it.id != task.id }
-		_state.update { state ->
-			state.copy(
-				tasks = newTasks
-			)
+		viewModelScope.launch {
+			_state.update { it.copy(showDeleteDialog = false, itemToDelete = null) }
+
+			when (val result = db.deleteTask(task.id)) {
+				is Result.Error -> {
+					Timber.e("Task deletion failed: ${result.message}")
+					_state.update {
+						it.copy(
+							alert = MessageAlert(
+								errorMessage = Pair(
+									result.error.asUiText(),
+									result.message ?: "Failed to delete task"
+								)
+							)
+						)
+					}
+				}
+
+				is Result.Success -> {
+					Timber.d("Task deleted successfully: ${task.id}")
+					allTasks = allTasks.filter { it.id != task.id }
+					val newTasks = _state.value.tasks.filter { it.id != task.id }
+					_state.update { state ->
+						state.copy(
+							tasks = newTasks,
+							alert = MessageAlert(
+								successMessage = UiText.StringResource(R.string.delete_task_success)
+							)
+						)
+					}
+				}
+			}
 		}
 	}
 

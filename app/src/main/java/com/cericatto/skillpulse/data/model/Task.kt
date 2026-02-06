@@ -4,7 +4,8 @@ import java.util.UUID
 
 data class Task(
 	val id : String = UUID.randomUUID().toString(),
-	val description : String = "Aguar as plantas",
+	val userId: String = "a@a.com",
+	val description : String = "Create this app",
 	val timestamp : String = "",
 	val startTime : String = "",
 	val endTime : String = "",

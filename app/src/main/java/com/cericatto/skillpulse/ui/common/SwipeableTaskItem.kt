@@ -44,7 +44,6 @@ import kotlinx.coroutines.launch
 fun SwipeableTaskItem(
 	modifier: Modifier = Modifier,
 	item: Task,
-	showDialog: Boolean = false,
 	isDarkTheme: Boolean = isSystemInDarkTheme(),
 	onAction: (TaskScreenAction) -> Unit,
 	deleteThreshold: Dp = (-150).dp,
@@ -106,7 +105,7 @@ fun SwipeableTaskItem(
 						onDragEnd = {
 							isDragging = false
 							if (animatedOffset < deleteThreshold) {
-								onAction(TaskScreenAction.OnShowDeleteDialog(true))
+								onAction(TaskScreenAction.OnShowDeleteDialog(item))
 							}
 							coroutineScope.launch {
 								dragOffset = 0f
@@ -135,12 +134,6 @@ fun SwipeableTaskItem(
 			}
 		}
 	}
-	if (showDialog) {
-		ConfirmationDialog(
-			item = item,
-			onAction = onAction
-		)
-	}
 }
 
 @Preview(
@@ -152,7 +145,6 @@ fun SwipeableTaskItem(
 fun SwipeableTaskItemPreviewLight() {
 	SwipeableTaskItem(
 		item = Task(),
-		showDialog = false,
 		onAction = {},
 		content = {
 			TaskItem(
@@ -174,7 +166,6 @@ fun SwipeableTaskItemPreviewLight() {
 fun SwipeableTaskItemPreviewDark() {
 	SwipeableTaskItem(
 		item = Task(),
-		showDialog = false,
 		onAction = {},
 		content = {
 			TaskItem(

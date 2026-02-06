@@ -69,6 +69,7 @@ import com.cericatto.skillpulse.ui.common.DynamicStatusBarColor
 import com.cericatto.skillpulse.ui.common.LoadingScreen
 import com.cericatto.skillpulse.ui.common.SwipeableTaskItem
 import com.cericatto.skillpulse.ui.common.shadowModifier
+import com.cericatto.skillpulse.ui.common.utils.ConfirmationDialog
 import com.cericatto.skillpulse.ui.common.utils.formatDateString
 import com.cericatto.skillpulse.ui.navigation.Route
 import java.time.Instant
@@ -191,7 +192,6 @@ fun TaskScreen(
 				TaskScreenItems(
 					isLoading = state.loading,
 					tasks = state.tasks,
-					showDeleteDialog = state.showDeleteDialog,
 					canLoadMore = state.canLoadMore,
 					loadingMore = state.loadingMore,
 					listState = listState,
@@ -206,6 +206,14 @@ fun TaskScreen(
 			isDarkTheme = isDarkTheme,
 			onClick = { onAction(TaskScreenAction.OnAddTaskClick) }
 		)
+
+		// Single confirmation dialog for the specific item being deleted
+		state.itemToDelete?.let { task ->
+			ConfirmationDialog(
+				item = task,
+				onAction = onAction
+			)
+		}
 	}
 }
 
@@ -233,7 +241,6 @@ private fun BoxScope.TaskScreenFab(
 private fun TaskScreenItems(
 	isLoading: Boolean,
 	tasks: List<Task>,
-	showDeleteDialog: Boolean,
 	canLoadMore: Boolean,
 	loadingMore: Boolean,
 	listState: androidx.compose.foundation.lazy.LazyListState,
@@ -250,7 +257,6 @@ private fun TaskScreenItems(
 			items(tasks) { task ->
 				SwipeableTaskItem(
 					item = task,
-					showDialog = showDeleteDialog,
 					isDarkTheme = isDarkTheme,
 					onAction = onAction
 				) {

@@ -79,4 +79,18 @@ class FakeRemoteDatabase : RemoteDatabase {
 			}
 		}
 	}
+
+	override suspend fun deleteTask(taskId: String): Result<Boolean, DataError> {
+		return if (shouldReturnError) {
+			Result.Error(errorToReturn, "Fake error")
+		} else {
+			val index = tasks.indexOfFirst { it.id == taskId }
+			if (index == -1) {
+				Result.Error(DataError.Firebase.FIRESTORE_ERROR, "Task not found")
+			} else {
+				tasks.removeAt(index)
+				Result.Success(true)
+			}
+		}
+	}
 }

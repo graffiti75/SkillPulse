@@ -17,7 +17,7 @@ fun ConfirmationDialog(
 ) {
 	AlertDialog(
 		onDismissRequest = {
-			onAction(TaskScreenAction.OnShowDeleteDialog(false))
+			onAction(TaskScreenAction.OnShowDeleteDialog(null))
 		},
 		title = {
 			Text(
@@ -32,8 +32,7 @@ fun ConfirmationDialog(
 		confirmButton = {
 			Button(
 				onClick = {
-					onAction(TaskScreenAction.OnShowDeleteDialog(false))
-					onAction(TaskScreenAction.OnDeleteTask(item))
+					onAction(TaskScreenAction.OnConfirmDeleteTask)
 				}
 			) {
 				Text(
@@ -45,7 +44,7 @@ fun ConfirmationDialog(
 		dismissButton = {
 			Button(
 				onClick = {
-					onAction(TaskScreenAction.OnShowDeleteDialog(false))
+					onAction(TaskScreenAction.OnShowDeleteDialog(null))
 				}
 			) {
 				Text(

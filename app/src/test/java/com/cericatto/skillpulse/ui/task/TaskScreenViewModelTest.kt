@@ -124,20 +124,24 @@ class TaskScreenViewModelTest {
 	@Test
 	fun `OnShowDeleteDialog shows dialog`() {
 		viewModel = createViewModel()
+		val task = Task(id = "test", description = "Test")
 
-		viewModel.onAction(TaskScreenAction.OnShowDeleteDialog(true))
+		viewModel.onAction(TaskScreenAction.OnShowDeleteDialog(task))
 
 		assertThat(viewModel.state.value.showDeleteDialog).isTrue()
+		assertThat(viewModel.state.value.itemToDelete).isEqualTo(task)
 	}
 
 	@Test
 	fun `OnShowDeleteDialog hides dialog`() {
 		viewModel = createViewModel()
+		val task = Task(id = "test", description = "Test")
 
-		viewModel.onAction(TaskScreenAction.OnShowDeleteDialog(true))
-		viewModel.onAction(TaskScreenAction.OnShowDeleteDialog(false))
+		viewModel.onAction(TaskScreenAction.OnShowDeleteDialog(task))
+		viewModel.onAction(TaskScreenAction.OnShowDeleteDialog(null))
 
 		assertThat(viewModel.state.value.showDeleteDialog).isFalse()
+		assertThat(viewModel.state.value.itemToDelete).isNull()
 	}
 
 	// ==================== Delete Task Tests ====================
@@ -148,7 +152,8 @@ class TaskScreenViewModelTest {
 		viewModel = createViewModel()
 
 		val taskToDelete = viewModel.state.value.tasks.first()
-		viewModel.onAction(TaskScreenAction.OnDeleteTask(taskToDelete))
+		viewModel.onAction(TaskScreenAction.OnShowDeleteDialog(taskToDelete))
+		viewModel.onAction(TaskScreenAction.OnConfirmDeleteTask)
 
 		assertThat(viewModel.state.value.tasks).hasSize(2)
 		assertThat(viewModel.state.value.tasks).doesNotContain(taskToDelete)
@@ -160,7 +165,8 @@ class TaskScreenViewModelTest {
 		viewModel = createViewModel()
 
 		val nonExistentTask = Task(id = "non_existent", description = "Test")
-		viewModel.onAction(TaskScreenAction.OnDeleteTask(nonExistentTask))
+		viewModel.onAction(TaskScreenAction.OnShowDeleteDialog(nonExistentTask))
+		viewModel.onAction(TaskScreenAction.OnConfirmDeleteTask)
 
 		assertThat(viewModel.state.value.tasks).hasSize(3)
 	}
@@ -533,7 +539,8 @@ class TaskScreenViewModelTest {
 		assertThat(viewModel.state.value.tasks).hasSize(2)
 
 		val taskToDelete = viewModel.state.value.tasks.first()
-		viewModel.onAction(TaskScreenAction.OnDeleteTask(taskToDelete))
+		viewModel.onAction(TaskScreenAction.OnShowDeleteDialog(taskToDelete))
+		viewModel.onAction(TaskScreenAction.OnConfirmDeleteTask)
 
 		assertThat(viewModel.state.value.tasks).hasSize(1)
 		assertThat(viewModel.state.value.filterDate).isEqualTo("2026-01-05")
@@ -547,7 +554,8 @@ class TaskScreenViewModelTest {
 
 		val tasks = viewModel.state.value.tasks.toList()
 		tasks.forEach { task ->
-			viewModel.onAction(TaskScreenAction.OnDeleteTask(task))
+			viewModel.onAction(TaskScreenAction.OnShowDeleteDialog(task))
+			viewModel.onAction(TaskScreenAction.OnConfirmDeleteTask)
 		}
 
 		assertThat(viewModel.state.value.tasks).isEmpty()
@@ -680,7 +688,8 @@ class TaskScreenViewModelTest {
 			.containsExactly("Monday Meeting", "Monday Standup")
 
 		val taskToDelete = viewModel.state.value.tasks.first()
-		viewModel.onAction(TaskScreenAction.OnDeleteTask(taskToDelete))
+		viewModel.onAction(TaskScreenAction.OnShowDeleteDialog(taskToDelete))
+		viewModel.onAction(TaskScreenAction.OnConfirmDeleteTask)
 		assertThat(viewModel.state.value.tasks).hasSize(1)
 
 		viewModel.onAction(TaskScreenAction.OnClearFilter)

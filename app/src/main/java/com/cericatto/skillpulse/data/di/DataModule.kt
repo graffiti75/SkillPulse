@@ -46,70 +46,10 @@ object DataModule {
 
 	@Provides
 	@Singleton
-	fun provideRemoteDatabase(db: FirebaseFirestore): RemoteDatabase {
-		return FirebaseRemoteDatabase(db)
+	fun provideRemoteDatabase(
+		db: FirebaseFirestore,
+		userAuth: UserAuthentication
+	): RemoteDatabase {
+		return FirebaseRemoteDatabase(db, userAuth)
 	}
-
-	/*
-	@Provides
-	@Singleton
-	fun provideOkHttpClient(): OkHttpClient {
-		val loggingInterceptor = HttpLoggingInterceptor().apply {
-			level = HttpLoggingInterceptor.Level.BODY
-		}
-
-		return OkHttpClient.Builder()
-			.addInterceptor(
-				HttpLoggingInterceptor().apply {
-					level = HttpLoggingInterceptor.Level.BODY
-				}
-			)
-			.addInterceptor(loggingInterceptor)
-			.build()
-	}
-
-	@Provides
-	@Singleton
-	fun provideApi(
-		client: OkHttpClient,
-		moshi: Moshi
-	): Api {
-		return Retrofit.Builder()
-			.baseUrl(BASE_URL)
-			.addConverterFactory(MoshiConverterFactory.create(moshi))
-			.client(client)
-			.build()
-			.create()
-	}
-
-	@Provides
-	@Singleton
-	fun provideRepository(
-		db: Database,
-		api: Api
-	): Repository {
-		return RepositoryImpl(
-			dao = db.dao,
-			api = api
-		)
-	}
-
-	@Provides
-	@Singleton
-	fun provideDatabase(app: Application): Database {
-		return Room.databaseBuilder(
-			app,
-			Database::class.java,
-			"db"
-		).build()
-	}
-
-	@Provides
-	@Singleton
-	fun provideMoshi(): Moshi {
-		return Moshi.Builder()
-			.add(KotlinJsonAdapterFactory())
-			.build()
-	}
-	 */
 }

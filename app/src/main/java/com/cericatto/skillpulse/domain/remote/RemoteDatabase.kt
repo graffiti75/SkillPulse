@@ -17,4 +17,5 @@ interface RemoteDatabase {
 		startTime: String,
 		endTime: String
 	): Result<Boolean, DataError>
+	suspend fun deleteTask(taskId: String): Result<Boolean, DataError>
 }
