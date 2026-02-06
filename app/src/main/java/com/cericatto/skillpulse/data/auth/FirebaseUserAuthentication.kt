@@ -69,7 +69,10 @@ class FirebaseUserAuthentication(
 				val email = user.email ?: ""
 				Result.Success(data = email)
 			} else {
-				Result.Success(data = "")
+				Result.Error(
+					error = DataError.Firebase.USER_LOGGED,
+					message = "No user logged in"
+				)
 			}
 		} catch (e: SecurityException) {
 			Timber.e(e, "Security exception checking user - likely Google Play " +

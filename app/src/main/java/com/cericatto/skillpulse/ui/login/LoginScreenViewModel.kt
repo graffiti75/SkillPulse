@@ -131,14 +131,22 @@ class LoginScreenViewModel @Inject constructor(
 					}
 				}
 				is Result.Success -> {
-					Timber.d("User logged in as ${result.data}")
-					_state.update {
-						it.copy(
-							user = result.data,
-							loading = false
-						)
+					val email = result.data
+					if (email.isNotBlank()) {
+						Timber.d("User logged in as $email")
+						_state.update {
+							it.copy(
+								user = email,
+								loading = false
+							)
+						}
+						goToTaskScreen()
+					} else {
+						Timber.d("No user logged in")
+						_state.update {
+							it.copy(loading = false)
+						}
 					}
-					goToTaskScreen()
 				}
 			}
 		}
