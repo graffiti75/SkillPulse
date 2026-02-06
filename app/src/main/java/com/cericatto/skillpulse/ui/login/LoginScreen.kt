@@ -10,7 +10,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -26,6 +31,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -86,6 +92,7 @@ private fun LoginScreen(
 ) {
 	var email by remember { mutableStateOf("") }
 	var password by remember { mutableStateOf("") }
+	var showPassword by remember { mutableStateOf(false) }
 	val keyboardController = LocalSoftwareKeyboardController.current
 	val passwordFocusRequester = remember { FocusRequester() }
 
@@ -129,9 +136,21 @@ private fun LoginScreen(
 					text = "Password"
 				)
 			},
-			visualTransformation = PasswordVisualTransformation(),
+			visualTransformation = if (showPassword) VisualTransformation.None
+				else PasswordVisualTransformation(),
+			trailingIcon = {
+				IconButton(onClick = { showPassword = !showPassword }) {
+					Icon(
+						imageVector = if (showPassword) Icons.Filled.VisibilityOff
+							else Icons.Filled.Visibility,
+						contentDescription = if (showPassword) "Hide password"
+							else "Show password"
+					)
+				}
+			},
 			keyboardOptions = KeyboardOptions(
-				keyboardType = KeyboardType.Password,
+				keyboardType = if (showPassword) KeyboardType.Text
+					else KeyboardType.Password,
 				imeAction = ImeAction.Done
 			),
 			keyboardActions = KeyboardActions(
