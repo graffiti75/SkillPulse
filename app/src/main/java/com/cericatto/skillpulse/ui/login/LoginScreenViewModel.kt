@@ -120,14 +120,9 @@ class LoginScreenViewModel @Inject constructor(
 		viewModelScope.launch {
 			when (val result = auth.userLogged()) {
 				is Result.Error -> {
-					Timber.e("User logged action couldn't not be verified: ${result.message}")
+					Timber.d("No user logged in: ${result.message}")
 					_state.update {
-						it.copy(
-							alert = MessageAlert(
-								errorMessage = Pair(result.error.asUiText(), result.message ?: "")
-							),
-							loading = false
-						)
+						it.copy(loading = false)
 					}
 				}
 				is Result.Success -> {
