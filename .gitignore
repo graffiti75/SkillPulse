@@ -16,3 +16,4 @@ local.properties
 .idea/copilot*
 .idea/misc.xml
 .kotlin/
+app/google-services.json
