@@ -8,7 +8,7 @@ SkillPulse is a modern Android application designed for efficient task managemen
 
 ## Demo
 
-![SkillPulse Demo](https://raw.githubusercontent.com/graffiti75/SkillPulse/refs/heads/master/media/Screen%20Recording%202026-02-06%20at%2012.11.57.gif)
+[![SkillPulse Demo](https://raw.githubusercontent.com/graffiti75/SkillPulse/refs/heads/master/media/Screen%20Recording%202026-02-06%20at%2012.11.57.gif)](https://www.youtube.com/shorts/j1Gzt7mbsvU)
 
 Also, you can check out the full video [here](https://www.youtube.com/shorts/j1Gzt7mbsvU).
 
